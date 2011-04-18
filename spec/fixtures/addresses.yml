@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  street: MyString
+  build: MyString
+  porch: 1
+  nos: 1
+
+two:
+  user_id: 1
+  street: MyString
+  build: MyString
+  porch: 1
+  nos: 1

@@ -1,0 +1,34 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_admins_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_admin_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Admins
+    .inner
+      %table.table
+        %tr
+          %th.first ID
+          %th
+            = t("activerecord.attributes.admin_admin.email", :default => t("activerecord.labels.email", :default => "Email"))
+          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th.last &nbsp;
+        - @admins.each do |admin|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = admin.id
+            %td
+              = link_to admin.email, admin_admin_path(admin)
+            %td
+              = admin.created_at
+            %td.last
+              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_admin_path(admin)
+              |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_admin_path(admin)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_admin_path(admin), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @admins
+- content_for :sidebar, render(:partial => 'sidebar')

@@ -11,8 +11,8 @@ development:
   reconnect: false
   database: personnel_development
   pool: 5
-  username: root
-  password:
+  username: artemka
+  password: artemka123
   socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
@@ -24,8 +24,8 @@ test:
   reconnect: false
   database: personnel_test
   pool: 5
-  username: root
-  password:
+  username: artemka
+  password: artemka123
   socket: /tmp/mysql.sock
 
 production:

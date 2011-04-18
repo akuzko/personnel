@@ -1,0 +1,34 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_departments_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_department_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Departments
+    .inner
+      %table.table
+        %tr
+          %th.first ID
+          %th
+            = t("activerecord.attributes.admin_department.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th.last &nbsp;
+        - @departments.each do |department|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = department.id
+            %td
+              = link_to department.name, admin_department_path(department)
+            %td
+              = department.created_at
+            %td.last
+              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_department_path(department)
+              |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_department_path(department)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_department_path(department), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @departments
+- content_for :sidebar, render(:partial => 'sidebar')

@@ -1,0 +1,40 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_user_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Users
+    .inner
+      %table.table
+        %tr
+          %th.first id
+          %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
+          %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell 1"))
+          %th= t("activerecord.attributes.contact.cell2", :default => t("activerecord.labels.cell2", :default => "Cell 2"))
+          %th= t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department", :default => "Department"))
+          %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
+          %th= t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate"))
+          %th.last &nbsp;
+        - @users.each do |user|
+          %tr{:class => cycle("odd", "even")}
+            %td= user.id
+            %td= user.identifier
+            %td= user.full_name
+            %td= user.cell1
+            %td= user.cell2
+            %td= user.department_name
+            %td= user.full_address
+            %td= l(user.birthdate) if user.birthdate
+            %td.last
+              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path(user)
+              |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(user), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @users
+- content_for :sidebar, render(:partial => 'sidebar')

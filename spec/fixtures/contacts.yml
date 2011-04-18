@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  user_id: 1
+  email: MyString
+  cell1: MyString
+  cell2: MyString
+
+two:
+  user_id: 1
+  email: MyString
+  cell1: MyString
+  cell2: MyString
