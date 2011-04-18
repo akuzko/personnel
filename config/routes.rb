@@ -51,7 +51,12 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "home#index"
-    resources :admins, :departments, :users
+    resources :admins, :departments
+    resources :users do
+      get 'delivery', :on => :collection
+      get 'edit_data', :on => :member
+      put 'update_data', :on => :member
+    end
   end
 
   # You can have the root of your site routed with "root"

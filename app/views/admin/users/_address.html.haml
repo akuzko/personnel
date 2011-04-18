@@ -1,0 +1,21 @@
+= form_for address, :url => update_data_admin_user_path(user, :data => 'address'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+  .group
+    = f.label :street, t("activerecord.attributes.address.street", :default => "Street"), :class => :label
+    = f.text_field :street, :class => 'text_field'
+  .group
+    = f.label :build, t("activerecord.attributes.address.build", :default => "Build №"), :class => :label
+    = f.text_field :build, :class => 'text_field'
+  .group
+    = f.label :porch, t("activerecord.attributes.address.porch", :default => "Porch"), :class => :label
+    = f.text_field :porch, :class => 'text_field'
+  .group
+    = f.label :nos, t("activerecord.attributes.address.nos", :default => "Number of storeys"), :class => :label
+    = f.text_field :nos, :class => 'text_field'
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      = t("web-app-theme.save", :default => "Save")
+    %span.text_button_padding= t("web-app-theme.or", :default => "or")
+    %a.button{:href => '#', :data => {'cancel-address' => true}}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")

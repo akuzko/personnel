@@ -1,0 +1,73 @@
+%h2= @user.full_name
+
+.block.notice
+  %h3 Profile
+  #sidebar_profile.content
+    %p
+      %b
+        = t("activerecord.attributes.profile.last_name", :default => "Last Name")
+        \:
+      = @user.profile.last_name
+    %p
+      %b
+        = t("activerecord.attributes.profile.initials", :default => "Initials")
+        \:
+      = @user.profile.initials
+    %p
+      %b
+        = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
+        \:
+      = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
+    .wat-cf
+      = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+        edit_data_admin_user_path(@user, :data => 'profile'), :class => "button", 'data-edit-profile' => edit_data_admin_user_path(@user, :data => 'profile')
+    
+.block.notice
+  %h3 Address
+  #sidebar_address.content
+    %p
+      %b
+        = t("activerecord.attributes.address.street", :default => "Street")
+        \:
+      = @user.address.street
+    %p
+      %b
+        = t("activerecord.attributes.address.build", :default => "Build №")
+        \:
+      = @user.address[:build]
+    %p
+      %b
+        = t("activerecord.attributes.address.porch", :default => "Porch")
+        \:
+      = @user.address.porch
+    %p
+      %b
+        = t("activerecord.attributes.address.nos", :default => "Number of storeys")
+        \:
+      = @user.address.nos
+    .wat-cf
+      = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+        edit_data_admin_user_path(@user, :data => 'address'), :class => "button", 'data-edit-address' => edit_data_admin_user_path(@user, :data => 'address')
+
+.block.notice
+  %h3 Contacts
+  #sidebar_contact.content
+    %p
+      %b
+        = t("activerecord.attributes.contact.email", :default => "Personal Email")
+        \:
+      = @user.contact.email
+    %p
+      %b
+        = t("activerecord.attributes.contact.cell1", :default => "Cell 1")
+        \:
+      = @user.contact.cell1
+    %p
+      %b
+        = t("activerecord.attributes.contact.cell2", :default => "Cell 2")
+        \:
+      = @user.contact.cell2
+    .wat-cf
+      = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+        edit_data_admin_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_admin_user_path(@user, :data => 'contact')
+

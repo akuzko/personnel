@@ -38,7 +38,7 @@ module Personnel
     end
 
     # JavaScript files you want as :defaults (application.js is always included).
-    config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
+    config.action_view.javascript_expansions[:defaults] = %w(jquery rails underscore.min)
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
@@ -49,6 +49,7 @@ module Personnel
     config.action_mailer.default_url_options = {:host => 'personnel.artemka.sv:3005'}
     config.to_prepare do
       Devise::SessionsController.layout "sign"
+      Devise::PasswordsController.layout "sign"
     end
   end
 end
