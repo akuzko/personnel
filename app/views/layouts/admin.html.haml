@@ -23,8 +23,10 @@
               %a{:href => admin_admins_path} Admins
             %li{:class => controller.controller_path == 'admin/departments' ? 'active' : '' }
               %a{:href => admin_departments_path} Departments
-            %li{:class => controller.controller_path == 'admin/users' ? 'active' : '' }
-              %a{:href => admin_users_path} Users
+            %li{:class => controller.controller_path == 'admin/users' && params[:action] != 'delivery' ? 'active' : '' }
+              %a{:href => admin_users_path} All Personnel
+            %li{:class => controller.controller_path == 'admin/users' && params[:action] == 'delivery' ? 'active' : '' }
+              %a{:href => delivery_admin_users_path} Delivery List
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|

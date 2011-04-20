@@ -4,6 +4,15 @@ class Admin::UsersController < ApplicationController
   
   def index
     @users = User.with_data.order('id DESC').paginate :page => params[:page], :per_page => 15
+    
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @users }
+    end
+  end
+
+  def delivery
+    @users = User.identified.with_data.order('identifier ASC').paginate :page => params[:page], :per_page => 15
 
     respond_to do |format|
       format.html # index.html.erb
@@ -36,6 +45,7 @@ class Admin::UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     @user.department_id = params[:user][:department_id] # WTF?!
+    @user.identifier = params[:user][:identifier] # also WTF?!
 
     respond_to do |format|
       if @user.save

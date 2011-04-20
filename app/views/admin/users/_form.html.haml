@@ -4,7 +4,10 @@
   %span.description= t("personnel.Z3K email address")
 .group
   = f.label :department_id, t("activerecord.attributes.user.department_id", :default => "Department"), :class => :label
-  = f.select :department_id, Department.selection, {}, :class => 'text_field'
+  = f.select :department_id, Department.selection
+.group
+  = f.label :identifier, t("activerecord.attributes.user.identifier", :default => "IDentifier"), :class => :label
+  = f.select :identifier, User.identifier_selection(f.object.try(:identifier)), :include_blank => true
 .group
   = f.label :password, t("activerecord.attributes.user.password", :default => "Password"), :class => :label
   = f.text_field :password, :class => 'text_field'

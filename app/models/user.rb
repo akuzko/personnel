@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  IDENTIFIER_THRESHOLD = 50
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -21,10 +22,18 @@ class User < ActiveRecord::Base
 
   scope :with_data, includes(:profile, :address, :contact)
   scope :identified, where('identifier IS NOT NULL')
+  scope :identifiers, order('identifier ASC').select('identifier')
 
   validates_presence_of :department_id
   validates_presence_of :identifier, :if => :has_identifier?
   validates_uniqueness_of :identifier, :scope => :department_id, :if => :has_identifier?
+
+  def self.identifier_selection include_id = nil
+    identifiers = identified.identifiers.map(&:identifier)
+    first, last = identifiers.first || 1, identifiers.last || 1
+    identifiers = ((first..last+IDENTIFIER_THRESHOLD).to_a - identifiers + [include_id]).compact.sort
+    identifiers.zip identifiers
+  end
   
   def has_identifier?
     (department || Department.find(department_id)).has_identifier?

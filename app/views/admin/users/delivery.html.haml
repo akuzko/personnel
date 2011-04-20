@@ -1,0 +1,28 @@
+.block
+  .content
+    %h2.title= t("personnel.delivery", :default => 'Personnel Delivery List')
+    .inner
+      %table.table
+        %tr
+          %th.first= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
+          %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell 1"))
+          %th= t("activerecord.attributes.contact.cell2", :default => t("activerecord.labels.cell2", :default => "Cell 2"))
+          %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
+          %th.last &nbsp;
+        - @users.each do |user|
+          %tr{:class => cycle("odd", "even")}
+            %td= user.identifier
+            %td= user.full_name
+            %td= user.cell1
+            %td= user.cell2
+            %td= user.full_address
+            %td.last
+              %a{:href => admin_user_path(user), :data => {'load-user' => admin_user_path(user)}}= t("web-app-theme.show", :default => "Show")
+              |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(user), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @users
+- content_for :sidebar, render(:partial => 'sidebar')
