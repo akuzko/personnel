@@ -30,8 +30,8 @@ class User < ActiveRecord::Base
 
   def self.identifier_selection include_id = nil
     identifiers = identified.identifiers.map(&:identifier)
-    first, last = identifiers.first || 1, identifiers.last || 1
-    identifiers = ((first..last+IDENTIFIER_THRESHOLD).to_a - identifiers + [include_id]).compact.sort
+    last = identifiers.last || 1
+    identifiers = ((1..last+IDENTIFIER_THRESHOLD).to_a - identifiers + [include_id]).compact.sort
     identifiers.zip identifiers
   end
   

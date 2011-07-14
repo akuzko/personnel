@@ -1,4 +1,6 @@
 Personnel::Application.routes.draw do
+  get "users/show"
+
   devise_for :users
   devise_for :admins
 
