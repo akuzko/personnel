@@ -25,10 +25,10 @@
       }, this));
     },
     flashFade: function() {
-      return $('.flash').children().each(function(i) {
+      return $('.flash-fade').children().each(function(i) {
         return setTimeout((__bind(function() {
           return $(this).fadeOut();
-        }, this)), 2250 + i * 750);
+        }, this)), 250 + i * 1000);
       });
     },
     reload: function() {

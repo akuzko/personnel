@@ -17,7 +17,7 @@
           no
 
   flashFade: ->
-    $('.flash').children().each (i) ->
+    $('.flash-fade').children().each (i) ->
       setTimeout((=> $(this).fadeOut()), 250 + i * 1000)
 
   reload: -> location.reload()
