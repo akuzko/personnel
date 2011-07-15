@@ -290,6 +290,24 @@ input.checkbox {
   color: red;
 }
 
+#error_explanation {
+    color: red;
+    display: block;
+    font-weight: bold;
+    border-width: 1px;
+    border-style: dashed;
+    margin-bottom: 10px;
+}
+
+#error_explanation ul {
+    margin: 10px 20px;
+    padding: 10px;
+}
+
+#error_explanation h2 {
+    color: red;
+}
+
 .form input.text_field, .form textarea.text_area {
   width: 100%;
   border-width: 1px;

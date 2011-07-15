@@ -4,8 +4,12 @@
   %span.description Z3K email address
 .group
   = f.label :password, t("activerecord.attributes.admin.password", :default => "Password"), :class => :label
-  = f.text_field :password, :class => 'text_field'
+  = f.password_field :password, :class => 'text_field'
   %span.description Password
+.group
+  = f.label :confirm_password, t("activerecord.attributes.admin.confirm_password", :default => "Confirm Password"), :class => :label
+  = f.password_field :password_confirmation, :class => 'text_field'
+  %span.description Password Confirmation
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

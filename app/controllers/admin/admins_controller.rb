@@ -46,7 +46,7 @@ class Admin::AdminsController < ApplicationController
     @admin = Admin.new(params[:admin])
 
     respond_to do |format|
-      if @department.save
+      if @admin.save
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully created.') }
         format.xml  { render :xml => @admin, :status => :created, :location => @admin }
       else

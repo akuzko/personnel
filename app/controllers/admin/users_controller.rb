@@ -30,7 +30,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def new
-    @suer = User.new
+    @user = User.new
 
     respond_to do |format|
       format.html # new.html.erb

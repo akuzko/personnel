@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   belongs_to :department
 
   has_one :profile
-  has_one :address
+  has_many :addresses
   has_one :contact
 
   after_create :create_internals
@@ -20,13 +20,14 @@ class User < ActiveRecord::Base
   delegate :cell1, :cell2, :to => :contact, :allow_nil => true
   delegate :name, :to => :department, :prefix => true
 
-  scope :with_data, includes(:profile, :address, :contact)
+  scope :with_data, includes(:profile, :addresses, :contact)
   scope :identified, where('identifier IS NOT NULL')
   scope :identifiers, order('identifier ASC').select('identifier')
 
   validates_presence_of :department_id
   validates_presence_of :identifier, :if => :has_identifier?
   validates_uniqueness_of :identifier, :scope => :department_id, :if => :has_identifier?
+  validates_confirmation_of :password
 
   def self.identifier_selection include_id = nil
     identifiers = identified.identifiers.map(&:identifier)
@@ -47,8 +48,9 @@ class User < ActiveRecord::Base
   def full_address
     attributes = %w(street build porch nos)
     separators = [', ', ' || ', ' / ']
-    return nil if attributes.any?{ |a| address[a].nil? || address[a] == '' }
-    attributes.map{ |a| address[a] }.zip(separators).flatten.compact.join
+    #debugger
+    return nil if attributes.any?{ |a| addresses[0][a].nil? || addresses[0][a] == '' }
+    attributes.map{ |a| addresses[0][a] }.zip(separators).flatten.compact.join
   end
 
   private
