@@ -24,30 +24,45 @@
     
 .block.notice
   %h3 Addresses
-  #sidebar_address.content
-    %p
-      %b
-        = t("activerecord.attributes.address.street", :default => "Street")
-        \:
-      = @user.address.street
-    %p
-      %b
-        = t("activerecord.attributes.address.build", :default => "Build №")
-        \:
-      = @user.address[:build]
-    %p
-      %b
-        = t("activerecord.attributes.address.porch", :default => "Porch")
-        \:
-      = @user.address.porch
-    %p
-      %b
-        = t("activerecord.attributes.address.nos", :default => "Number of storeys")
-        \:
-      = @user.address.nos
-    .wat-cf
-      = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
-        edit_data_admin_user_path(@user, :data => 'address'), :class => "button", 'data-edit-address' => edit_data_admin_user_path(@user, :data => 'address')
+  %div{:style => "margin:10px; height: 30px;"}
+    .pagination
+      - @user.addresses.each do |addr|
+        %a{ :href => '#', :id => "#{addr.id}", :onclick => "showAddTab(#{addr.id})"}
+          = @user.addresses.index(addr).next
+
+    = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
+      edit_data_admin_user_path(@user, :data => 'address'), :class => "button", :style => "float:right;", 'data-edit-address' => edit_data_admin_user_path(@user, :data => 'address')
+
+  %div{:style => "margin:10px;"}
+    - @user.addresses.each do |addr|
+      .content{:id => "sidebar_address_#{addr.id}", :style => "#{!addr.primary ? 'display:none;' : ''}"}
+        - if addr.primary
+          %p
+            %b{:style => "color:red;"}
+              Primary Address
+        %p
+          %b
+            = t("activerecord.attributes.address.street", :default => "Street")
+            \:
+          = addr.street
+        %p
+          %b
+            = t("activerecord.attributes.address.build", :default => "Build №")
+            \:
+          = addr[:build]
+        %p
+          %b
+            = t("activerecord.attributes.address.porch", :default => "Porch")
+            \:
+          = addr.porch
+        %p
+          %b
+            = t("activerecord.attributes.address.nos", :default => "Number of storeys")
+            \:
+          = addr.nos
+        .wat-cf
+          = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+            edit_data_admin_user_path(@user, {:data => 'address', :aid => addr.id}), :class => "button", 'data-edit-address' => edit_data_admin_user_path(@user, :data => 'address')
 
 .block.notice
   %h3 Contacts
@@ -70,4 +85,3 @@
     .wat-cf
       = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
         edit_data_admin_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_admin_user_path(@user, :data => 'contact')
-

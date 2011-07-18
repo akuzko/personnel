@@ -27,7 +27,7 @@
             %td= user.cell1
             %td= user.cell2
             %td= user.department_name
-            %td= user.full_address
+            -#%td= user.full_address
             %td= l(user.birthdate) if user.birthdate
             %td.last
               %a{:href => admin_user_path(user), :data => {'load-user' => admin_user_path(user)}}= t("web-app-theme.show", :default => "Show")

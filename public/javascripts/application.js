@@ -36,3 +36,9 @@
     }
   };
 }).call(this);
+
+function showAddTab(tab)
+{
+    $("div[id^='sidebar_address_']").hide();
+    $("#sidebar_address_"+tab).show() ;
+}
