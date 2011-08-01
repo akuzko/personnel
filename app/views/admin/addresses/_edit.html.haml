@@ -1,4 +1,4 @@
-= form_for address, :url => update_data_admin_user_path(user, :data => 'address'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+= form_for :address,:url => admin_address_path(@address), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :street, t("activerecord.attributes.address.street", :default => "Street"), :class => :label
     = f.text_field :street, :class => 'text_field'
