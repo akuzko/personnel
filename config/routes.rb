@@ -53,7 +53,7 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "home#index"
-    resources :admins, :departments
+    resources :admins, :departments, :addresses
     resources :users do
       get 'delivery', :on => :collection
       get 'edit_data', :on => :member

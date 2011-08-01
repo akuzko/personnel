@@ -60,7 +60,10 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    params[:user].delete(:password) if params[:user][:password].empty?
+    if params[:user][:password].empty?
+      params[:user].delete(:password)
+      params[:user].delete(:password_confirmation)
+    end
 
     respond_to do |format|
       if @user.update_attributes(params[:user])

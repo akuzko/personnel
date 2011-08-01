@@ -15,7 +15,7 @@
         %b
           = t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department_id", :default => "Department"))
           \:
-        = @user.department_name
+        = @user.department_name if @user.department_id
       %p
         %b
           = t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "Identifier"))
