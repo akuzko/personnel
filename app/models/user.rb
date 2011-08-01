@@ -27,7 +27,6 @@ class User < ActiveRecord::Base
 
   #validates_presence_of :department_id, :on => :update
   validates_presence_of :identifier, :if => :has_identifier?, :on => :update
-  validates_presence_of :home_phone, :on => :update
   validates_uniqueness_of :identifier, :scope => :department_id, :if => :has_identifier?, :on => :update
   validates_confirmation_of :password
 
