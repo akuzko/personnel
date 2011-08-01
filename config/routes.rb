@@ -52,7 +52,7 @@ Personnel::Application.routes.draw do
   #     resources :products
   #   end
   namespace :admin do
-    root :to => "home#index"
+    root :to => "users#index"
     resources :admins, :departments, :addresses
     resources :users do
       get 'delivery', :on => :collection
