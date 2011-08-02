@@ -41,14 +41,21 @@ class Admin::AddressesController < ApplicationController
     end
 
   def destroy
-
+    @address = Address.find(params[:id])
+    @address = Address.find_by_user_id_and_primary(@address.user_id, 1)
+    Address.delete(params[:id])
+    respond_to do |format|
+      format.js { render() { |p| p.call 'app.display_addresses', @address.user_id, @address.id } }
+    end
   end
 
   def make_primary
     @address = Address.find(params[:id])
 
-    @old_primary = Address.where(:user_id => @address.user_id, :primary => 1).first
-    @old_primary.update_attributes({'primary' => 0}) if @old_primary
+    @old_primaries = Address.find_all_by_user_id_and_primary(@address.user_id, 1)
+    @old_primaries.each do |addr|
+      addr.update_attributes({'primary' => 0})
+    end
 
     @address.update_attributes({'primary' => 1})
     respond_to do |format|
