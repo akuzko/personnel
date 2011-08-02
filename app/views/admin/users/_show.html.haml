@@ -3,58 +3,14 @@
 .block.notice
   %h3 Profile
   #sidebar_profile.content
-    %p
-      %b
-        = t("activerecord.attributes.profile.last_name", :default => "Last Name")
-        \:
-      = @user.profile.last_name
-    %p
-      %b
-        = t("activerecord.attributes.profile.initials", :default => "Initials")
-        \:
-      = @user.profile.initials
-    %p
-      %b
-        = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
-        \:
-      = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
-    .wat-cf
-      = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
-        edit_data_admin_user_path(@user, :data => 'profile'), :class => "button", 'data-edit-profile' => edit_data_admin_user_path(@user, :data => 'profile')
+    = render 'show_profile'
     
 .block.notice
   %h3 Addresses
   %div#sidebar_address.content{:style => "margin:10px;"}
-    = render :template => 'admin/addresses/show.html'
+    = render 'show_addresses'
 
 .block.notice
   %h3 Contacts
   #sidebar_contact.content
-    %p
-      %b
-        = t("activerecord.attributes.contact.email", :default => "Personal Email")
-        \:
-      = @user.contact.email
-    %p
-      %b
-        = t("activerecord.attributes.contact.cell1", :default => "Cell 1")
-        \:
-      = @user.contact.cell1
-    %p
-      %b
-        = t("activerecord.attributes.contact.cell2", :default => "Cell 2")
-        \:
-      = @user.contact.cell2
-    %p
-      %b
-        = t("activerecord.attributes.contact.cell3", :default => "Cell 3")
-        \:
-      = @user.contact.cell3
-    %p
-      %b
-        = t("activerecord.attributes.contact.home_phone", :default => "Home Phone")
-        \:
-      = @user.contact.home_phone
-    .wat-cf
-      = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
-        edit_data_admin_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_admin_user_path(@user, :data => 'contact')
+    = render 'show_contact'

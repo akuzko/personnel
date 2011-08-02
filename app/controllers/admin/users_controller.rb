@@ -101,7 +101,7 @@ class Admin::UsersController < ApplicationController
 
   def display_addresses
     @user = User.find params[:id]
-    render 'admin/addresses/show.html', :layout => false
+    render '_show_addresses.html', :layout => false
   end
 
 end
