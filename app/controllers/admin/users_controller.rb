@@ -64,7 +64,6 @@ class Admin::UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
-
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to([:admin, @user], :notice => 'User was successfully updated.') }
@@ -98,6 +97,11 @@ class Admin::UsersController < ApplicationController
     data.update_attributes(params[params[:data]])
 
     render(:update){ |p| p.call 'app.reload' }
+  end
+
+  def display_addresses
+    @user = User.find params[:id]
+    render 'admin/addresses/show.html', :layout => false
   end
 
 end

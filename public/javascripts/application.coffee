@@ -21,3 +21,13 @@
       setTimeout((=> $(this).fadeOut()), 250 + i * 1000)
 
   reload: -> location.reload()
+
+  display_addresses: (user_id, id) ->
+    $("#sidebar_address").load '/admin/users/'+user_id+'/display_addresses', ->
+      app.showAddTab(id)
+    no
+
+  showAddTab: (tab) ->
+    $("div[id^='sidebar_address_']").hide()
+    $("#sidebar_address_"+tab).show()
+    no

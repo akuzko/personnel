@@ -33,12 +33,17 @@
     },
     reload: function() {
       return location.reload();
+    },
+    display_addresses: function(user_id, id) {
+      $("#sidebar_address").load('/admin/users/' + user_id + '/display_addresses', function() {
+        return app.showAddTab(id);
+      });
+      return false;
+    },
+    showAddTab: function(tab) {
+      $("div[id^='sidebar_address_']").hide();
+      $("#sidebar_address_" + tab).show();
+      return false;
     }
   };
 }).call(this);
-
-function showAddTab(tab)
-{
-    $("div[id^='sidebar_address_']").hide();
-    $("#sidebar_address_"+tab).show() ;
-}
