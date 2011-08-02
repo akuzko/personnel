@@ -59,6 +59,7 @@ Personnel::Application.routes.draw do
       get 'edit_data', :on => :member
       put 'update_data', :on => :member
       get 'display_addresses', :on => :member
+      get 'display_section', :on => :member
     end
   end
 

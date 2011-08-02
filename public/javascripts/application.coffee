@@ -27,6 +27,9 @@
       app.showAddTab(id)
     no
 
+  reload_section: (user_id, section) ->
+    $("#sidebar_"+section).load '/admin/users/'+user_id+'/display_section?section='+section
+
   showAddTab: (tab) ->
     $("div[id^='sidebar_address_']").hide()
     $("#sidebar_address_"+tab).show()

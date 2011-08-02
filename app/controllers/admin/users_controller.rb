@@ -96,12 +96,19 @@ class Admin::UsersController < ApplicationController
     data = user.send(params[:data])
     data.update_attributes(params[params[:data]])
 
-    render(:update){ |p| p.call 'app.reload' }
+    #render(:update){ |p| p.call 'app.reload' }
+    render(:update){ |p| p.call 'app.reload_section', params[:id],  params[:data]}
   end
 
   def display_addresses
     @user = User.find params[:id]
     render '_show_addresses.html', :layout => false
   end
+
+  def display_section
+    @user = User.find params[:id]
+    render '_show_'+params[:section]+'.html', :layout => false
+  end
+
 
 end

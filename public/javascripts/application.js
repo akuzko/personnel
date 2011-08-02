@@ -40,6 +40,9 @@
       });
       return false;
     },
+    reload_section: function(user_id, section) {
+      return $("#sidebar_" + section).load('/admin/users/' + user_id + '/display_section?section=' + section);
+    },
     showAddTab: function(tab) {
       $("div[id^='sidebar_address_']").hide();
       $("#sidebar_address_" + tab).show();
