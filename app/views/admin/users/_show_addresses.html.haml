@@ -35,3 +35,7 @@
       .wat-cf
         = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
           edit_admin_address_path(addr), :class => "button", 'data-edit-address' => edit_admin_address_path(addr)
+
+        - if !addr.primary
+          = link_to image_tag("web-app-theme/icons/heart.png", :alt => "#{t("web-app-theme.edit", :default=> "Make Primary")}") + " " + t("web-app-theme.edit", :default=> "Make Primary"),
+            make_primary_admin_address_path(addr), :remote => true,  :class => "button"

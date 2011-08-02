@@ -1,14 +1,14 @@
 class Admin::AddressesController < ApplicationController
-    before_filter :authenticate_admin!
-    layout 'admin'
+  before_filter :authenticate_admin!
+  layout 'admin'
 
-    def index
+  def index
 
-    end
+  end
 
-    def show
+  def show
 
-    end
+  end
 
     def new
       @address = Address.new
@@ -16,10 +16,10 @@ class Admin::AddressesController < ApplicationController
       render :layout => false
     end
 
-    def edit
-      @address = Address.find params[:id]
-      render :layout => false
-    end
+  def edit
+    @address = Address.find params[:id]
+    render :layout => false
+  end
 
     def create
       @address = Address.new(params[:address])
@@ -30,7 +30,7 @@ class Admin::AddressesController < ApplicationController
       end
     end
 
-    def update
+  def update
     @address = Address.find(params[:id])
       if @address.update_attributes(params[:address])
         render(:update){ |p| p.call 'app.display_addresses', @address.user_id, @address.id }
@@ -39,7 +39,20 @@ class Admin::AddressesController < ApplicationController
       end
     end
 
-    def destroy
+  def destroy
 
+  end
+
+  def make_primary
+    @address = Address.find(params[:id])
+
+    @old_primary = Address.where(:user_id => @address.user_id, :primary => 1).first
+    @old_primary.update_attributes({'primary' => 0}) if @old_primary
+
+    @address.update_attributes({'primary' => 1})
+    respond_to do |format|
+      format.js { render() { |p| p.call 'app.display_addresses', @address.user_id, @address.id } }
     end
+  end
+
 end
