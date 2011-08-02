@@ -8,7 +8,7 @@
           $('#sidebar').load($(this).data('load-user'));
           return false;
         });
-        return _.each(['profile', 'address', 'contact'], function(data) {
+        _.each(['profile', 'address', 'contact'], function(data) {
           $("[data-edit-" + data + "]").live('click', function() {
             $("#sidebar_" + data).append('<div/>');
             $("#sidebar_" + data).children(':last').load($(this).data("edit-" + data), function() {
@@ -21,6 +21,13 @@
             $("#sidebar_" + data).children().show();
             return false;
           });
+        });
+        return $("[data-add-address]").live('click', function() {
+          $("#sidebar_address").append('<div/>');
+          $("#sidebar_address").children(':last').load($(this).data("add-address"), function() {
+            return $("#sidebar_address").children(':not(:last)').hide();
+          });
+          return false;
         });
       }, this));
     },

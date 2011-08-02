@@ -15,6 +15,11 @@
           $("#sidebar_#{data}").children(':last').remove()
           $("#sidebar_#{data}").children().show()
           no
+      $("[data-add-address]").live 'click', ->
+        $("#sidebar_address").append('<div/>')
+        $("#sidebar_address").children(':last').load $(this).data("add-address"), ->
+          $("#sidebar_address").children(':not(:last)').hide()
+        no
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->

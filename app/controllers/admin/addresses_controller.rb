@@ -12,6 +12,8 @@ class Admin::AddressesController < ApplicationController
 
     def new
       @address = Address.new
+      @address.user_id = params[:user]
+      render :layout => false
     end
 
     def edit
@@ -20,20 +22,20 @@ class Admin::AddressesController < ApplicationController
     end
 
     def create
-
+      @address = Address.new(params[:address])
+      if @address.save!
+        render(:update){ |p| p.call 'app.display_addresses', @address.user_id, @address.id }
+      else
+        #error
+      end
     end
 
     def update
     @address = Address.find(params[:id])
-     #debugger
       if @address.update_attributes(params[:address])
         render(:update){ |p| p.call 'app.display_addresses', @address.user_id, @address.id }
       else
-        respond_to do |format|
-          format.html { render :edit }
-          format.xml  { render :xml => @address.errors, :status => :unprocessable_entity }
-          format.json {render :json => {:message => 'not ok'}}
-        end
+        #error
       end
     end
 

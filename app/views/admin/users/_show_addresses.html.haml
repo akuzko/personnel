@@ -3,7 +3,7 @@
     %a{ :href => '#', :onclick => "app.showAddTab(#{addr.id})"}
       = @user.addresses.index(addr).next
 = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
-  new_admin_address_path(@user), :class => "button", :style => "float:right;", 'data-add-address' => new_admin_address_path(@user)
+  new_admin_address_path(:user => @user), :class => "button", :style => "float:right;", 'data-add-address' => new_admin_address_path(:user => @user)
 
 %div{:style => "padding-top:30px;"}
   - @user.addresses.each do |addr|
