@@ -1,5 +1,7 @@
 class Address < ActiveRecord::Base
   belongs_to :user
+  validates_presence_of :street, :build, :porch, :nos
+  validates_numericality_of :porch, :nos
 
   def full
     attributes = %w(street build porch nos)

@@ -29,6 +29,9 @@ class User < ActiveRecord::Base
   validates_presence_of :identifier, :if => :has_identifier?, :on => :update
   validates_uniqueness_of :identifier, :scope => :department_id, :if => :has_identifier?, :on => :update
   validates_confirmation_of :password
+  validates_format_of :email,
+    :with => /\A([^@\s]+)@zone3000\.net\Z/i,
+    :message => 'Only Zone3000 local email is acceptable'
 
   def self.identifier_selection include_id = nil
     identifiers = identified.identifiers.map(&:identifier)

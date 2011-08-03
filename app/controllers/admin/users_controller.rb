@@ -94,10 +94,15 @@ class Admin::UsersController < ApplicationController
   def update_data
     user = User.find params[:id]
     data = user.send(params[:data])
-    data.update_attributes(params[params[:data]])
-
-    #render(:update){ |p| p.call 'app.reload' }
-    render(:update){ |p| p.call 'app.reload_section', params[:id],  params[:data]}
+    if data.update_attributes(params[params[:data]])
+      render(:update){ |p| p.call 'app.reload_section', params[:id],  params[:data]}
+    else
+      message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
+      render(:update) do |page|
+        page['#'+params[:data]+'_flash'].parents(0).show
+        page['#'+params[:data]+'_flash'].html message
+      end
+    end
   end
 
   def display_addresses

@@ -1,3 +1,5 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "contact_flash", :class => "message error"}
 = form_for contact, :url => update_data_admin_user_path(user, :data => 'contact'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :email, t("activerecord.attributes.contact.email", :default => "Personal Email"), :class => :label

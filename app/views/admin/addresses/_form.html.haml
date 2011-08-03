@@ -1,3 +1,5 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "address_flash", :class => "message error"}
 = form_for [:admin, @address], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :street, t("activerecord.attributes.address.street", :default => "Street"), :class => :label
