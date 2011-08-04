@@ -8,6 +8,14 @@
     .inner
       %p
         %b
+          = t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
+          \:
+          - if @user.active?
+            &#10003;
+          - else
+            \--
+      %p
+        %b
           = t("activerecord.attributes.user.email", :default => t("activerecord.labels.email", :default => "Email"))
           \:
         = @user.email

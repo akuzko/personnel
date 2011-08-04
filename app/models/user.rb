@@ -1,12 +1,12 @@
 class User < ActiveRecord::Base
-  IDENTIFIER_THRESHOLD = 50
+  #IDENTIFIER_THRESHOLD = 50
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :identifier, :department_id
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :identifier, :department_id, :active
 
   belongs_to :department
 
@@ -33,12 +33,12 @@ class User < ActiveRecord::Base
     :with => /\A([^@\s]+)@zone3000\.net\Z/i,
     :message => 'Only Zone3000 local email is acceptable'
 
-  def self.identifier_selection include_id = nil
-    identifiers = identified.identifiers.map(&:identifier)
-    last = identifiers.last || 1
-    identifiers = ((1..last+IDENTIFIER_THRESHOLD).to_a - identifiers + [include_id]).compact.sort
-    identifiers.zip identifiers
-  end
+  #def self.identifier_selection include_id = nil
+  #  identifiers = identified.identifiers.map(&:identifier)
+  #  last = identifiers.last || 1
+  #  identifiers = ((1..last+IDENTIFIER_THRESHOLD).to_a - identifiers + [include_id]).compact.sort
+  #  identifiers.zip identifiers
+  #end
   
   def has_identifier?
     (department || Department.find(department_id)).has_identifier? if department_id

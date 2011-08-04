@@ -41,13 +41,22 @@
     reload: function() {
       return location.reload();
     },
-    display_addresses: function(user_id, id) {
+    display_addresses: function(id) {
+      $("#sidebar_address").load('/user/display_addresses', function() {
+        return app.showAddTab(id);
+      });
+      return false;
+    },
+    display_addresses_admin: function(user_id, id) {
       $("#sidebar_address").load('/admin/users/' + user_id + '/display_addresses', function() {
         return app.showAddTab(id);
       });
       return false;
     },
-    reload_section: function(user_id, section) {
+    reload_section: function(section) {
+      return $("#sidebar_" + section).load('/user/display_section?section=' + section);
+    },
+    reload_section_admin: function(user_id, section) {
       return $("#sidebar_" + section).load('/admin/users/' + user_id + '/display_section?section=' + section);
     },
     showAddTab: function(tab) {

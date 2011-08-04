@@ -1,0 +1,18 @@
+%p
+  %b
+    = t("activerecord.attributes.profile.last_name", :default => "Last Name")
+    \:
+  = @user.profile.last_name
+%p
+  %b
+    = t("activerecord.attributes.profile.initials", :default => "Initials")
+    \:
+  = @user.profile.initials
+%p
+  %b
+    = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
+    \:
+  = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
+.wat-cf
+  = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+    edit_data_user_path(@user, :data => 'profile'), :class => "button", 'data-edit-profile' => edit_data_user_path(@user, :data => 'profile')

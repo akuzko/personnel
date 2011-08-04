@@ -27,12 +27,20 @@
 
   reload: -> location.reload()
 
-  display_addresses: (user_id, id) ->
+  display_addresses: (id) ->
+    $("#sidebar_address").load '/user/display_addresses', ->
+      app.showAddTab(id)
+    no
+
+  display_addresses_admin: (user_id, id) ->
     $("#sidebar_address").load '/admin/users/'+user_id+'/display_addresses', ->
       app.showAddTab(id)
     no
 
-  reload_section: (user_id, section) ->
+  reload_section: ( section) ->
+    $("#sidebar_"+section).load '/user/display_section?section='+section
+
+  reload_section_admin: (user_id, section) ->
     $("#sidebar_"+section).load '/admin/users/'+user_id+'/display_section?section='+section
 
   showAddTab: (tab) ->

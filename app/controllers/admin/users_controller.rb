@@ -95,7 +95,7 @@ class Admin::UsersController < ApplicationController
     user = User.find params[:id]
     data = user.send(params[:data])
     if data.update_attributes(params[params[:data]])
-      render(:update){ |p| p.call 'app.reload_section', params[:id],  params[:data]}
+      render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
     else
       message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|

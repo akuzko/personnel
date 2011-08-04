@@ -13,6 +13,8 @@
         #user-navigation
           %ul.wat-cf
             %li
+              %strong= Admin.find(current_admin.id).email if current_admin.id?
+            %li
               %a{:href => "#"}= t("web-app-theme.profile", :default => "Profile")
             %li
               %a{:href => "#"}= t("web-app-theme.settings", :default => "Settings")

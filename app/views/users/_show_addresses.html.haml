@@ -1,0 +1,44 @@
+.pagination
+  - @user.addresses.each do |addr|
+    %a{ :href => '#', :onclick => "app.showAddTab(#{addr.id})"}
+      = @user.addresses.index(addr).next
+= link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
+  new_address_path, :class => "button", :style => "float:right;", 'data-add-address' => new_address_path
+
+%div{:style => "padding-top:30px;"}
+  - @user.addresses.each do |addr|
+    %div{:id => "sidebar_address_#{addr.id}", :style => "#{!addr.primary ? 'display:none;' : ''}"}
+      - if addr.primary
+        %p
+          %b{:style => "color:red;"}
+            Primary Address
+      %p
+        %b
+          = t("activerecord.attributes.address.street", :default => "Street")
+          \:
+        = addr.street
+      %p
+        %b
+          = t("activerecord.attributes.address.build", :default => "Build №")
+          \:
+        = addr[:build]
+      %p
+        %b
+          = t("activerecord.attributes.address.porch", :default => "Porch")
+          \:
+        = addr.porch
+      %p
+        %b
+          = t("activerecord.attributes.address.nos", :default => "Number of storeys")
+          \:
+        = addr.nos
+      .wat-cf
+        = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+          edit_address_path(addr), :class => "button", 'data-edit-address' => edit_address_path(addr)
+
+        - if !addr.primary
+          = link_to image_tag("web-app-theme/icons/application_delete.png", :alt => "#{t("web-app-theme.edit", :default=> "Delete")}") + " " + t("web-app-theme.edit", :default=> "Delete"),
+            address_path(addr), :method => :delete, :remote => true, :class => "button"
+
+          = link_to image_tag("web-app-theme/icons/heart.png", :alt => "#{t("web-app-theme.edit", :default=> "Make Primary")}") + " " + t("web-app-theme.edit", :default=> "Make Primary"),
+            make_primary_address_path(addr), :remote => true,  :class => "button"

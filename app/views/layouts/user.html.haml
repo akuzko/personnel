@@ -13,12 +13,13 @@
         #user-navigation
           %ul.wat-cf
             %li
+              %strong= User.find(current_user.id).full_name if current_user.id?
+            %li
               = link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => 'logout'
         #main-navigation
           %ul.wat-cf
-            %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Profile", root_path
-            %li= link_to t("personnel.Admin Area", :default => "Addresses"), admin_root_path
-            %li= link_to t("personnel.User Area", :default => "Contacts"), user_path
+            %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Profile", user_path
+            %li= link_to t("personnel.Admin Area", :default => "Find a person"), user_path
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|

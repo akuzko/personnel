@@ -11,6 +11,7 @@
       %table.table
         %tr
           %th.first id
+          %th= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
           %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
           %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
           %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell 1"))
@@ -24,6 +25,9 @@
         - @users.each do |user|
           %tr{:class => cycle("odd", "even")}
             %td= user.id
+            %td
+              - if user.active?
+                &#10003;
             %td= user.identifier
             %td= user.full_name
             %td= user.cell1

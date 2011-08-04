@@ -43,8 +43,15 @@ Personnel::Application.routes.draw do
   #       get 'recent', :on => :collection
   #     end
   #   end
-  resource :user
-
+  resource :user do
+      get 'edit_data', :on => :member
+      put 'update_data', :on => :member
+      get 'display_addresses', :on => :member
+      get 'display_section', :on => :member
+  end
+  resources :addresses do
+    get 'make_primary', :on => :member
+  end
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
