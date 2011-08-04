@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 
   scope :with_data, includes(:profile, :addresses, :contact)
   scope :identified, where('identifier IS NOT NULL')
+  scope :active, where('active = 1')
   scope :identifiers, order('identifier ASC').select('identifier')
 
   #validates_presence_of :department_id, :on => :update
@@ -65,4 +66,10 @@ class User < ActiveRecord::Base
     #create_address
     create_contact
   end
+
+  def self.search(department_id, page)
+    paginate :per_page => 3, :page => page,
+             :conditions => ['department_id', department_id], :order => 'id'
+  end
+
 end

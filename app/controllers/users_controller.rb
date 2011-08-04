@@ -69,4 +69,15 @@ class UsersController < ApplicationController
     render '_show_'+params[:section]+'.html', :layout => false
   end
 
+  def find
+    debugger
+    @user = User.find current_user.id
+    #@users = User.with_data.active.order(:id).paginate :page => params[:page], :per_page => 3
+    @users = User.with_data.active.order(:id).search(params[:search], params[:page])
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @users }
+    end
+  end
+
 end

@@ -10,19 +10,11 @@
       #header
         %h1
           %a{:href => "/"} Personnel
-        #user-navigation
-          %ul.wat-cf
-            %li
-              %a{:href => "#"}= t("web-app-theme.profile", :default => "Profile")
-            %li
-              %a{:href => "#"}= t("web-app-theme.settings", :default => "Settings")
-            %li
-              = link_to t("web-app-theme.logout", :default => "Logout"), destroy_user_session_path, :class => 'logout'
         #main-navigation
           %ul.wat-cf
             %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Home", root_path
             %li= link_to t("personnel.Admin Area", :default => "Admin Area"), admin_root_path
-            %li= link_to t("personnel.User Area", :default => "User Area"), user_path
+            %li= link_to t("personnel.User Area", :default => "User Area"), users_path
             %li= link_to t("personnel.Applicant", :default => "Applicant"), '#'
       #wrapper.wat-cf
         .flash
