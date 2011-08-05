@@ -12,6 +12,8 @@
         %tr
           %th.first ID
           %th
+            Approved
+          %th
             = t("activerecord.attributes.admin_admin.email", :default => t("activerecord.labels.email", :default => "Email"))
           %th= t("web-app-theme.created_at", :default => "Created at")
           %th.last &nbsp;
@@ -19,6 +21,9 @@
           %tr{:class => cycle("odd", "even")}
             %td
               = admin.id
+            %td
+              - if admin.approved
+                &#10003;
             %td
               = link_to admin.email, admin_admin_path(admin)
             %td
