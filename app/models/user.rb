@@ -69,11 +69,11 @@ class User < ActiveRecord::Base
 
   def self.search(params, page)
     conditions = []
-    conditions.push("active = #{params[:active]}") unless params[:active].nil? || params[:active] == ""
-    conditions.push("department_id = #{params[:department_id]}") unless params[:department_id].nil? || params[:department_id] == ""
-    conditions.push("identifier = #{params[:identifier]}") unless params[:identifier].nil? || params[:identifier] == ""
+    [:active, :department_id, :identifier].each do |field|
+      conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
+    end
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
-    paginate :per_page => 3, :page => page,
+    paginate :per_page => 15, :page => page,
              :conditions => conditions.join(' and '),
              :order => '`profiles`.last_name'
   end
