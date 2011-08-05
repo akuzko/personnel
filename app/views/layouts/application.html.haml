@@ -14,7 +14,7 @@
           %ul.wat-cf
             %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Home", root_path
             %li= link_to t("personnel.Admin Area", :default => "Admin Area"), admin_root_path
-            %li= link_to t("personnel.User Area", :default => "User Area"), users_path
+            %li= link_to t("personnel.User Area", :default => "User Area"), user_path
             %li= link_to t("personnel.Applicant", :default => "Applicant"), '#'
       #wrapper.wat-cf
         .flash

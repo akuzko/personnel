@@ -8,6 +8,33 @@
       = t("web-app-theme.all", :default => "All")
       Users
     .inner
+      = form_tag(admin_users_path, :method => :get) do
+        %table
+          %tr
+            %td
+              By ID
+              = text_field_tag :identifier, params[:identifier], :class => 'text_field', :style => "width:80px"
+            %td
+              &nbsp;
+            %td
+              Full Name
+              = text_field_tag :full_name, params[:full_name], :class => 'text_field'
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection, params[:department_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              Active Only
+              = check_box_tag :active, 1, params[:active]
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
           %th.first id

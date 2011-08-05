@@ -70,14 +70,8 @@ class UsersController < ApplicationController
   end
 
   def find
-    debugger
     @user = User.find current_user.id
-    #@users = User.with_data.active.order(:id).paginate :page => params[:page], :per_page => 3
-    @users = User.with_data.active.order(:id).search(params[:search], params[:page])
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @users }
-    end
+    @users = User.with_data.active.search(params, params[:page])
   end
 
 end

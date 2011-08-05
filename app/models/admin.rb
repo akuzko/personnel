@@ -8,4 +8,7 @@ class Admin < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
   validates_confirmation_of :password
+  validates_format_of :email,
+    :with => /\A([^@\s]+)@zone3000\.net\Z/i,
+    :message => 'Only Zone3000 local email is acceptable'
 end

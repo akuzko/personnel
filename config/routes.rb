@@ -68,6 +68,7 @@ Personnel::Application.routes.draw do
 
     resources :users do
       get 'delivery', :on => :collection
+      get 'find', :on => :collection
       get 'edit_data', :on => :member
       put 'update_data', :on => :member
       get 'display_addresses', :on => :member

@@ -4,20 +4,28 @@
       = t("web-app-theme.find", :default => "Find")
       Users
     .inner
-      = form_for :search, :url => find_user_path, :html => {:method => :get, :class => 'form'} do |f|
-        .group
-          = f.label :identifier, t("activerecord.attributes.contact.identifier", :default => "By ID"), :class => :label
-          = f.text_field :identifier, :class => 'text_field'
-        .group
-          = f.label :full_name, t("activerecord.attributes.contact.full_name", :default => "Full Name"), :class => :label
-          = f.text_field :full_name, :class => 'text_field'
-        .group
-          = f.label :department_id, t("activerecord.attributes.user.department_id", :default => "Department"), :class => :label
-          = f.select :department_id, Department.selection
-        .group.navform.wat-cf
-          %button.button{:type => "submit"}
-            = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
-            = t("web-app-theme.find", :default => "Find")
+      = form_tag(find_user_path, :method => :get) do
+        %table
+          %tr
+            %td
+              By ID
+              = text_field_tag :identifier, params[:identifier], :class => 'text_field', :style => "width:80px"
+            %td
+              &nbsp;
+            %td
+              Full Name
+              = text_field_tag :full_name, params[:full_name], :class => 'text_field'
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection, params[:department_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
           %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
