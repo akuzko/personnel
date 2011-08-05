@@ -11,4 +11,17 @@ class Admin < ActiveRecord::Base
   validates_format_of :email,
     :with => /\A([^@\s]+)@zone3000\.net\Z/i,
     :message => 'Only Zone3000 local email is acceptable'
+
+  def active_for_authentication?
+    super && approved?
+  end
+
+  def inactive_message
+    if !approved?
+      :not_approved
+    else
+      super # Use whatever other message
+    end
+  end
+
 end

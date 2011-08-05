@@ -60,7 +60,10 @@ class Admin::AdminsController < ApplicationController
   # PUT /departments/1.xml
   def update
     @admin = Admin.find(params[:id])
-
+    if params[:admin][:password].empty?
+      params[:admin].delete(:password)
+      params[:admin].delete(:password_confirmation)
+    end
     respond_to do |format|
       if @admin.update_attributes(params[:admin])
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully updated.') }
