@@ -25,7 +25,7 @@ class Admin::AddressesController < ApplicationController
       @address = Address.new(params[:address])
       @address.primary = 1 if Address.find_all_by_user_id_and_primary(@address.user_id, 1).count == 0
       if @address.save
-        render(:update){ |p| p.call 'app.display_addresses', @address.user_id, @address.id }
+        render(:update){ |p| p.call 'app.display_addresses_admin', @address.user_id, @address.id }
       else
         message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
         render(:update) do |page|
@@ -38,7 +38,7 @@ class Admin::AddressesController < ApplicationController
   def update
     @address = Address.find(params[:id])
       if @address.update_attributes(params[:address])
-        render(:update){ |p| p.call 'app.display_addresses', @address.user_id, @address.id }
+        render(:update){ |p| p.call 'app.display_addresses_admin', @address.user_id, @address.id }
       else
         message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
         render(:update) do |page|

@@ -40,8 +40,6 @@ class Admin::UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    @user.department_id = params[:user][:department_id] # WTF?!
-    @user.identifier = params[:user][:identifier] # also WTF?!
 
     respond_to do |format|
       if @user.save
@@ -62,7 +60,7 @@ class Admin::UsersController < ApplicationController
     end
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to([:admin, @user], :notice => 'User was successfully updated.') }
+        format.html { redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -76,7 +74,7 @@ class Admin::UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_users_url) }
+      format.html { redirect_to(admin_users_url, :notice => 'User was successfully deleted.') }
       format.xml  { head :ok }
     end
   end

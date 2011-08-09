@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  #IDENTIFIER_THRESHOLD = 50
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,9 +9,10 @@ class User < ActiveRecord::Base
 
   belongs_to :department
 
-  has_one :profile
-  has_many :addresses
-  has_one :contact
+  has_one :profile, :dependent => :destroy
+  has_many :addresses, :dependent => :destroy
+  has_one :contact, :dependent => :destroy
+  has_many :schedule_cells, :dependent => :destroy
 
   after_create :create_internals
 
@@ -24,23 +24,17 @@ class User < ActiveRecord::Base
   scope :with_data, includes(:profile, :addresses, :contact)
   scope :identified, where('identifier IS NOT NULL')
   scope :active, where('active = 1')
-  scope :identifiers, order('identifier ASC').select('identifier')
+  #scope :identifiers, order('identifier ASC').select('identifier')
 
-  #validates_presence_of :department_id, :on => :update
   validates_presence_of :identifier, :if => :has_identifier?, :on => :update
-  validates_uniqueness_of :identifier, :scope => :department_id, :if => :has_identifier?, :on => :update
+  validates_uniqueness_of :identifier, :scope => :active, :if => :has_identifier?, :on => :update
   validates_confirmation_of :password
   validates_format_of :email,
     :with => /\A([^@\s]+)@zone3000\.net\Z/i,
     :message => 'Only Zone3000 local email is acceptable'
 
-  #def self.identifier_selection include_id = nil
-  #  identifiers = identified.identifiers.map(&:identifier)
-  #  last = identifiers.last || 1
-  #  identifiers = ((1..last+IDENTIFIER_THRESHOLD).to_a - identifiers + [include_id]).compact.sort
-  #  identifiers.zip identifiers
-  #end
-  
+  before_validation :clean_unused_identifier
+
   def has_identifier?
     (department || Department.find(department_id)).has_identifier? if department_id
   end
@@ -63,7 +57,6 @@ class User < ActiveRecord::Base
 
   def create_internals
     create_profile
-    #create_address
     create_contact
   end
 
@@ -76,6 +69,10 @@ class User < ActiveRecord::Base
     paginate :per_page => 15, :page => page,
              :conditions => conditions.join(' and '),
              :order => '`profiles`.last_name'
+  end
+
+  def clean_unused_identifier
+    self.identifier = "" unless Department.find(self.department_id).has_identifier?
   end
 
 end

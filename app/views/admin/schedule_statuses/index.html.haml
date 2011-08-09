@@ -1,0 +1,32 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_schedule_statuses_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_schedule_status_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Schedule Statuses
+    .inner
+      %table.table
+        %tr
+          %th.first ID
+          %th
+            Name
+          %th
+            = t("activerecord.attributes.admin_admin.color", :default => t("activerecord.labels.color", :default => "Color"))
+          %th.last &nbsp;
+        - @statuses.each do |status|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = status.id
+            %td
+              = status.name
+            %td
+              %span{:style => "display:block;width:20px;height:20px;background-color:##{status.color}"}
+            %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_schedule_status_path(status)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_schedule_status_path(status), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @statuses

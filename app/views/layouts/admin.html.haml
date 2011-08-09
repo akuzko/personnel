@@ -3,7 +3,7 @@
   %head
     %title Personnel Administration
     = stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/default/style", "web-app-theme/override", :cache => true
-    = javascript_include_tag :defaults, :cache => true
+    = javascript_include_tag :defaults, 'jscolor', :cache => true
     = csrf_meta_tag
   %body
     #container
@@ -25,6 +25,9 @@
               %a{:href => admin_users_path} All Personnel
             %li{:class => controller.controller_path == 'admin/users' && params[:action] == 'delivery' ? 'active' : '' }
               %a{:href => delivery_admin_users_path} Delivery List
+            %li{:class => controller.controller_path == 'admin/schedule_statuses' ? 'active' : '' }
+              %a{:href => admin_schedule_statuses_path} Schedule Statuses
+
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|
