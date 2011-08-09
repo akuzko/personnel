@@ -1,0 +1,2 @@
+module Admin::ScheduleStatusesHelper
+end
