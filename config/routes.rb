@@ -61,6 +61,7 @@ Personnel::Application.routes.draw do
   namespace :admin do
     root :to => "users#index"
     resources :admins, :departments, :schedule_statuses
+    resource :schedule
 
     resources :addresses do
       get 'make_primary', :on => :member

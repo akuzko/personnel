@@ -4,3 +4,8 @@
   right: 25px;
   position: fixed;
   width: 400px; }
+#cell-table td{
+    height: 30px;
+    width: 30px !important;
+    text-align: center;
+}

@@ -1,0 +1,63 @@
+.block
+  .content
+    .inner
+      = form_tag(admin_schedule_path, :method => :get) do
+        %table
+          %tr
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection, params[:department_id])
+            %td
+              &nbsp;
+            %td
+              = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
+                = t("web-app-theme.find", :default => "Show")
+        %table
+          %tr
+            %th.first ID
+            %th Name
+            %th S
+            %th N
+          - @users.each do |user|
+            %tr
+              %td= user.identifier
+              %td= user.full_name
+              %td 0
+              %td 0
+        %table{:border => 1}
+          %tr
+            %td
+              &nbsp;
+            %td
+              %table{:border => 1, :id => 'cell-table'}
+                %tr
+                - @days_in_month.times do |day|
+                  %td
+                    = day + 1
+          - @template.schedule_shifts.order(:number).each do |shift|
+            %tr
+              %td
+                %b
+                  - if shift.number == 10
+                    DayOff
+                  - else
+                    Shift #
+                    = shift.number
+                    %br
+                    = shift.start
+                    \-
+                    = shift.end
+              %td
+                %table{:border => 1, :id => 'cell-table'}
+                  - shift.lines.times do |line|
+                    %tr
+                      - @days_in_month.times do |day|
+                        %td
+                          - cell = shift.schedule_cells.find_by_day_and_line(day+1, line+1)
+                          = cell.user_id if cell
+
