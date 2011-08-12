@@ -60,7 +60,7 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :schedule_statuses
+    resources :admins, :departments, :schedule_statuses, :schedule_shifts
     resource :schedule
 
     resources :addresses do

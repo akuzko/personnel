@@ -1,26 +1,4 @@
 %div{:class => "flash", :style => 'display:none;'}
   %div{:id => "contact_flash", :class => "message error"}
 = form_for contact, :url => update_data_user_path(:data => 'contact'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
-  .group
-    = f.label :email, t("activerecord.attributes.contact.email", :default => "Personal Email"), :class => :label
-    = f.text_field :email, :class => 'text_field'
-  .group
-    = f.label :cell1, t("activerecord.attributes.contact.cell1", :default => "Cell 1"), :class => :label
-    = f.text_field :cell1, :class => 'text_field'
-  .group
-    = f.label :cell2, t("activerecord.attributes.contact.cell2", :default => "Cell 2"), :class => :label
-    = f.text_field :cell2, :class => 'text_field'
-  .group
-    = f.label :cell3, t("activerecord.attributes.contact.cell3", :default => "Cell 3"), :class => :label
-    = f.text_field :cell3, :class => 'text_field'
-  .group
-    = f.label :home_phone, t("activerecord.attributes.contact.home_phone", :default => "Home Phone"), :class => :label
-    = f.text_field :home_phone, :class => 'text_field'
-  .group.navform.wat-cf
-    %button.button{:type => "submit"}
-      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
-      = t("web-app-theme.save", :default => "Save")
-    %span.text_button_padding= t("web-app-theme.or", :default => "or")
-    %a.button{:href => '#', :data => {'cancel-contact' => true}}
-      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
-      = t("web-app-theme.cancel", :default => "Cancel")
+  = render 'shared/contact_form', :f => f

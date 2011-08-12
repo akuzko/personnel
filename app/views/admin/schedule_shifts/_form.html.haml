@@ -1,0 +1,24 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "shift_flash", :class => "message error"}
+= form_for [:admin, @shift], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+  .group
+    = f.label :number, t("activerecord.attributes.schedule_shift.number", :default => "Number"), :class => :label
+    = f.text_field :number, :class => 'text_field'
+  .group
+    = f.label :lines, t("activerecord.attributes.schedule_shift.lines", :default => "Lines"), :class => :label
+    = f.text_field :lines, :class => 'text_field'
+  .group
+    = f.label :start, t("activerecord.attributes.schedule_shift.start", :default => "Start"), :class => :label
+    = f.text_field :start, :class => 'text_field'
+  .group
+    = f.label :end, t("activerecord.attributes.schedule_shift.end", :default => "End"), :class => :label
+    = f.text_field :end, :class => 'text_field'
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      = t("web-app-theme.save", :default => "Save")
+    = f.hidden_field :schedule_template_id
+    %span.text_button_padding= t("web-app-theme.or", :default => "or")
+    %a.button.close{:href => '#'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")

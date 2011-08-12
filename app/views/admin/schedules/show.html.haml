@@ -32,7 +32,8 @@
         %table{:border => 1}
           %tr
             %td
-              &nbsp;
+              = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
+                new_admin_schedule_shift_path(:template => @template), :class => "button modal_dialog", :rel => "#overlay", :style => "float:right;"
             %td
               %table{:border => 1, :id => 'cell-table'}
                 %tr
@@ -52,6 +53,9 @@
                     = shift.start
                     \-
                     = shift.end
+                %br
+                  = link_to 'Edit', edit_admin_schedule_shift_path(shift), :rel => "#overlay", :class => "modal_dialog"
+                  = link_to 'Delete', admin_schedule_shift_path(shift), :method => :delete, :remote => true, :confirm => 'Delete the Shift#'+shift.number.to_s+'?' unless shift.number == 10
               %td
                 %table{:border => 1, :id => 'cell-table'}
                   - shift.lines.times do |line|
@@ -60,4 +64,5 @@
                         %td
                           - cell = shift.schedule_cells.find_by_day_and_line(day+1, line+1)
                           = cell.user_id if cell
-
+%div.modal#overlay
+  %div.contentWrap

@@ -6,29 +6,7 @@
       %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_user_path
   .content
     .inner
-      %p
-        %b
-          = t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
-          \:
-          - if @user.active?
-            &#10003;
-          - else
-            \--
-      %p
-        %b
-          = t("activerecord.attributes.user.email", :default => t("activerecord.labels.email", :default => "Email"))
-          \:
-        = @user.email
-      %p
-        %b
-          = t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department_id", :default => "Department"))
-          \:
-        = @user.department_name if @user.department_id
-      %p
-        %b
-          = t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "Identifier"))
-          \:
-        = @user.identifier || '--'
+      = render 'shared/user_show', :user => @user
       .wat-cf
         = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_admin_user_path(@user), :class => "button"
         = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), admin_user_path(@user), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"

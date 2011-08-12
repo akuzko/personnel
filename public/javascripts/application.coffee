@@ -20,6 +20,13 @@
         $("#sidebar_address").children(':last').load $(this).data("add-address"), ->
           $("#sidebar_address").children(':not(:last)').hide()
         no
+      $("a.modal_dialog[rel]").overlay
+        onBeforeLoad:() ->
+          wrap = this.getOverlay().find(".contentWrap")
+          wrap.load(this.getTrigger().attr("href"))
+      $("a.button.close").live 'click', ->
+        $("a.modal_dialog[rel]").each ->
+          $(this).overlay().close()
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->

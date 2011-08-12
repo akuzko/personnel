@@ -22,12 +22,24 @@
             return false;
           });
         });
-        return $("[data-add-address]").live('click', function() {
+        $("[data-add-address]").live('click', function() {
           $("#sidebar_address").append('<div/>');
           $("#sidebar_address").children(':last').load($(this).data("add-address"), function() {
             return $("#sidebar_address").children(':not(:last)').hide();
           });
           return false;
+        });
+        $("a.modal_dialog[rel]").overlay({
+          onBeforeLoad: function() {
+            var wrap;
+            wrap = this.getOverlay().find(".contentWrap");
+            return wrap.load(this.getTrigger().attr("href"));
+          }
+        });
+        return $("a.button.close").live('click', function() {
+          return $("a.modal_dialog[rel]").each(function() {
+            return $(this).overlay().close();
+          });
         });
       }, this));
     },

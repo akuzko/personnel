@@ -1,0 +1,15 @@
+%p
+  %b
+    = t("activerecord.attributes.profile.last_name", :default => "Last Name")
+    \:
+  = @user.profile.last_name
+%p
+  %b
+    = t("activerecord.attributes.profile.initials", :default => "Initials")
+    \:
+  = @user.profile.initials
+%p
+  %b
+    = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
+    \:
+  = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?

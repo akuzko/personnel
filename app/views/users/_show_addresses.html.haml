@@ -8,30 +8,7 @@
 %div{:style => "padding-top:30px;"}
   - @user.addresses.each do |addr|
     %div{:id => "sidebar_address_#{addr.id}", :style => "#{!addr.primary ? 'display:none;' : ''}"}
-      - if addr.primary
-        %p
-          %b{:style => "color:red;"}
-            Primary Address
-      %p
-        %b
-          = t("activerecord.attributes.address.street", :default => "Street")
-          \:
-        = addr.street
-      %p
-        %b
-          = t("activerecord.attributes.address.build", :default => "Build №")
-          \:
-        = addr[:build]
-      %p
-        %b
-          = t("activerecord.attributes.address.porch", :default => "Porch")
-          \:
-        = addr.porch
-      %p
-        %b
-          = t("activerecord.attributes.address.nos", :default => "Number of storeys")
-          \:
-        = addr.nos
+      = render 'shared/address_show', :addr => addr
       .wat-cf
         = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
           edit_address_path(addr), :class => "button", 'data-edit-address' => edit_address_path(addr)

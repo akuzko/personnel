@@ -1,0 +1,24 @@
+- if addr.primary
+  %p
+    %b{:style => "color:red;"}
+      Primary Address
+%p
+  %b
+    = t("activerecord.attributes.address.street", :default => "Street")
+    \:
+  = addr.street
+%p
+  %b
+    = t("activerecord.attributes.address.build", :default => "Build №")
+    \:
+  = addr[:build]
+%p
+  %b
+    = t("activerecord.attributes.address.porch", :default => "Porch")
+    \:
+  = addr.porch
+%p
+  %b
+    = t("activerecord.attributes.address.nos", :default => "Number of storeys")
+    \:
+  = addr.nos

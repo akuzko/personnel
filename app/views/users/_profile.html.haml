@@ -1,20 +1,4 @@
 %div{:class => "flash", :style => 'display:none;'}
   %div{:id => "profile_flash", :class => "message error"}
 = form_for profile, :url => update_data_user_path(:data => 'profile'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
-  .group
-    = f.label :last_name, t("activerecord.attributes.profile.last_name", :default => "Last Name"), :class => :label
-    = f.text_field :last_name, :class => 'text_field'
-  .group
-    = f.label :initials, t("activerecord.attributes.profile.initials", :default => "Initials"), :class => :label
-    = f.text_field :initials, :class => 'text_field'
-  .group
-    = f.label :birthdate, t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate")), :class => :label
-    = f.date_select :birthdate, :include_blank => true, :end_year => Time.now.year - 60, :start_year => Time.now.year - 13
-  .group.navform.wat-cf
-    %button.button{:type => "submit"}
-      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
-      = t("web-app-theme.save", :default => "Save")
-    %span.text_button_padding= t("web-app-theme.or", :default => "or")
-    %a.button{:href => '#', :data => {'cancel-profile' => true}}
-      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
-      = t("web-app-theme.cancel", :default => "Cancel")
+  = render 'shared/profile_form', :f => f
