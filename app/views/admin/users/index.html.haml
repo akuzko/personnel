@@ -37,13 +37,10 @@
                 = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
-          %th.first id
-          %th= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
+          %th.first= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
           %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
           %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
-          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell 1"))
-          %th= t("activerecord.attributes.contact.cell2", :default => t("activerecord.labels.cell2", :default => "Cell 2"))
-          %th= t("activerecord.attributes.contact.cell3", :default => t("activerecord.labels.cell3", :default => "Cell 3"))
+          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
           %th= t("activerecord.attributes.contact.home_phone", :default => t("activerecord.labels.home_phone", :default => "Home Phone"))
           %th= t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department", :default => "Department"))
           %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
@@ -51,18 +48,20 @@
           %th.last &nbsp;
         - @users.each do |user|
           %tr{:class => cycle("odd", "even")}
-            %td= user.id
             %td
               - if user.active?
                 &#10003;
             %td= user.identifier
             %td= user.full_name
-            %td= user.cell1
-            %td= user.cell2
-            %td= user.cell3
+            %td
+              = user.cell1
+              %br
+              = user.cell2
+              %br
+              = user.cell3
             %td= user.home_phone
             %td= user.department_name if user.department_id
-            %td= user.full_address
+            %td= user.full_address_admin
             %td= l(user.birthdate) if user.birthdate
             %td.last
               %a{:href => admin_user_path(user), :data => {'load-user' => admin_user_path(user)}}= t("web-app-theme.show", :default => "Show")

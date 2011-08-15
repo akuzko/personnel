@@ -53,6 +53,15 @@ class User < ActiveRecord::Base
     attributes.map{ |a| @address[a] }.zip(separators).flatten.compact.join
   end
 
+  def full_address_admin
+    @address = addresses.order('addresses.primary DESC').first
+    return '' if @address.nil?
+    attributes = %w(street build porch nos room)
+    separators = [', ', ' || ', ' / ', ', app.']
+    return nil if attributes.any?{ |a| @address[a].nil? || @address[a] == '' }
+    attributes.map{ |a| @address[a] }.zip(separators).flatten.compact.join
+  end
+
   private
 
   def create_internals
@@ -75,4 +84,7 @@ class User < ActiveRecord::Base
     self.identifier = "" unless Department.find(self.department_id).has_identifier?
   end
 
+  def self.selection(department_id)
+    order(:identifier).find_all_by_department_id(department_id).map{ |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
+  end
 end

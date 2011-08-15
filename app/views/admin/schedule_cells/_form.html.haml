@@ -3,16 +3,16 @@
 = form_for [:admin, @cell], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :user_id, t("activerecord.attributes.schedule_cell.user_id", :default => "User"), :class => :label
-
+    = f.select :user_id, User.selection(@template.department_id), { :include_blank => true }
   .group
     = f.label :additional_attributes, t("activerecord.attributes.schedule_cell.additional_attributes", :default => "Attr"), :class => :label
-
+    = f.select :additional_attributes, ScheduleStatus.selection, { :include_blank => true }
   .group
     = f.label :responsible, t("activerecord.attributes.schedule_cell.responsible", :default => "Responsible"), :class => :label
-    = f.text_field :responsible, :class => 'text_field'
+    = f.check_box :responsible, :class => 'text_field'
   .group
     = f.label :is_modified, t("activerecord.attributes.schedule_cell.is_modified", :default => "Modified"), :class => :label
-    = f.text_field :is_modified, :class => 'text_field'
+    = f.check_box :is_modified, :class => 'text_field'
   .group.navform.wat-cf
     %button.button{:type => "submit"}
       = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

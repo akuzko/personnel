@@ -17,52 +17,66 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
                 = t("web-app-theme.find", :default => "Show")
-        %table
-          %tr
-            %th.first ID
-            %th Name
-            %th S
-            %th N
-          - @users.each do |user|
-            %tr
-              %td= user.identifier
-              %td= user.full_name
-              %td 0
-              %td 0
-        %table{:border => 1}
-          %tr
             %td
-              = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
-                new_admin_schedule_shift_path(:template => @template), :class => "button modal_dialog", :rel => "#overlay", :style => "float:right;"
-            %td
-              %table{:border => 1, :id => 'cell-table'}
-                %tr
-                - @days_in_month.times do |day|
-                  %td
-                    = day + 1
-          - @template.schedule_shifts.order(:number).each do |shift|
+              = check_box_tag :visible,  params[:visible], params[:visible], {:href => set_visibility_admin_schedule_template_path(@template)}
+              Visible
+        %div{:style => 'float:left'}
+          %table{:width =>200, :cellpadding => 5, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
             %tr
+              %th.first ID
+              %th Name
+              %th S
+              %th N
+            - @users.each do |user|
+              %tr
+                %td{:style => 'background-color:#ffffff'}= user.identifier
+                %td{:style => 'background-color:#ffffff;text-align:left;padding-left:5px'}= user.full_name
+                %td{:style => 'background-color:#ffffff'} 0
+                %td{:style => 'background-color:#ffffff'} 0
+        %div{:style => 'float:left;padding-left:5px'}
+          %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
+            %tr
+              %td{:style => 'background-color:#ffffff'}
+                = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
+                  new_admin_schedule_shift_path(:template => @template), :class => "button modal_dialog", :style => "float:right;"
               %td
-                %b
-                  - if shift.number == 10
-                    DayOff
-                  - else
-                    Shift #
-                    = shift.number
-                    %br
-                    = shift.start
-                    \-
-                    = shift.end
-                %br
-                  = link_to 'Edit', edit_admin_schedule_shift_path(shift), :rel => "#overlay", :class => "modal_dialog"
-                  = link_to 'Delete', admin_schedule_shift_path(shift), :method => :delete, :remote => true, :confirm => 'Delete the Shift#'+shift.number.to_s+'?' unless shift.number == 10
+                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}
+                  %tr
+                  - @days_in_month.times do |day|
+                    %td{:style => 'background-color:#eeeeee'}
+                      = day + 1
+            - @template.schedule_shifts.order(:number).each do |shift|
+              %tr
+                %td{:style => 'background-color:#eeeeee'}
+                  %b
+                    - if shift.number == 10
+                      DayOff
+                    - else
+                      Shift #
+                      = shift.number
+                      %br
+                      = shift.start
+                      \-
+                      = shift.end
+                  %br
+                    = link_to 'Edit', edit_admin_schedule_shift_path(shift), :id =>"shit_#{shift.id}_edit", :rel => "#overlay", :class => "modal_dialog"
+                    = link_to 'Delete', admin_schedule_shift_path(shift), :method => :delete, :remote => true, :confirm => 'Delete the Shift#'+shift.number.to_s+'?' unless shift.number == 10
+                %td{:id => "shift_#{shift.id}"}
+                  = render 'shared/shift_show', :layout => false, :shift => shift
+            %tr
+              %td{:style => 'background-color:#ffffff'}
+                = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Check")}") + " " + t("web-app-theme.add", :default=> "Check"),
+                  check_month_admin_schedule_template_path(@template), :id => 'check_month', :class => "button", :style => "float:right;"
               %td
-                %table{:border => 1, :id => 'cell-table'}
-                  - shift.lines.times do |line|
-                    %tr
-                      - @days_in_month.times do |day|
-                        %td
-                          - cell = shift.schedule_cells.find_by_day_and_line(day+1, line+1)
-                          = cell.user_id if cell
+                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}
+                  %tr
+                  - @days_in_month.times do |day|
+                    %td{:style => 'background-color:#eeeeee'}
+                      %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
+        %div{:style => 'clear:both'}
 %div.modal#overlay
   %div.contentWrap
+%script{:type => "text/javascript"}
+  app.check_month(
+  =@template.id
+  )

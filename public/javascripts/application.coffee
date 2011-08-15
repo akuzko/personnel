@@ -20,13 +20,21 @@
         $("#sidebar_address").children(':last').load $(this).data("add-address"), ->
           $("#sidebar_address").children(':not(:last)').hide()
         no
-      $("a.modal_dialog[rel]").overlay
-        onBeforeLoad:() ->
-          wrap = this.getOverlay().find(".contentWrap")
-          wrap.load(this.getTrigger().attr("href"))
+      $("#overlay").dialog
+        autoOpen: false
+        resizable: false
       $("a.button.close").live 'click', ->
-        $("a.modal_dialog[rel]").each ->
-          $(this).overlay().close()
+        $("#overlay").dialog("close")
+      $('.modal_dialog').live 'click', ->
+        $("#overlay .contentWrap").load $(this).attr("href"), ->
+          $("#overlay").dialog("open")
+        no
+      $("#visible").click ->
+        $.post $(this).attr('href')+'?visible='+$(this).attr('checked')
+      $("#check_month").click ->
+        $.get $(this).attr('href')
+        no
+
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->
@@ -54,3 +62,13 @@
     $("div[id^='sidebar_address_']").hide()
     $("#sidebar_address_"+tab).show()
     no
+  reload_shift_admin: ( shift) ->
+    $("#shift_"+shift).load '/admin/schedule_shifts/'+shift, ->
+      $("#overlay").dialog("close")
+  check_day: (template, day) ->
+    $.get '/admin/schedule_templates/'+template+'/check_day/?day='+day
+    no
+  check_month: (template) ->
+    $.get '/admin/schedule_templates/'+template+'/check_month/'
+    no
+

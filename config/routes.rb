@@ -60,8 +60,14 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :schedule_statuses, :schedule_shifts
+    resources :admins, :departments, :schedule_statuses, :schedule_shifts, :schedule_cells
     resource :schedule
+
+    resources :schedule_templates do
+      post 'set_visibility', :on => :member
+      get 'check_day', :on => :member
+      get 'check_month', :on => :member
+    end
 
     resources :addresses do
       get 'make_primary', :on => :member

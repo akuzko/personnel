@@ -30,20 +30,21 @@
         %tr
           %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
           %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
-          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell 1"))
-          %th= t("activerecord.attributes.contact.cell2", :default => t("activerecord.labels.cell2", :default => "Cell 2"))
-          %th= t("activerecord.attributes.contact.cell3", :default => t("activerecord.labels.cell3", :default => "Cell 3"))
-          %th= t("activerecord.attributes.contact.home_phone", :default => t("activerecord.labels.home_phone", :default => "Home Phone"))
+          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
+          %th= t("activerecord.attributes.contact.address", :default => t("activerecord.labels.address", :default => "Address"))
           %th= t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department", :default => "Department"))
           %th= t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate"))
         - @users.each do |user|
           %tr{:class => cycle("odd", "even")}
             %td= user.identifier
             %td= user.full_name
-            %td= user.cell1
-            %td= user.cell2
-            %td= user.cell3
-            %td= user.home_phone
+            %td
+              = user.cell1
+              %br
+              = user.cell2
+              %br
+              = user.cell3
+            %td= user.full_address
             %td= user.department_name if user.department_id
             %td= l(user.birthdate) if user.birthdate
       .actions-bar.wat-cf

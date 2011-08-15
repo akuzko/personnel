@@ -4,7 +4,11 @@ class Admin::ScheduleShiftsController < ApplicationController
   end
 
   def show
-
+    @shift = ScheduleShift.find(params[:id])
+    @template = ScheduleTemplate.find @shift.schedule_template_id
+    @days_in_month = Time.days_in_month(@template.month, @template.year)
+    @shift_leader_color = ScheduleStatus.find_by_name('shift_leader').color
+    render :partial => 'shared/shift_show', :layout => false, :locals => {:shift => @shift}
   end
 
   def new
@@ -34,7 +38,10 @@ class Admin::ScheduleShiftsController < ApplicationController
   def update
     @shift = ScheduleShift.find(params[:id])
     if @shift.update_attributes(params[:schedule_shift])
-      render(:update) { |p| p.call 'app.reload'}
+      render(:update) do |p|
+        p.call 'app.reload_shift_admin', params[:id]
+        p.call 'app.check_month', @shift.schedule_template_id
+      end
     else
       message = '<p>' + @shift.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|
@@ -46,7 +53,7 @@ class Admin::ScheduleShiftsController < ApplicationController
 
   def destroy
     @shift = ScheduleShift.find(params[:id])
-    ScheduleShift.delete(params[:id])
+    @shift.destroy
     respond_to do |format|
       format.js { render() { |p| p.call 'app.reload'} }
     end

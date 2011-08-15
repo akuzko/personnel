@@ -4,7 +4,7 @@
   right: 25px;
   position: fixed;
   width: 400px; }
-#cell-table td{
+.cell-table td{
     height: 30px;
     width: 30px !important;
     text-align: center;
@@ -23,3 +23,6 @@
 		-moz-box-shadow: 0 0 50px #ccc;
 		-webkit-box-shadow: 0 0 50px #ccc;
 	}
+.modal_dialog{
+    cursor: pointer
+}

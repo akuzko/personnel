@@ -29,17 +29,25 @@
           });
           return false;
         });
-        $("a.modal_dialog[rel]").overlay({
-          onBeforeLoad: function() {
-            var wrap;
-            wrap = this.getOverlay().find(".contentWrap");
-            return wrap.load(this.getTrigger().attr("href"));
-          }
+        $("#overlay").dialog({
+          autoOpen: false,
+          resizable: false
         });
-        return $("a.button.close").live('click', function() {
-          return $("a.modal_dialog[rel]").each(function() {
-            return $(this).overlay().close();
+        $("a.button.close").live('click', function() {
+          return $("#overlay").dialog("close");
+        });
+        $('.modal_dialog').live('click', function() {
+          $("#overlay .contentWrap").load($(this).attr("href"), function() {
+            return $("#overlay").dialog("open");
           });
+          return false;
+        });
+        $("#visible").click(function() {
+          return $.post($(this).attr('href') + '?visible=' + $(this).attr('checked'));
+        });
+        return $("#check_month").click(function() {
+          $.get($(this).attr('href'));
+          return false;
         });
       }, this));
     },
@@ -74,6 +82,19 @@
     showAddTab: function(tab) {
       $("div[id^='sidebar_address_']").hide();
       $("#sidebar_address_" + tab).show();
+      return false;
+    },
+    reload_shift_admin: function(shift) {
+      return $("#shift_" + shift).load('/admin/schedule_shifts/' + shift, function() {
+        return $("#overlay").dialog("close");
+      });
+    },
+    check_day: function(template, day) {
+      $.get('/admin/schedule_templates/' + template + '/check_day/?day=' + day);
+      return false;
+    },
+    check_month: function(template) {
+      $.get('/admin/schedule_templates/' + template + '/check_month/');
       return false;
     }
   };
