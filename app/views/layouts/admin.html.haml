@@ -13,7 +13,7 @@
         #user-navigation
           %ul.wat-cf
             %li
-              %strong= Admin.find(current_admin.id).email if current_admin.id?
+              %strong= Admin.find(current_admin.id).email unless current_admin.nil?
             %li= link_to t("web-app-theme.logout", :default => "Logout"), destroy_admin_session_path, :class => 'logout'
         #main-navigation
           %ul.wat-cf

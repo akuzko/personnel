@@ -45,9 +45,26 @@
         $("#visible").click(function() {
           return $.post($(this).attr('href') + '?visible=' + $(this).attr('checked'));
         });
-        return $("#check_month").click(function() {
+        $("#check_month").click(function() {
           $.get($(this).attr('href'));
           return false;
+        });
+        $("th.sortable").click(function() {
+          $("#sort_by").val($(this).attr('sort'));
+          return $("#find_form").submit();
+        });
+        $(".user_select").click(function() {
+          var id;
+          id = $(this).attr('id');
+          $("td.modal_dialog.user_selected").removeClass('user_selected');
+          return $("td.modal_dialog").each(function() {
+            if ($.trim($(this).html()) === id) {
+              return $(this).addClass('user_selected');
+            }
+          });
+        });
+        return $("#clear_selection").click(function() {
+          return $("td.modal_dialog.user_selected").removeClass('user_selected');
         });
       }, this));
     },
@@ -96,6 +113,9 @@
     check_month: function(template) {
       $.get('/admin/schedule_templates/' + template + '/check_month/');
       return false;
+    },
+    show_users_admin: function(template_id) {
+      return $("#template_users").load('/admin/schedule/show_users/?id=' + template_id);
     }
   };
 }).call(this);

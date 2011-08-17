@@ -36,6 +36,7 @@ class Admin::UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @back_url = request.env["HTTP_REFERER"]
   end
 
   def create
@@ -54,13 +55,15 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    @back_url = params[:user][:back_url]
+    params[:user].delete(:back_url)
     if params[:user][:password].empty?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        format.html { redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
+        format.html { redirect_to @back_url }#redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -34,6 +34,17 @@
       $("#check_month").click ->
         $.get $(this).attr('href')
         no
+      $("th.sortable").click ->
+        $("#sort_by").val($(this).attr('sort'))
+        $("#find_form").submit()
+      $(".user_select").click ->
+        id = $(this).attr('id')
+        $("td.modal_dialog.user_selected").removeClass('user_selected')
+        $("td.modal_dialog").each ->
+          if $.trim($(this).html())==id
+            $(this).addClass('user_selected')
+      $("#clear_selection").click ->
+        $("td.modal_dialog.user_selected").removeClass('user_selected')
 
 
   flashFade: ->
@@ -71,4 +82,5 @@
   check_month: (template) ->
     $.get '/admin/schedule_templates/'+template+'/check_month/'
     no
-
+  show_users_admin: ( template_id) ->
+    $("#template_users").load '/admin/schedule/show_users/?id='+template_id

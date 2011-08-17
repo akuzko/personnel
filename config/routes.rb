@@ -52,6 +52,7 @@ Personnel::Application.routes.draw do
   resources :addresses do
     get 'make_primary', :on => :member
   end
+  resource :schedule
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
@@ -61,7 +62,10 @@ Personnel::Application.routes.draw do
   namespace :admin do
     root :to => "users#index"
     resources :admins, :departments, :schedule_statuses, :schedule_shifts, :schedule_cells
-    resource :schedule
+    resource :schedule do
+      get 'show_users', :on => :member
+    end
+
 
     resources :schedule_templates do
       post 'set_visibility', :on => :member

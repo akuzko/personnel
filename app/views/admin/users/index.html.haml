@@ -8,7 +8,7 @@
       = t("web-app-theme.all", :default => "All")
       Users
     .inner
-      = form_tag(admin_users_path, :method => :get) do
+      = form_tag(admin_users_path, :method => :get, :id => 'find_form') do
         %table
           %tr
             %td
@@ -32,14 +32,16 @@
             %td
               &nbsp;
             %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
-          %th.first= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
-          %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
-          %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+          %th{:sort => 'active', :class => 'sortable'}= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
+          %th{:sort => 'identifier', :class => 'sortable'}= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
+          %th{:sort => 'full_name', :class => 'sortable'}= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
           %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
           %th= t("activerecord.attributes.contact.home_phone", :default => t("activerecord.labels.home_phone", :default => "Home Phone"))
           %th= t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department", :default => "Department"))

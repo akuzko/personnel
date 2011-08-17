@@ -43,6 +43,7 @@ class Admin::ScheduleCellsController < ApplicationController
         page[id].html ''
         page["#overlay"].dialog("close")
         page.call 'app.check_day', @cell.schedule_shift_id, @cell.day
+        page.call 'app.show_users_admin', ScheduleShift.find(@cell.schedule_shift_id).schedule_template_id
       end
     else
       if @cell.update_attributes(params[:schedule_cell])
@@ -65,6 +66,7 @@ class Admin::ScheduleCellsController < ApplicationController
           page[id].html @cell.user_id
           page["#overlay"].dialog("close")
           page.call 'app.check_day', @cell.schedule_shift_id, @cell.day
+          page.call 'app.show_users_admin', ScheduleShift.find(@cell.schedule_shift_id).schedule_template_id
         end
       else
         message = '<p>' + @cell.errors.full_messages.join('</p><p>') + '</p>'

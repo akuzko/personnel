@@ -1,0 +1,19 @@
+.block
+  .content
+    .inner
+      = form_tag(schedule_path, :method => :get) do
+        %table
+          %tr
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection, params[:department_id])
+            %td
+              &nbsp;
+            %td
+              = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
+                = t("web-app-theme.find", :default => "Show")

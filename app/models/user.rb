@@ -62,6 +62,34 @@ class User < ActiveRecord::Base
     attributes.map{ |a| @address[a] }.zip(separators).flatten.compact.join
   end
 
+  def work_shifts_count(template_id)
+    shifts_count = 0
+    shifts = ScheduleShift.where('number < 10').find_all_by_schedule_template_id template_id
+    shifts.each do |shift|
+      cells = ScheduleCell.where(:schedule_shift_id => shift.id).where(:user_id => self.identifier).count(:all)
+      shifts_count += cells * (shift.end - shift.start) /8.0
+    end
+    shifts_count
+  end
+  def work_nights_count(template_id)
+    shifts_count = 0
+    shifts = ScheduleShift.where(:start => 0).where('number < 10').find_all_by_schedule_template_id template_id
+    shifts.each do |shift|
+      cells = ScheduleCell.where(:schedule_shift_id => shift.id).where(:user_id => self.identifier).count(:all)
+      shifts_count += cells
+    end
+    shifts_count
+  end
+  def day_off_count(template_id)
+    shifts_count = 0
+    shifts = ScheduleShift.where(:number => 10).find_all_by_schedule_template_id template_id
+    shifts.each do |shift|
+      cells = ScheduleCell.where(:schedule_shift_id => shift.id).where(:user_id => self.identifier).count(:all)
+      shifts_count += cells
+    end
+    shifts_count
+  end
+
   private
 
   def create_internals
@@ -70,6 +98,12 @@ class User < ActiveRecord::Base
   end
 
   def self.search(params, page)
+    params[:sort_by] ||= :full_name
+    sort_by = {
+        :identifier => '`users`.identifier',
+        :active => '`users`.active',
+        :full_name => '`profiles`.last_name'
+    }
     conditions = []
     [:active, :department_id, :identifier].each do |field|
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
@@ -77,7 +111,7 @@ class User < ActiveRecord::Base
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => 15, :page => page,
              :conditions => conditions.join(' and '),
-             :order => '`profiles`.last_name'
+             :order => sort_by[params[:sort_by].to_sym]
   end
 
   def clean_unused_identifier
@@ -85,6 +119,9 @@ class User < ActiveRecord::Base
   end
 
   def self.selection(department_id)
-    order(:identifier).find_all_by_department_id(department_id).map{ |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
+    order(:identifier).find_all_by_department_id_and_active(department_id, 1).map{ |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
   end
+
+
+
 end

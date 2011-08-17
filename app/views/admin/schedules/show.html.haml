@@ -20,19 +20,11 @@
             %td
               = check_box_tag :visible,  params[:visible], params[:visible], {:href => set_visibility_admin_schedule_template_path(@template)}
               Visible
-        %div{:style => 'float:left'}
-          %table{:width =>200, :cellpadding => 5, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
-            %tr
-              %th.first ID
-              %th Name
-              %th S
-              %th N
-            - @users.each do |user|
-              %tr
-                %td{:style => 'background-color:#ffffff'}= user.identifier
-                %td{:style => 'background-color:#ffffff;text-align:left;padding-left:5px'}= user.full_name
-                %td{:style => 'background-color:#ffffff'} 0
-                %td{:style => 'background-color:#ffffff'} 0
+        %div#template_users{:style => 'float:left'}
+          - @admin = true
+          = render 'shared/template_users_show', :layout => false
+          %a#clear_selection
+            clear selection
         %div{:style => 'float:left;padding-left:5px'}
           %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
             %tr
@@ -62,7 +54,7 @@
                     = link_to 'Edit', edit_admin_schedule_shift_path(shift), :id =>"shit_#{shift.id}_edit", :rel => "#overlay", :class => "modal_dialog"
                     = link_to 'Delete', admin_schedule_shift_path(shift), :method => :delete, :remote => true, :confirm => 'Delete the Shift#'+shift.number.to_s+'?' unless shift.number == 10
                 %td{:id => "shift_#{shift.id}"}
-                  = render 'shared/shift_show', :layout => false, :shift => shift
+                  = render 'shared/shift_show_admin', :layout => false, :shift => shift
             %tr
               %td{:style => 'background-color:#ffffff'}
                 = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Check")}") + " " + t("web-app-theme.add", :default=> "Check"),

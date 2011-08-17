@@ -1,0 +1,63 @@
+.block
+  .content
+    .inner
+      = form_tag(schedule_path, :method => :get) do
+        %table
+          %tr
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection, params[:department_id])
+            %td
+              &nbsp;
+            %td
+              = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
+                = t("web-app-theme.find", :default => "Show")
+        %div{:style => 'float:left'}
+          = render 'shared/template_users_show', :layout => false, :template => @template, :users => @users, :admin => false
+          %br
+          %table{:width =>200, :cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
+            %tr
+              %th
+                Legend
+              %th
+                = t("activerecord.attributes.admin_admin.color", :default => t("activerecord.labels.color", :default => "Color"))
+              %th.last &nbsp;
+            - @statuses.each do |status|
+              %tr{:class => cycle("odd", "even")}
+                %td{:style => 'background-color:#ffffff;width:100%'}
+                  = status.name
+                %td{:style => "background-color:##{status.color};width:100%"}
+                  &nbsp;
+
+        %div{:style => 'float:left;padding-left:5px'}
+          %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
+            %tr
+              %td{:style => 'background-color:#ffffff'}
+                &nbsp;
+              %td
+                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}
+                  %tr
+                  - @days_in_month.times do |day|
+                    %td{:style => 'background-color:#eeeeee'}
+                      = day + 1
+            - @template.schedule_shifts.order(:number).each do |shift|
+              %tr
+                %td{:style => 'background-color:#eeeeee'}
+                  %b
+                    - if shift.number == 10
+                      DayOff
+                    - else
+                      Shift #
+                      = shift.number
+                      %br
+                      = shift.start
+                      \-
+                      = shift.end
+                %td{:id => "shift_#{shift.id}"}
+                  = render 'shared/shift_show', :layout => false, :shift => shift
+        %div{:style => 'clear:both'}

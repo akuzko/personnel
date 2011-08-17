@@ -6,7 +6,7 @@ class ScheduleTemplate < ActiveRecord::Base
     total_normal = 0
     @users = User.find_all_by_department_id self.department_id
     @users.each do |user|
-      total_normal += user.identifier * 8
+      total_normal += user.identifier * 8.0
     end
     total_fact = 0
 
