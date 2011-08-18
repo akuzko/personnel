@@ -3,7 +3,6 @@ class Admin::UsersController < ApplicationController
   layout 'admin'
   
   def index
-    #@users = User.with_data.order('id DESC').paginate :page => params[:page], :per_page => 15
     @users = User.with_data.search(params, params[:page])
   end
 

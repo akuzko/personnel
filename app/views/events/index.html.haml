@@ -1,0 +1,35 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", events_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_event_path, :class => 'modal_dialog'
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Events
+    .inner
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+          %th
+            = t("activerecord.attributes.category.name", :default => t("activerecord.labels.category", :default => "Category"))
+          %th
+            = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
+          %th.last &nbsp;
+        - @events.each do |event|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = event.eventtime
+            %td
+              = event.category_name
+            %td
+              = event.description
+            %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_event_path(event), :class => "modal_dialog"} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", event_path(event), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @events
+%div.modal#overlay
+  %div.contentWrap

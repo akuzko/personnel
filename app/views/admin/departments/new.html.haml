@@ -8,6 +8,7 @@
       = t("web-app-theme.new", :default => "New")
       Department
     .inner
+      = render "shared/form_errors", :object => @department
       = form_for :department, :url => admin_departments_path, :html => { :class => :form } do |f|
         = render :partial => "form", :locals => {:f => f}
 - content_for :sidebar, render(:partial => 'sidebar')

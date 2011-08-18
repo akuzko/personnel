@@ -1,0 +1,74 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_categories_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_category_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Categories
+    .inner
+      = form_tag(admin_categories_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              Name
+              = text_field_tag :name, params[:name], :class => 'text_field'
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection, params[:department_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              Displayed Only
+              = check_box_tag :displayed, 1, params[:displayed]
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th.first ID
+          %th{:sort => 'name', :class => 'sortable'}
+            = t("activerecord.attributes.admin_category.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th{:sort => 'department_id', :class => 'sortable'}
+            = t("activerecord.attributes.admin_category.department", :default => t("activerecord.labels.name", :default => "Department"))
+          %th{:sort => 'displayed', :class => 'sortable'}
+            = t("activerecord.attributes.admin_category.displayed", :default => t("activerecord.labels.name", :default => "Display"))
+          %th
+            = t("activerecord.attributes.admin_category.reported", :default => t("activerecord.labels.name", :default => "Report"))
+          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th.last &nbsp;
+        - @categories.each do |category|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = category.id
+            %td
+              = link_to category.name, admin_category_path(category)
+            %td
+              = category.department_name
+            %td
+              - if category.displayed?
+                &#10003;
+            %td
+              - if category.reported?
+                &#10003;
+            %td
+              = category.created_at
+            %td.last
+              = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_category_path(category)
+              |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_category_path(category)} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_category_path(category), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @categories
+- content_for :sidebar, render(:partial => 'sidebar')

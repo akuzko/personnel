@@ -119,7 +119,11 @@ class User < ActiveRecord::Base
   end
 
   def self.selection(department_id)
-    order(:identifier).find_all_by_department_id_and_active(department_id, 1).map{ |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
+    if department_id == 0
+      with_data.order('`profiles`.last_name').active.map{ |d| [d.full_name, d.id] }
+    else
+      order(:identifier).find_all_by_department_id_and_active(department_id, 1).map{ |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
+  end
   end
 
 

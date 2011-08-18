@@ -1,0 +1,82 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_shifts_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_shift_path, :class => 'modal_dialog'
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Shifts
+    .inner
+      = form_tag(admin_shifts_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              User
+              = select_tag :user_id, options_for_select(User.selection(0), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_from_check, 1, params[:date_from_check]
+            %td
+              &nbsp;
+            %td
+              From
+              = select_date params[:date_from], :prefix => 'date_from', :start_year => 2010, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_to_check, 1, params[:date_to_check]
+            %td
+              &nbsp;
+            %td
+              To
+              = select_date params[:date_to], :prefix => 'date_to', :start_year => 2010, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            = t("activerecord.attributes.admin_shift.date", :default => t("activerecord.labels.date", :default => "Date"))
+          %th
+            \#
+          %th
+            = t("activerecord.attributes.admin_shift.starttime", :default => t("activerecord.labels.starttime", :default => "Start Time"))
+          %th
+            = t("activerecord.attributes.admin_shift.endtime", :default => t("activerecord.labels.endtime", :default => "End Time"))
+          %th
+            = t("activerecord.attributes.admin_shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked, min"))
+          %th.last &nbsp;
+        - @shifts.each do |shift|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = shift.user_full_name
+            %td
+              = shift.shiftdate
+            %td
+              = shift.number
+            %td
+              = shift.starttime
+            %td
+              = shift.endtime
+            %td
+              = shift.worked_min
+            %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_shift_path(shift), :class => "modal_dialog"} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_shift_path(shift), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @shifts
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.modal#overlay
+  %div.contentWrap

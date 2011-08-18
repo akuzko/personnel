@@ -7,10 +7,10 @@ class SchedulesController < ApplicationController
     else
       params[:date] = Time.now
     end
-    params[:department_id] = 6 unless params[:department_id]
+    params[:department_id] = @user = User.find(current_user.id).department_id unless params[:department_id]
     @template = ScheduleTemplate.find_by_department_id_and_year_and_month_and_visible(params[:department_id], params[:date].year, params[:date].month, 1)
     if @template.nil?
-      redirect_to new_schedule_path
+      redirect_to(new_schedule_path, :notice => 'No schedule available at this time')
     else
       @users = User.order(:identifier).find_all_by_department_id_and_active params[:department_id], 1
       @days_in_month = Time.days_in_month(@template.month, @template.year)
@@ -20,7 +20,12 @@ class SchedulesController < ApplicationController
   end
 
   def new
-
+    if params[:date]
+      params[:date] = Date.parse(params[:date]["year"].to_s+"-"+params[:date]["month"].to_s+"-1")
+    else
+      params[:date] = Time.now
+    end
+    params[:department_id] = @user = User.find(current_user.id).department_id unless params[:department_id]
   end
 
 end

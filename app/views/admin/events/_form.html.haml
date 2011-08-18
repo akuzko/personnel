@@ -1,0 +1,23 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "event_flash", :class => "message error"}
+= form_for [:admin, @event], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+  .group
+    = f.label :user_id, t("activerecord.attributes.event.user_id", :default => "User"), :class => :label
+    = f.select :user_id, User.selection(0), { :include_blank => true }
+  .group
+    = f.label :category_id, t("activerecord.attributes.event.category_id", :default => "Category"), :class => :label
+    = f.select :category_id, Category.selection(0), { :include_blank => true }
+  .group
+    = f.label :eventtime, t("activerecord.attributes.event.datetime", :default => t("activerecord.event.datetime", :default => "DateTime")), :class => :label
+    = f.datetime_select :eventtime, :end_year => Time.now.year+1, :start_year => Time.now.year - 1
+  .group
+    = f.label :description, t("activerecord.attributes.event.description", :default => "Description"), :class => :label
+    = f.text_field :description, :class => 'text_field'
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      = t("web-app-theme.save", :default => "Save")
+    %span.text_button_padding= t("web-app-theme.or", :default => "or")
+    %a.button.close{:href => '#'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")

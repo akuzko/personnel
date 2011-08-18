@@ -1,0 +1,74 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_events_path
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_event_path, :class => 'modal_dialog'
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Events
+    .inner
+      = form_tag(admin_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              User
+              = select_tag :user_id, options_for_select(User.selection(0), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_from_check, 1, params[:date_from_check]
+            %td
+              &nbsp;
+            %td
+              From
+              = select_datetime params[:date_from], :prefix => 'date_from', :start_year => 2010, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_to_check, 1, params[:date_to_check]
+            %td
+              &nbsp;
+            %td
+              To
+              = select_datetime params[:date_to], :prefix => 'date_to', :start_year => 2010, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+          %th
+            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            = t("activerecord.attributes.category.name", :default => t("activerecord.labels.category", :default => "Category"))
+          %th
+            = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
+          %th.last &nbsp;
+        - @events.each do |event|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = event.eventtime
+            %td
+              = event.user_full_name
+            %td
+              = event.category_name
+            %td
+              = event.description
+            %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_event_path(event), :class => "modal_dialog"} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_event_path(event), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @events
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.modal#overlay
+  %div.contentWrap

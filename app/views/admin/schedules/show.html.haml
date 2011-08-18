@@ -51,7 +51,7 @@
                       \-
                       = shift.end
                   %br
-                    = link_to 'Edit', edit_admin_schedule_shift_path(shift), :id =>"shit_#{shift.id}_edit", :rel => "#overlay", :class => "modal_dialog"
+                    = link_to 'Edit', edit_admin_schedule_shift_path(shift), :id =>"shit_#{shift.id}_edit", :class => "modal_dialog"
                     = link_to 'Delete', admin_schedule_shift_path(shift), :method => :delete, :remote => true, :confirm => 'Delete the Shift#'+shift.number.to_s+'?' unless shift.number == 10
                 %td{:id => "shift_#{shift.id}"}
                   = render 'shared/shift_show_admin', :layout => false, :shift => shift

@@ -21,14 +21,18 @@
               %a{:href => admin_admins_path} Admins
             %li{:class => controller.controller_path == 'admin/departments' ? 'active' : '' }
               %a{:href => admin_departments_path} Departments
-            %li{:class => controller.controller_path == 'admin/users' && params[:action] != 'delivery' ? 'active' : '' }
+            %li{:class => controller.controller_path == 'admin/categories' ? 'active' : '' }
+              %a{:href => admin_categories_path} Categories
+            %li{:class => controller.controller_path == 'admin/users' ? 'active' : '' }
               %a{:href => admin_users_path} All Personnel
-            %li{:class => controller.controller_path == 'admin/users' && params[:action] == 'delivery' ? 'active' : '' }
-              %a{:href => delivery_admin_users_path} Delivery List
             %li{:class => controller.controller_path == 'admin/schedule_statuses' ? 'active' : '' }
               %a{:href => admin_schedule_statuses_path} Schedule Statuses
             %li{:class => controller.controller_path == 'admin/schedules' ? 'active' : '' }
               %a{:href => admin_schedule_path} Schedule
+            %li{:class => controller.controller_path == 'admin/shifts' ? 'active' : '' }
+              %a{:href => admin_shifts_path} Shifts
+            %li{:class => controller.controller_path == 'admin/events' ? 'active' : '' }
+              %a{:href => admin_events_path} Events
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|
