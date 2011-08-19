@@ -45,6 +45,8 @@
             $(this).addClass('user_selected')
       $("#clear_selection").click ->
         $("td.modal_dialog.user_selected").removeClass('user_selected')
+      $("[name*='shiftdate']").change ->
+        app.reload_shift_numbers()
 
 
   flashFade: ->
@@ -84,3 +86,11 @@
     no
   show_users_admin: ( template_id) ->
     $("#template_users").load '/admin/schedule/show_users/?id='+template_id
+  reload_shift_numbers: ->
+    dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()
+    $("#shift_numbers").load '/events/available_shift_numbers/?date='+dt, ->
+      if $("select#shift_number option").size() == 0
+        $("#new_shift .navform").hide()
+      else
+        $("#new_shift .navform").show()
+

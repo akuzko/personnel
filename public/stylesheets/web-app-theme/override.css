@@ -33,3 +33,7 @@ td.user_selected{
     background-color: red !important;
     opacity:0.8;
 }
+.flash .alert {
+  border: 1px solid #ffff88;
+  background-color: #ffffcc;
+}

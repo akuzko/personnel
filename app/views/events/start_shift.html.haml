@@ -1,0 +1,19 @@
+%h1
+  Start Shift
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "shift_flash", :class => "message error"}
+= form_for @shift, :url => new_shift_events_path, :html => {:class => 'form'} do |f|
+  .group
+    = f.label :shiftdate, t("activerecord.attributes.shift.date", :default => t("activerecord.labels.date", :default => "Date")), :class => :label
+    = f.date_select :shiftdate, :end_year => Time.now.year+1, :start_year => Time.now.year - 1
+  %div#shift_numbers.group
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.start", :default => "Start")}")
+      = t("web-app-theme.start", :default => "Start")
+    %span.text_button_padding= t("web-app-theme.or", :default => "or")
+    %a.button{:href => user_path}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")
+%script{:type => "text/javascript"}
+  app.reload_shift_numbers()

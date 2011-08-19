@@ -21,6 +21,7 @@
             %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Profile", user_path
             %li= link_to t("personnel.list", :default => "Find"), find_user_path
             %li= link_to t("personnel.schedule", :default => "Schedule"), schedule_path
+            %li= link_to t("personnel.timereport", :default => "TimeReport"), events_path
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|

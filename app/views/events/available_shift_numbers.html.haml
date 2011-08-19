@@ -1,0 +1,6 @@
+- if !@shift_numbers.empty?
+  %label
+    Number
+  = select_tag "shift[number]", options_for_select(@shift_numbers, @selected_number)
+- else
+  No shifts

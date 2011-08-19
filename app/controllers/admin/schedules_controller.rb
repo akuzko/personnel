@@ -11,9 +11,11 @@ class Admin::SchedulesController < ApplicationController
     @template = ScheduleTemplate.find_or_create_by_department_id_and_year_and_month(params[:department_id], params[:date].year, params[:date].month)
     if @template.schedule_shifts.empty?
       @previous_template = ScheduleTemplate.where('id < ?', @template.id).order('year DESC, month DESC').limit(1).find_by_department_id(params[:department_id])
-      @previous_template.schedule_shifts.each do |shift|
-        @shift = ScheduleShift.create(:schedule_template_id => @template.id, :lines => shift.lines, :number => shift.number, :start => shift.start, :end => shift.end)
-        @shift.save
+      if @previous_template
+        @previous_template.schedule_shifts.each do |shift|
+          @shift = ScheduleShift.create(:schedule_template_id => @template.id, :lines => shift.lines, :number => shift.number, :start => shift.start, :end => shift.end)
+          @shift.save
+        end
       end
     end
     params[:visible] = @template.visible?

@@ -53,7 +53,12 @@ Personnel::Application.routes.draw do
     get 'make_primary', :on => :member
   end
   resource :schedule
-  resources :events
+  resources :events do
+    get 'start_shift', :on => :collection
+    get 'end_shift', :on => :collection
+    post 'new_shift', :on => :collection
+    get 'available_shift_numbers', :on => :collection
+  end
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController

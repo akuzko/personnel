@@ -63,8 +63,11 @@
             }
           });
         });
-        return $("#clear_selection").click(function() {
+        $("#clear_selection").click(function() {
           return $("td.modal_dialog.user_selected").removeClass('user_selected');
+        });
+        return $("[name*='shiftdate']").change(function() {
+          return app.reload_shift_numbers();
         });
       }, this));
     },
@@ -116,6 +119,17 @@
     },
     show_users_admin: function(template_id) {
       return $("#template_users").load('/admin/schedule/show_users/?id=' + template_id);
+    },
+    reload_shift_numbers: function() {
+      var dt;
+      dt = $("#shift_shiftdate_1i").val() + '-' + $("#shift_shiftdate_2i").val() + '-' + $("#shift_shiftdate_3i").val();
+      return $("#shift_numbers").load('/events/available_shift_numbers/?date=' + dt, function() {
+        if ($("select#shift_number option").size() === 0) {
+          return $("#new_shift .navform").hide();
+        } else {
+          return $("#new_shift .navform").show();
+        }
+      });
     }
   };
 }).call(this);

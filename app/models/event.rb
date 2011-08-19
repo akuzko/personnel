@@ -17,4 +17,19 @@ class Event < ActiveRecord::Base
              :conditions => conditions.join(' and '),
              :order => params[:sort_by]
   end
+
+  def self.login(user_id)
+    @category = Category.find_or_create_by_name('Login')
+    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => DateTime.current, :description => '-')
+    @event.save
+    @event.id
+  end
+
+  def self.logout(user_id)
+    @category = Category.find_or_create_by_name('Logout')
+    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => DateTime.current, :description => '-')
+    @event.save
+    @event.id
+  end
+
 end
