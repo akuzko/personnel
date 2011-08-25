@@ -15,7 +15,7 @@
               &nbsp;
             %td
               User
-              = select_tag :user_id, options_for_select(User.selection(0), params[:user_id]), { :include_blank => true }
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id), params[:user_id]), { :include_blank => true }
             %td
               &nbsp;
             %td

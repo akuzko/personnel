@@ -1,6 +1,14 @@
 class Admin::AdminsController < ApplicationController
   before_filter :authenticate_admin!
+  before_filter :check_permissions
   layout 'admin'
+
+  def check_permissions
+    if !current_admin.super_user?
+      flash[:error] = "You dont have permissions to view this page"
+      redirect_to admin_users_path
+    end
+  end
 
   # GET /departments
   # GET /departments.xml
@@ -47,6 +55,9 @@ class Admin::AdminsController < ApplicationController
 
     respond_to do |format|
       if @admin.save
+        params[:departments].each do |d|
+          AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
+        end
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully created.') }
         format.xml  { render :xml => @admin, :status => :created, :location => @admin }
       else
@@ -60,6 +71,16 @@ class Admin::AdminsController < ApplicationController
   # PUT /departments/1.xml
   def update
     @admin = Admin.find(params[:id])
+    old_departments = @admin.departments.map{|d|d.id.to_s}
+    if old_departments != params[:departments]
+      old_departments.each do |d|
+        AdminDepartment.find_by_admin_id_and_department_id(@admin.id,d.to_i).destroy unless params[:departments].include?(d)
+      end
+      new_departments = params[:departments] - old_departments
+      new_departments.each do |d|
+        AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
+      end
+    end
     if params[:admin][:password].empty?
       params[:admin].delete(:password)
       params[:admin].delete(:password_confirmation)

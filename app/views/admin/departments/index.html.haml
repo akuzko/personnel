@@ -13,6 +13,8 @@
           %th.first ID
           %th
             = t("activerecord.attributes.admin_department.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            Admins
           %th= t("web-app-theme.created_at", :default => "Created at")
           %th.last &nbsp;
         - @departments.each do |department|
@@ -21,6 +23,10 @@
               = department.id
             %td
               = link_to department.name, admin_department_path(department)
+            %td
+              - department.admins.each do |admin|
+                = admin.email
+                %br
             %td
               = department.created_at
             %td.last

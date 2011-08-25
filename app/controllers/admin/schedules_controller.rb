@@ -7,7 +7,8 @@ class Admin::SchedulesController < ApplicationController
     else
       params[:date] = Time.now
     end
-    params[:department_id] = 6 unless params[:department_id]
+    params[:department_id] = Department.selection_by_admin(current_admin.id).first[1] unless params[:department_id]
+    redirect_to admin_users_path unless current_admin.manage_department(params[:department_id].to_i)
     @template = ScheduleTemplate.find_or_create_by_department_id_and_year_and_month(params[:department_id], params[:date].year, params[:date].month)
     if @template.schedule_shifts.empty?
       @previous_template = ScheduleTemplate.where('id < ?', @template.id).order('year DESC, month DESC').limit(1).find_by_department_id(params[:department_id])

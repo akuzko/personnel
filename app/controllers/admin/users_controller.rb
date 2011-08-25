@@ -3,7 +3,7 @@ class Admin::UsersController < ApplicationController
   layout 'admin'
   
   def index
-    @users = User.with_data.search(params, params[:page])
+    @users = User.with_data.search_by_admin(params, params[:page], current_admin.id)
   end
 
   def delivery
@@ -17,7 +17,7 @@ class Admin::UsersController < ApplicationController
 
   def show
     @user = User.with_data.find(params[:id])
-
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     respond_to do |format|
       format.html{ render :partial => 'show' if request.xhr? }
       format.xml{ render :xml => @user }
@@ -35,12 +35,13 @@ class Admin::UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     @back_url = request.env["HTTP_REFERER"]
   end
 
   def create
     @user = User.new(params[:user])
-
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     respond_to do |format|
       if @user.save
         format.html { redirect_to([:admin, @user], :notice => 'User was successfully created.') }
@@ -54,6 +55,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     @back_url = params[:user][:back_url]
     params[:user].delete(:back_url)
     if params[:user][:password].empty?
@@ -73,6 +75,7 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     @user.destroy
 
     respond_to do |format|
@@ -83,12 +86,13 @@ class Admin::UsersController < ApplicationController
 
   def edit_data
     user = User.find params[:id]
-
+    redirect_to 'index' unless current_admin.manage_department(user.department_id)
     render :partial => params[:data], :object => user.send(params[:data]), :locals => {:user => user}
   end
 
   def update_data
     user = User.find params[:id]
+    redirect_to 'index' unless current_admin.manage_department(user.department_id)
     data = user.send(params[:data])
     if data.update_attributes(params[params[:data]])
       render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
@@ -103,11 +107,13 @@ class Admin::UsersController < ApplicationController
 
   def display_addresses
     @user = User.find params[:id]
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     render '_show_addresses.html', :layout => false
   end
 
   def display_section
     @user = User.find params[:id]
+    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     render '_show_'+params[:section]+'.html', :layout => false
   end
 

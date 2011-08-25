@@ -7,7 +7,7 @@ class Admin::EventsController < ApplicationController
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
 
 
-    @events = Event.search(params, params[:page])
+    @events = Event.joins('JOIN users ON events.user_id = users.id').search(params, params[:page], current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb

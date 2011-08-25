@@ -3,10 +3,10 @@
 = form_for [:admin, @event], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :user_id, t("activerecord.attributes.event.user_id", :default => "User"), :class => :label
-    = f.select :user_id, User.selection(0), { :include_blank => true }
+    = f.select :user_id, User.selection_by_admin(current_admin.id), { :include_blank => true }
   .group
     = f.label :category_id, t("activerecord.attributes.event.category_id", :default => "Category"), :class => :label
-    = f.select :category_id, Category.selection(0), { :include_blank => true }
+    = f.select :category_id, Category.selection_by_admin(current_admin.id), { :include_blank => true }
   .group
     = f.label :eventtime, t("activerecord.attributes.event.datetime", :default => t("activerecord.event.datetime", :default => "DateTime")), :class => :label
     = f.datetime_select :eventtime, :end_year => Time.now.year+1, :start_year => Time.now.year - 1

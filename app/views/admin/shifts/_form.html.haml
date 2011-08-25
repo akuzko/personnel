@@ -3,7 +3,7 @@
 = form_for [:admin, @shift], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :user_id, t("activerecord.attributes.shift.user_id", :default => "User"), :class => :label
-    = f.select :user_id, User.selection(0), { :include_blank => true }
+    = f.select :user_id, User.selection_by_admin(current_admin.id), { :include_blank => true }
   .group
     = f.label :shiftdate, t("activerecord.attributes.shift.date", :default => t("activerecord.shift.date", :default => "Date")), :class => :label
     = f.date_select :shiftdate, :end_year => Time.now.year+1, :start_year => Time.now.year - 1

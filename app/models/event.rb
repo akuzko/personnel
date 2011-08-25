@@ -8,10 +8,12 @@ class Event < ActiveRecord::Base
 
   scope :identified, where('identifier IS NOT NULL')
 
-  def self.search(params, page)
+  def self.search(params, page, admin_id)
     params[:sort_by] ||= :eventtime
 
+    admin = Admin.find_by_id(admin_id)
     conditions = []
+    conditions.push("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     conditions.push("user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
     conditions.push("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
     conditions.push("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
@@ -22,6 +24,7 @@ class Event < ActiveRecord::Base
   end
 
   def self.login(user_id, time)
+    #TODO: Category creation with department ID
     @category = Category.find_or_create_by_name('Login')
     @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :description => '-')
     @event.save

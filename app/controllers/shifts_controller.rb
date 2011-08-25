@@ -29,7 +29,7 @@ class ShiftsController < ApplicationController
         if shift.number < 10
           shift.schedule_cells.each do |cell|
             if !cell.user_id.nil? && cell.day == @date.day
-              user = User.find_by_identifier(cell.user_id)
+              user = User.find_by_identifier_and_active(cell.user_id, 1)
               count = Shift.find_all_by_user_id_and_number_and_shiftdate(user.id, shift.number, @date).count
               @missed_shifts.push [user.full_name, @date, shift.number, shift.start, shift.end] if count == 0
             end

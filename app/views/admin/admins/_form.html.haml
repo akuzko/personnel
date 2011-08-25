@@ -1,4 +1,7 @@
 .group
+  = f.label :super_user, t("activerecord.attributes.admin.super_user", :default => "Super User"), :class => :label
+  = f.check_box :super_user, :class => 'check_box'
+.group
   = f.label :approved, t("activerecord.attributes.admin.approved", :default => "Approved"), :class => :label
   = f.check_box :approved, :class => 'check_box'
 .group
@@ -13,6 +16,8 @@
   = f.label :confirm_password, t("activerecord.attributes.admin.confirm_password", :default => "Confirm Password"), :class => :label
   = f.password_field :password_confirmation, :class => 'text_field'
   %span.description Password Confirmation
+.group
+  = select_tag 'departments[]', options_for_select(Department.selection, @admin.departments.map{|d|d.id}), { :multiple => true, :size =>Department.selection.size }
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

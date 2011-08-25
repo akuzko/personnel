@@ -4,7 +4,7 @@
   %span.description Ex: a simple text
 .group
   = f.label :department_id, t("activerecord.attributes.category.department_id", :default => "Department"), :class => :label
-  = f.select :department_id, Department.selection
+  = f.select :department_id, Department.selection_by_admin(current_admin.id)
 .group
   = f.label :displayed, t("activerecord.attributes.category.displayed", :default => "Display"), :class => :label
   = f.check_box :displayed, :class => 'check_box'

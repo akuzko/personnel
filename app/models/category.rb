@@ -3,10 +3,11 @@ class Category < ActiveRecord::Base
   validates_presence_of :name, :department_id
   delegate :name, :to => :department, :prefix => true
 
-  def self.search(params, page)
+  def self.search(params, page, admin_id)
     params[:sort_by] ||= :name
-
+    admin = Admin.find_by_id(admin_id)
     conditions = []
+    conditions.push("department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     [:displayed, :department_id].each do |field|
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
@@ -22,5 +23,16 @@ class Category < ActiveRecord::Base
     else
       order(:name).find_all_by_department_id_and_displayed(department_id, 1).map{ |d| [d.name, d.id] }
     end
+  end
+
+  def self.selection_by_admin(admin_id)
+    admin = Admin.find_by_id(admin_id)
+    return selection(0) if admin.super_user?
+    departments = admin.departments.map{|d|d.id}
+    categories = []
+    order(:name).map do |d|
+      categories.push [d.name, d.id] if departments.include?(d.department_id)
+    end
+    categories
   end
 end

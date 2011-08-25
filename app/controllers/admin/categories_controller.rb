@@ -3,7 +3,7 @@ class Admin::CategoriesController < ApplicationController
   layout 'admin'
 
   def index
-    @categories = Category.search(params, params[:page])
+    @categories = Category.search(params, params[:page], current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -31,11 +31,12 @@ class Admin::CategoriesController < ApplicationController
 
   def edit
     @category = Category.find(params[:id])
+    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
   end
 
   def create
     @category = Category.new(params[:category])
-
+    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
     respond_to do |format|
       if @category.save
         format.html { redirect_to([:admin, @category], :notice => 'Category was successfully created.') }
@@ -49,7 +50,7 @@ class Admin::CategoriesController < ApplicationController
 
   def update
     @category = Category.find(params[:id])
-
+    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
     respond_to do |format|
       if @category.update_attributes(params[:category])
         format.html { redirect_to([:admin, @category], :notice => 'Category was successfully updated.') }
@@ -63,6 +64,7 @@ class Admin::CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id])
+    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
     @category.destroy
 
     respond_to do |format|
