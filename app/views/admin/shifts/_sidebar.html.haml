@@ -1,11 +1,11 @@
 .block.notice
   %h3 Simple Block
   .content
-    %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    %p
 .block
   %h3 Links
   %ul.navigation
     %li
-      %a{:href => "#"} Link 1
+      %a{:href => check_shifts_path, :target => '_blank'} Missed shifts for previous day
     %li
-      %a{:href => "#"} Link 2
+      %a{:href => close_old_shifts_path, :target => '_blank'} Auto-close shifts

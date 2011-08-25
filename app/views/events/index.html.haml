@@ -3,11 +3,10 @@
     %ul.wat-cf
       %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", events_path
       %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_event_path, :class => 'modal_dialog'
-      %li= link_to "#{t("web-app-theme.end", :default => "End Shift")}", end_shift_events_path, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+      %li{:style => 'float:right'}= link_to "#{t("web-app-theme.end", :default => "End Shift")}", end_shift_events_path, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
   .content
     %h2.title
-      = t("web-app-theme.all", :default => "All")
-      Events
+      = "Shift #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)"
     .inner
       %table.table
         %tr

@@ -3,7 +3,10 @@ class Event < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :description, :user_id, :category_id
   delegate :name, :to => :category, :prefix => true
+  delegate :displayed, :to => :category, :prefix => true
   delegate :full_name, :to => :user, :prefix => true
+
+  scope :identified, where('identifier IS NOT NULL')
 
   def self.search(params, page)
     params[:sort_by] ||= :eventtime
@@ -18,16 +21,16 @@ class Event < ActiveRecord::Base
              :order => params[:sort_by]
   end
 
-  def self.login(user_id)
+  def self.login(user_id, time)
     @category = Category.find_or_create_by_name('Login')
-    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => DateTime.current, :description => '-')
+    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :description => '-')
     @event.save
     @event.id
   end
 
-  def self.logout(user_id)
+  def self.logout(user_id, time)
     @category = Category.find_or_create_by_name('Logout')
-    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => DateTime.current, :description => '-')
+    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :description => '-')
     @event.save
     @event.id
   end

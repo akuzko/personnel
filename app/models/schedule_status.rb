@@ -3,6 +3,6 @@ class ScheduleStatus < ActiveRecord::Base
   validates_uniqueness_of :name
 
   def self.selection
-    order(:name).all.map{ |d| [d.name, d.id] }
+    order(:name).where('name <> ?', 'shift_leader').all.map{ |d| [d.name, d.id] }
   end
 end

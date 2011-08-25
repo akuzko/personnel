@@ -2,10 +2,10 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :trackable, :validatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :identifier, :department_id, :active
+  attr_accessible :email, :password, :password_confirmation, :identifier, :department_id, :active
 
   belongs_to :department
 
@@ -13,6 +13,9 @@ class User < ActiveRecord::Base
   has_many :addresses, :dependent => :destroy
   has_one :contact, :dependent => :destroy
   has_many :schedule_cells, :dependent => :destroy
+  has_many :events
+  has_many :shifts
+  has_many :late_comings
 
   after_create :create_internals
 
@@ -115,7 +118,9 @@ class User < ActiveRecord::Base
   end
 
   def clean_unused_identifier
-    self.identifier = "" unless Department.find(self.department_id).has_identifier?
+    if !self.department_id.nil?
+      self.identifier = "" unless Department.find(self.department_id).has_identifier?
+    end
   end
 
   def self.selection(department_id)

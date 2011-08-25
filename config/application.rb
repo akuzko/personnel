@@ -51,6 +51,8 @@ module Personnel
     config.to_prepare do
       Devise::SessionsController.layout "sign"
       Devise::PasswordsController.layout "sign"
+      Devise::ConfirmationsController.layout "sign"
+      Devise::RegistrationsController.layout "sign"
     end
   end
 end

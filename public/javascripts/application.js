@@ -1,5 +1,7 @@
 (function() {
+  var ctrlPressed;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  ctrlPressed = false;
   this.app = {
     init: function() {
       return $(__bind(function() {
@@ -37,10 +39,16 @@
           return $("#overlay").dialog("close");
         });
         $('.modal_dialog').live('click', function() {
-          $("#overlay .contentWrap").load($(this).attr("href"), function() {
-            return $("#overlay").dialog("open");
-          });
-          return false;
+          if (ctrlPressed) {
+            $(this).toggleClass('selected');
+            return false;
+          } else {
+            $(this).addClass('selected');
+            $("#overlay .contentWrap").load($(this).attr("href"), function() {
+              return $("#overlay").dialog("open");
+            });
+            return false;
+          }
         });
         $("#visible").click(function() {
           return $.post($(this).attr('href') + '?visible=' + $(this).attr('checked'));
@@ -53,21 +61,37 @@
           $("#sort_by").val($(this).attr('sort'));
           return $("#find_form").submit();
         });
-        $(".user_select").click(function() {
+        $(".user_select").live('click', function() {
           var id;
           id = $(this).attr('id');
-          $("td.modal_dialog.user_selected").removeClass('user_selected');
-          return $("td.modal_dialog").each(function() {
+          $("td.cells.user_selected").removeClass('user_selected');
+          return $("td.cells").each(function() {
             if ($.trim($(this).html()) === id) {
               return $(this).addClass('user_selected');
             }
           });
         });
-        $("#clear_selection").click(function() {
-          return $("td.modal_dialog.user_selected").removeClass('user_selected');
+        $("#clear_selection").live('click', function() {
+          return $("td.cells.user_selected").removeClass('user_selected');
         });
-        return $("[name*='shiftdate']").change(function() {
+        $("[name*='shiftdate']").change(function() {
           return app.reload_shift_numbers();
+        });
+        $(".datetime_select").datetimepicker({
+          dateFormat: 'yy-mm-dd'
+        });
+        $(".date_select").datepicker({
+          dateFormat: 'yy-mm-dd'
+        });
+        $(window).keydown(function(evt) {
+          if (evt.which === 17) {
+            return ctrlPressed = true;
+          }
+        });
+        return $(window).keyup(function(evt) {
+          if (evt.which === 17) {
+            return ctrlPressed = false;
+          }
         });
       }, this));
     },
@@ -117,8 +141,8 @@
       $.get('/admin/schedule_templates/' + template + '/check_month/');
       return false;
     },
-    show_users_admin: function(template_id) {
-      return $("#template_users").load('/admin/schedule/show_users/?id=' + template_id);
+    show_users_admin: function() {
+      return $("#template_users").load('/admin/schedule/show_users/?id=' + $("#schedule_template").attr('val'));
     },
     reload_shift_numbers: function() {
       var dt;
@@ -130,6 +154,32 @@
           return $("#new_shift .navform").show();
         }
       });
+    },
+    mass_update: function(responsible, additional_attributes, user_id, is_modified) {
+      var regex;
+      regex = /cell_(\d+)_(\d+)_(\d+)/;
+      $("td.modal_dialog.selected").each(function() {
+        var day, line, match, shift_id, text;
+        text = $(this).attr('id');
+        match = text.match(regex);
+        shift_id = match[1];
+        line = match[2];
+        day = match[3];
+        return $.post("/admin/schedule_cells", {
+          shift: shift_id,
+          line: line,
+          day: day,
+          'schedule_cell[responsible]': responsible,
+          'schedule_cell[additional_attributes]': additional_attributes,
+          'schedule_cell[user_id]': user_id,
+          'schedule_cell[is_modified]': is_modified
+        }, function() {
+          return app.check_day(shift_id, day);
+        });
+      });
+      false;
+      app.show_users_admin();
+      return $("#overlay").dialog("close");
     }
   };
 }).call(this);

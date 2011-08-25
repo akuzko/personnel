@@ -3,38 +3,9 @@ class Admin::EventsController < ApplicationController
   layout 'admin'
 
   def index
-    if params[:date_from]
-      params[:date_from] =
-          DateTime.parse(
-              params[:date_from]["year"].to_s+
-                  "-"+
-                  params[:date_from]["month"].to_s+
-                  "-"+
-                  params[:date_from]["day"].to_s+
-                  " "+
-                  params[:date_from]["hour"].to_s+
-                  ":"+
-                  params[:date_from]["minute"].to_s
-          )
-    else
-      params[:date_from] = DateTime.current - 2.hour
-    end
-    if params[:date_to]
-      params[:date_to] =
-          DateTime.parse(
-              params[:date_to]["year"].to_s+
-                  "-"+
-                  params[:date_to]["month"].to_s+
-                  "-"+
-                  params[:date_to]["day"].to_s+
-                  " "+
-                  params[:date_to]["hour"].to_s+
-                  ":"+
-                  params[:date_to]["minute"].to_s
-          )
-    else
-      params[:date_to] = DateTime.current
-    end
+    params[:date_from] = (DateTime.current - 2.hour).to_formatted_s(:date_and_time)  if !params[:date_from]
+    params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+
 
     @events = Event.search(params, params[:page])
 
@@ -99,7 +70,7 @@ class Admin::EventsController < ApplicationController
     @event.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_events_url) }
+      format.html { redirect_to :back }
       format.xml { head :ok }
     end
   end

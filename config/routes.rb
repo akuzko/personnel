@@ -52,12 +52,18 @@ Personnel::Application.routes.draw do
   resources :addresses do
     get 'make_primary', :on => :member
   end
+  resources :shifts do
+    get 'close_old', :on => :collection
+    get 'check', :on => :collection
+  end
   resource :schedule
   resources :events do
     get 'start_shift', :on => :collection
     get 'end_shift', :on => :collection
-    post 'new_shift', :on => :collection
+    post 'create_shift', :on => :collection
     get 'available_shift_numbers', :on => :collection
+    get 'new_late_coming', :on => :collection
+    post 'create_late_coming', :on => :collection
   end
   # Sample resource route within a namespace:
   #   namespace :admin do
@@ -67,11 +73,13 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :schedule_cells, :shifts, :events
+    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :shifts, :events
     resource :schedule do
       get 'show_users', :on => :member
     end
-
+    resources :schedule_cells do
+      put 'mass_update', :on => :collection
+    end
 
     resources :schedule_templates do
       post 'set_visibility', :on => :member

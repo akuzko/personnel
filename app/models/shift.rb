@@ -1,5 +1,6 @@
 class Shift < ActiveRecord::Base
   belongs_to :user
+  has_one :late_coming
   validates_presence_of :number, :user_id
   delegate :full_name, :to => :user, :prefix => true
 
@@ -29,5 +30,18 @@ class Shift < ActiveRecord::Base
   def worked_min
     return '' if self.endtime == '' || self.starttime == ''
     ((self.endtime - self.starttime) / 1.minute).round
+  end
+
+  def schedule_shift
+    ScheduleTemplate.find_by_department_id_and_year_and_month(User.find(self.user_id).department_id, self.shiftdate.year, self.shiftdate.month).schedule_shifts.find_by_number(self.number)
+  end
+
+  def is_late
+    can_late_minutes = self.schedule_shift.start == 0 ? 10 : 5
+    (self.starttime - (self.shiftdate + self.schedule_shift.start.hour))/ 1.minutes > can_late_minutes
+  end
+
+  def is_over
+    (self.shiftdate + self.schedule_shift.end.hour) < DateTime.current
   end
 end

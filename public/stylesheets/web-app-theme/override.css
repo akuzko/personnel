@@ -37,3 +37,6 @@ td.user_selected{
   border: 1px solid #ffff88;
   background-color: #ffffcc;
 }
+td.modal_dialog.selected{
+    background-color:#FAFAFA !important;
+}

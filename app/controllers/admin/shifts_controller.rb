@@ -3,16 +3,19 @@ class Admin::ShiftsController < ApplicationController
   layout 'admin'
 
   def index
-    if params[:date_from]
-      params[:date_from] = Date.parse(params[:date_from]["year"].to_s+"-"+params[:date_from]["month"].to_s+"-"+params[:date_from]["day"].to_s)
-    else
-      params[:date_from] = Time.now
-    end
-    if params[:date_to]
-      params[:date_to] = Date.parse(params[:date_to]["year"].to_s+"-"+params[:date_to]["month"].to_s+"-"+params[:date_to]["day"].to_s)
-    else
-      params[:date_to] = Time.now
-    end
+    #if params[:date_from]
+    #  params[:date_from] = Date.parse(params[:date_from]["year"].to_s+"-"+params[:date_from]["month"].to_s+"-"+params[:date_from]["day"].to_s)
+    #else
+    #  params[:date_from] = Time.now
+    #end
+    #if params[:date_to]
+    #  params[:date_to] = Date.parse(params[:date_to]["year"].to_s+"-"+params[:date_to]["month"].to_s+"-"+params[:date_to]["day"].to_s)
+    #else
+    #  params[:date_to] = Time.now
+    #end
+
+    params[:date_from] = Date.current.to_formatted_s(:date_only)  if !params[:date_from]
+    params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
     @shifts = Shift.search(params, params[:page])
 
     respond_to do |format|
@@ -76,7 +79,7 @@ class Admin::ShiftsController < ApplicationController
     @shift.destroy
 
     respond_to do |format|
-      format.html { redirect_to(admin_shifts_url) }
+      format.html { redirect_to :back }
       format.xml { head :ok }
     end
   end

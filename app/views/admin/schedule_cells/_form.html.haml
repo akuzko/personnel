@@ -1,6 +1,6 @@
 %div{:class => "flash", :style => 'display:none;'}
   %div{:id => "cell_flash", :class => "message error"}
-= form_for [:admin, @cell], :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+= form_for [:admin, @cell], :url => mass_update_admin_schedule_cells_path, :method => :put, :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   .group
     = f.label :user_id, t("activerecord.attributes.schedule_cell.user_id", :default => "User"), :class => :label
     = f.select :user_id, User.selection(@template.department_id), { :include_blank => true }
@@ -8,7 +8,7 @@
     = f.label :additional_attributes, t("activerecord.attributes.schedule_cell.additional_attributes", :default => "Attr"), :class => :label
     = f.select :additional_attributes, ScheduleStatus.selection, { :include_blank => true }
   .group
-    = f.label :responsible, t("activerecord.attributes.schedule_cell.responsible", :default => "Responsible"), :class => :label
+    = f.label :responsible, t("activerecord.attributes.schedule_cell.shift_leader", :default => "Shift Leader"), :class => :label
     = f.check_box :responsible, :class => 'text_field'
   .group
     = f.label :is_modified, t("activerecord.attributes.schedule_cell.is_modified", :default => "Modified"), :class => :label
@@ -20,6 +20,7 @@
     = f.hidden_field :schedule_shift_id
     = f.hidden_field :line
     = f.hidden_field :day
+    = hidden_field_tag "wday", @wday
     %span.text_button_padding= t("web-app-theme.or", :default => "or")
     %a.button.close{:href => '#'}
       = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")

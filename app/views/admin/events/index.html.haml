@@ -24,7 +24,7 @@
               &nbsp;
             %td
               From
-              = select_datetime params[:date_from], :prefix => 'date_from', :start_year => 2010, :use_month_numbers => true
+              = text_field_tag 'date_from', params[:date_from], :class => 'datetime_select'
             %td
               &nbsp;
             %td
@@ -33,7 +33,7 @@
               &nbsp;
             %td
               To
-              = select_datetime params[:date_to], :prefix => 'date_to', :start_year => 2010, :use_month_numbers => true
+              = text_field_tag 'date_to', params[:date_to], :class => 'datetime_select'
             %td
               &nbsp;
             %td

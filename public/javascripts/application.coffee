@@ -1,3 +1,4 @@
+ctrlPressed = false
 @app =
   init: ->
     $ =>
@@ -26,9 +27,14 @@
       $("a.button.close").live 'click', ->
         $("#overlay").dialog("close")
       $('.modal_dialog').live 'click', ->
-        $("#overlay .contentWrap").load $(this).attr("href"), ->
-          $("#overlay").dialog("open")
-        no
+        if ctrlPressed
+          $(this).toggleClass('selected')
+          no
+        else
+          $(this).addClass('selected')
+          $("#overlay .contentWrap").load $(this).attr("href"), ->
+            $("#overlay").dialog("open")
+          no
       $("#visible").click ->
         $.post $(this).attr('href')+'?visible='+$(this).attr('checked')
       $("#check_month").click ->
@@ -37,16 +43,26 @@
       $("th.sortable").click ->
         $("#sort_by").val($(this).attr('sort'))
         $("#find_form").submit()
-      $(".user_select").click ->
+      $(".user_select").live 'click', ->
         id = $(this).attr('id')
-        $("td.modal_dialog.user_selected").removeClass('user_selected')
-        $("td.modal_dialog").each ->
+        $("td.cells.user_selected").removeClass('user_selected')
+        $("td.cells").each ->
           if $.trim($(this).html())==id
             $(this).addClass('user_selected')
-      $("#clear_selection").click ->
-        $("td.modal_dialog.user_selected").removeClass('user_selected')
+      $("#clear_selection").live 'click', ->
+        $("td.cells.user_selected").removeClass('user_selected')
       $("[name*='shiftdate']").change ->
         app.reload_shift_numbers()
+      $(".datetime_select").datetimepicker
+        dateFormat: 'yy-mm-dd'
+      $(".date_select").datepicker
+        dateFormat: 'yy-mm-dd'
+      $(window).keydown (evt) ->
+        if (evt.which == 17)
+          ctrlPressed = true
+      $(window).keyup (evt) ->
+        if (evt.which == 17)
+          ctrlPressed = false
 
 
   flashFade: ->
@@ -84,8 +100,8 @@
   check_month: (template) ->
     $.get '/admin/schedule_templates/'+template+'/check_month/'
     no
-  show_users_admin: ( template_id) ->
-    $("#template_users").load '/admin/schedule/show_users/?id='+template_id
+  show_users_admin: ->
+    $("#template_users").load '/admin/schedule/show_users/?id='+$("#schedule_template").attr('val')
   reload_shift_numbers: ->
     dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()
     $("#shift_numbers").load '/events/available_shift_numbers/?date='+dt, ->
@@ -93,4 +109,23 @@
         $("#new_shift .navform").hide()
       else
         $("#new_shift .navform").show()
+  mass_update: (responsible, additional_attributes, user_id, is_modified) ->
+    regex = /cell_(\d+)_(\d+)_(\d+)/
+    $("td.modal_dialog.selected").each ->
+      text = $(this).attr('id')
+      match =text.match(regex)
+      shift_id = match[1]
+      line = match[2]
+      day = match[3]
+      $.post "/admin/schedule_cells",
+        {shift: shift_id, line: line, day: day,
+        'schedule_cell[responsible]': responsible,
+        'schedule_cell[additional_attributes]': additional_attributes,
+        'schedule_cell[user_id]': user_id,
+        'schedule_cell[is_modified]': is_modified,
+        }, ->
+          app.check_day shift_id, day
+    no
+    app.show_users_admin()
+    $("#overlay").dialog("close")
 

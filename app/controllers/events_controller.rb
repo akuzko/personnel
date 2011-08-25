@@ -1,15 +1,35 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :check_shift_started, :except => [:start_shift, :new_shift, :available_shift_numbers]
+  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers]
   layout 'user'
 
   def index
-    @events = Event.find_all_by_user_id(current_user.id).paginate :page => params[:page], :per_page => 15
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @events }
+    @shift = Shift.find session[:shift_id]
+    if @shift.is_late && @shift.late_coming.nil?
+      redirect_to new_late_coming_events_path
+      return
     end
+    #Check if the current shift is over
+    if @shift.is_over
+      @template = ScheduleTemplate.find_by_department_id_and_year_and_month(current_user.department_id, Date.current.year, Date.current.month)
+      @shift_next = @template.schedule_shifts.where('number < 10 AND number > ?', @shift.number).order(:number).first unless @template.nil?
+      if @shift_next.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, Date.current.day).count > 0
+        #End current shift
+        @shift.end_event = Event.logout(current_user.id, @shift.shiftdate + @shift.schedule_shift.end.hour)
+        @shift.save
+        #Start new shift
+        @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(Date.current, @shift_next.number, current_user.id)
+        session[:shift_id] = @shift.id
+        #Check if the next shift for the user is not started
+        if @shift.start_event.nil?
+          #add login event
+          @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour)
+          @shift.save
+        end
+        redirect_to events_path, :notice => "Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)"
+      end
+    end
+    @events = current_user.events.where('events.id > ?', @shift.start_event).joins('INNER JOIN `categories` ON `events`.`category_id` = `categories`.`id`').where('`categories`.`displayed` =1').paginate :page => params[:page], :per_page => 30
   end
 
   def show
@@ -80,16 +100,21 @@ class EventsController < ApplicationController
   end
 
   def start_shift
+    if !current_user.has_identifier?
+      flash[:error] = "You dont have permissions to view this page"
+      redirect_to user_path
+    end
     @shift = Shift.new
+    @shift.shiftdate = Date.current + 1.day if DateTime.current.hour == 23
   end
 
-  def new_shift
+  def create_shift
     shiftdate = (params[:shift]["shiftdate(1i)"].to_s+"-"+params[:shift]["shiftdate(2i)"].to_s+"-"+params[:shift]["shiftdate(3i)"].to_s).to_date
     @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(shiftdate, params[:shift][:number], current_user.id)
     if @shift
       if @shift.start_event.nil?
         #add login event
-        @shift.start_event = Event.login(current_user.id)
+        @shift.start_event = Event.login(current_user.id, DateTime.current)
         @shift.save
       end
       session[:shift_id] = @shift.id
@@ -104,7 +129,7 @@ class EventsController < ApplicationController
   def end_shift
     @shift = Shift.find(session[:shift_id])
     #add logout event
-    @shift.end_event = Event.logout(current_user.id)
+    @shift.end_event = Event.logout(current_user.id, DateTime.current)
     @shift.save
     session.delete :shift_id
     redirect_to events_path
@@ -114,17 +139,51 @@ class EventsController < ApplicationController
     @date = params[:date].to_date
     @template = ScheduleTemplate.find_by_department_id_and_year_and_month(current_user.department_id, @date.year, @date.month)
     @shifts = @template.schedule_shifts.where('number < 10').order(:number) unless @template.nil?
+
     # user's shifts
     @shift_numbers = []
-
     @shifts.each do |shift|
       if shift.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, @date.day).count > 0
         @shift_numbers.push ["#{shift.number} (#{shift.start}:00-#{shift.end}:00)", shift.number]
       end
     end
-    shift = @shifts.where('start<=? and end>?', (Time.now.hour + 2), Time.now.hour).first
+
+    # selected shift number
+    shift = @shifts.where('start<=? and end>?', (Time.now.hour + 2), Time.now.hour).last
     @selected_number = shift.number unless shift.nil?
     render :layout => false
+  end
+
+  def new_late_coming
+    @shift = Shift.find session[:shift_id]
+    if !@shift.is_late || !@shift.late_coming.nil?
+      redirect_to events_path
+      return
+    end
+    @late_coming = LateComing.new
+    @late_coming.shift_id = session[:shift_id]
+    @late_coming.user_id = current_user.id
+    @late_coming.late_minutes = (@shift.starttime - (@shift.shiftdate + @shift.schedule_shift.start.hour))/ 1.minutes
+
+  end
+
+  def create_late_coming
+    @shift = Shift.find session[:shift_id]
+    if !@shift.is_late || !@shift.late_coming.nil?
+      redirect_to events_path
+      return
+    end
+    @late_coming = LateComing.new
+    @late_coming.shift_id = session[:shift_id]
+    @late_coming.user_id = current_user.id
+    @late_coming.late_minutes = (@shift.starttime - (@shift.shiftdate + @shift.schedule_shift.start.hour))/ 1.minutes
+    @late_coming.description = params[:late_coming][:description]
+    if @late_coming.save
+      redirect_to events_path
+    else
+      flash[:error] = @late_coming.errors
+      redirect_to :back
+    end
   end
 
 end
