@@ -1,4 +1,7 @@
-.mobile{
+th, .mobile{
     font-size:9px;
     text-align:center;
+}
+th {
+    background-color: #cccccc
 }
