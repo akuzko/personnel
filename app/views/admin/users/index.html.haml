@@ -3,6 +3,7 @@
     %ul.wat-cf
       %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path
       %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_user_path
+      %li{:style => 'float:right'}= link_to "#{t("web-app-theme.new", :default => "Delivery List")}", delivery_admin_users_path
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All")
