@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    name = [profile.last_name, profile.initials] * ' '
+    name = [profile.last_name, profile.first_name] * ' '
     name == ' ' ? email : name
   end
 

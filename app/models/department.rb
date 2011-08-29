@@ -12,7 +12,7 @@ class Department < ActiveRecord::Base
   def self.selection_by_admin(admin_id)
     admin = Admin.find_by_id(admin_id)
     return selection if admin.super_user?
-    departments = admin.departments.map{|d|d.id}
+    departments = admin.departments.map(&:id)
     admin.departments.order(:name).all.map do |d|
       if departments.include?(d.id)
         [d.name, d.id]

@@ -5,9 +5,9 @@
   = @user.profile.last_name
 %p
   %b
-    = t("activerecord.attributes.profile.initials", :default => "Initials")
+    = t("activerecord.attributes.profile.first_name", :default => "First Name")
     \:
-  = @user.profile.initials
+  = @user.profile.first_name
 %p
   %b
     = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
