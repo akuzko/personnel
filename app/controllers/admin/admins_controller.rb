@@ -55,8 +55,10 @@ class Admin::AdminsController < ApplicationController
 
     respond_to do |format|
       if @admin.save
-        params[:departments].each do |d|
-          AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
+        if params[:departments].is_a? Array
+          params[:departments].each do |d|
+            AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
+          end
         end
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully created.') }
         format.xml  { render :xml => @admin, :status => :created, :location => @admin }
@@ -72,13 +74,16 @@ class Admin::AdminsController < ApplicationController
   def update
     @admin = Admin.find(params[:id])
     old_departments = @admin.departments.map{|d|d.id.to_s}
+
     if old_departments != params[:departments]
       old_departments.each do |d|
-        AdminDepartment.find_by_admin_id_and_department_id(@admin.id,d.to_i).destroy unless params[:departments].include?(d)
+        AdminDepartment.find_by_admin_id_and_department_id(@admin.id,d.to_i).destroy unless params[:departments].is_a? Array || params[:departments].include?(d)
       end
-      new_departments = params[:departments] - old_departments
-      new_departments.each do |d|
-        AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
+      if params[:departments]
+        new_departments = params[:departments] - old_departments
+        new_departments.each do |d|
+          AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
+        end
       end
     end
     if params[:admin][:password].empty?

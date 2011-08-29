@@ -1,6 +1,11 @@
 class Admin::CategoriesController < ApplicationController
   before_filter :authenticate_admin!
+  before_filter :check_permissions, :except => :delivery
   layout 'admin'
+
+  def check_permissions
+    redirect_to delivery_admin_users_path unless current_admin.super_user? || !current_admin.departments.empty?
+  end
 
   def index
     @categories = Category.search(params, params[:page], current_admin.id)

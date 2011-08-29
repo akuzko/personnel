@@ -1,6 +1,12 @@
 class Admin::SchedulesController < ApplicationController
   before_filter :authenticate_admin!
+  before_filter :check_permissions, :except => :delivery
   layout 'admin'
+
+  def check_permissions
+    redirect_to delivery_admin_users_path unless current_admin.super_user? || !current_admin.departments.empty?
+  end
+
   def show
     if params[:date]
       params[:date] = Date.parse(params[:date]["year"].to_s+"-"+params[:date]["month"].to_s+"-1")

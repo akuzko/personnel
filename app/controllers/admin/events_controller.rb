@@ -1,6 +1,11 @@
 class Admin::EventsController < ApplicationController
   before_filter :authenticate_admin!
+  before_filter :check_permissions, :except => :delivery
   layout 'admin'
+
+  def check_permissions
+    redirect_to delivery_admin_users_path unless current_admin.super_user? || !current_admin.departments.empty?
+  end
 
   def index
     params[:date_from] = (DateTime.current - 2.hour).to_formatted_s(:date_and_time)  if !params[:date_from]
