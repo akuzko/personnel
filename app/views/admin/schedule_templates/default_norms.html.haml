@@ -1,0 +1,15 @@
+= form_for [:admin, @norms], :url => update_default_norms_admin_schedule_template_path(@template), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+  .group
+    = f.label :workdays, t("activerecord.attributes.schedule_templates.workdays", :default => "Workdays"), :class => :label
+    = f.text_field :workdays, :class => 'text_field'
+  .group
+    = f.label :weekend, t("activerecord.attributes.schedule_templates.weekend", :default => "Weekend"), :class => :label
+    = f.text_field :weekend, :class => 'text_field'
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Submit")}")
+      = t("web-app-theme.save", :default => "Save")
+    %span.text_button_padding= t("web-app-theme.or", :default => "or")
+    %a.button.close{:href => '#'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")
