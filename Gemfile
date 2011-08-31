@@ -13,6 +13,7 @@ gem 'will_paginate', '3.0.pre2'
 gem 'jquery-rails', '>= 0.2.6'
 gem 'ruby-debug'
 gem 'sass'
+gem 'prototype-rails'
 # Use unicorn as the web server
 # gem 'unicorn'
 

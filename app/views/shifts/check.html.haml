@@ -2,28 +2,34 @@
   .content
     %h2.title
       Missed shifts
-    .inner
-      %table.table
-        %tr
-          %th
-            = t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
-          %th
-            = t("activerecord.labels.date", :default => "Date")
-          %th
-            = t("activerecord.labels.number", :default => "Number")
-          %th
-            = t("activerecord.labels.start", :default => "Start")
-          %th
-            = t("activerecord.labels.end", :default => "End")
-        - @missed_shifts.each do |shift|
-          %tr{:class => cycle("odd", "even")}
-            %td
-              = shift[0]
-            %td
-              = shift[1]
-            %td
-              = shift[2]
-            %td
-              = shift[3]
-            %td
-              = shift[4]
+    .inner.form
+      - @missed_shifts_departments.each do |key, department|
+        %h3
+          = key
+        %span.description= "Admin: #{department[:admins].join(", ")}" if !department[:admins].empty?
+        %br
+        %br
+        %table.table
+          %tr
+            %th
+              = t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+            %th
+              = t("activerecord.labels.date", :default => "Date")
+            %th
+              = t("activerecord.labels.number", :default => "Number")
+            %th
+              = t("activerecord.labels.start", :default => "Start")
+            %th
+              = t("activerecord.labels.end", :default => "End")
+          - department[:shifts].each do |shift|
+            %tr{:class => cycle("odd", "even")}
+              %td
+                = shift[0]
+              %td
+                = shift[1]
+              %td
+                = shift[2]
+              %td
+                = shift[3]
+              %td
+                = shift[4]
