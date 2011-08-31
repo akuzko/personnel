@@ -12,6 +12,7 @@ gem 'devise'
 gem 'will_paginate', '3.0.pre2'
 gem 'jquery-rails', '>= 0.2.6'
 gem 'ruby-debug'
+gem 'sass'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -40,4 +41,5 @@ group :development, :test do
   gem 'hpricot'
   gem 'ruby_parser'
   gem 'web-app-theme'
+  gem 'awesome_print'
 end
