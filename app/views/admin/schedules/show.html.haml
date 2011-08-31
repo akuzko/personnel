@@ -55,7 +55,7 @@
                   = render 'shared/shift_show_admin', :layout => false, :shift => shift
             %tr
               %td{:style => 'background-color:#ffffff'}
-                = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Check")}") + " " + t("web-app-theme.add", :default=> "Check"),
+                = link_to image_tag("web-app-theme/icons/calendar.png", :alt => "#{t("web-app-theme.add", :default=> "Check")}") + " " + t("web-app-theme.add", :default=> "Check"),
                   check_month_admin_schedule_template_path(@template), :id => 'check_month', :class => "button", :style => "float:right;"
               %td
                 %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}

@@ -35,4 +35,19 @@ class Admin::ScheduleTemplatesController < ApplicationController
       end
     end
   end
+
+  def default_norms
+    @norms = Norm.new
+    @template = ScheduleTemplate.find params[:id]
+    render :layout => false
+  end
+
+  def update_default_norms
+    Norm.generate params
+    render :layout => false
+  end
+
+  def set_user_norm
+
+  end
 end

@@ -86,6 +86,8 @@ Personnel::Application.routes.draw do
       post 'set_visibility', :on => :member
       get 'check_day', :on => :member
       get 'check_month', :on => :member
+      get 'default_norms', :on => :member
+      post 'update_default_norms', :on => :member
     end
 
     resources :addresses do
