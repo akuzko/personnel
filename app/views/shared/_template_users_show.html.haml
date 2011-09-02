@@ -15,7 +15,7 @@
         - n = user.norms.find_by_month_and_year(@template.month, @template.year)
         - s = user.work_shifts_count @template.id
 
-        - if n && s < n.workdays
+        - if n && !n.workdays.nil? && s < n.workdays
           %td{:style => 'background-color:red'}= s
         - else
           %td{:style => 'background-color:#ffffff'}= s
@@ -23,7 +23,7 @@
         %td{:style => 'background-color:#ffffff'}= user.work_nights_count @template.id
         %td{:style => 'background-color:#ffffff'}= user.day_off_count @template.id
         %td{:style => 'background-color:#ffffff'}
-          - if n
+          - if n && !n.workdays.nil?
             = "#{n.workdays} | #{n.weekend}"
 %p
   %a.button{:href => '#', :id => 'clear_selection'}

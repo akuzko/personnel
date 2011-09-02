@@ -37,14 +37,29 @@ class Admin::ScheduleTemplatesController < ApplicationController
   end
 
   def default_norms
-    @norms = Norm.new
     @template = ScheduleTemplate.find params[:id]
+    @norms = Norm.norms_defaults(@template.year, @template.month)
     render :layout => false
   end
 
   def update_default_norms
-    Norm.generate params
-    render :layout => false
+    @template = ScheduleTemplate.find params[:id]
+    @users = User.find_all_by_department_id_and_active @template.department_id, 1
+
+    @users.each do |u|
+      Norm.set_norms(u, @template,  params[:norm])
+    end
+    #if !@norm.errors.full_messages.empty?
+    #  message = '<p>' + @norm.errors.full_messages.join('</p><p>') + '</p>'
+    #  render(:update) do |page|
+    #    page['#norms_flash'].parents(0).show
+    #    page['#norms_flash'].html message
+    #  end
+    #else
+      render(:update) do |p|
+        p.call 'app.show_users_admin'
+      #end
+    end
   end
 
   def set_user_norm

@@ -102,6 +102,7 @@ ctrlPressed = false
     no
   show_users_admin: ->
     $("#template_users").load '/admin/schedule/show_users/?id='+$("#schedule_template").attr('val')
+    $("#overlay").dialog("close")
   reload_shift_numbers: ->
     dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()
     $("#shift_numbers").load '/events/available_shift_numbers/?date='+dt, ->

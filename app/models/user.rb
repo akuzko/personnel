@@ -96,15 +96,15 @@ class User < ActiveRecord::Base
     shifts_count
   end
 
-  def norma(template_id)
-    shifts_count = 0
-    shifts = ScheduleShift.where(:number => 10).find_all_by_schedule_template_id template_id
-    shifts.each do |shift|
-      cells = ScheduleCell.where(:schedule_shift_id => shift.id).where(:user_id => self.identifier).count(:all)
-      shifts_count += cells
-    end
-    shifts_count
-  end
+  #def norma(template_id)
+  #  shifts_count = 0
+  #  shifts = ScheduleShift.where(:number => 10).find_all_by_schedule_template_id template_id
+  #  shifts.each do |shift|
+  #    cells = ScheduleCell.where(:schedule_shift_id => shift.id).where(:user_id => self.identifier).count(:all)
+  #    shifts_count += cells
+  #  end
+  #  shifts_count
+  #end
 
   private
 

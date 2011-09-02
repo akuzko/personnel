@@ -142,7 +142,8 @@
       return false;
     },
     show_users_admin: function() {
-      return $("#template_users").load('/admin/schedule/show_users/?id=' + $("#schedule_template").attr('val'));
+      $("#template_users").load('/admin/schedule/show_users/?id=' + $("#schedule_template").attr('val'));
+      return $("#overlay").dialog("close");
     },
     reload_shift_numbers: function() {
       var dt;
