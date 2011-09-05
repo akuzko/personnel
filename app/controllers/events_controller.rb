@@ -15,7 +15,7 @@ class EventsController < ApplicationController
       @shift_next = @template.schedule_shifts.where('number < 10 AND number > ?', @shift.number).order(:number).first unless @template.nil?
       if @shift_next.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, Date.current.day).count > 0
         #End current shift
-        @shift.end_event = Event.logout(current_user.id, @shift.shiftdate + @shift.schedule_shift.end.hour)
+        @shift.end_event = Event.logout(current_user.id, @shift.shiftdate + @shift.schedule_shift.end.hour, request.remote_ip)
         @shift.save
         #Start new shift
         @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(Date.current, @shift_next.number, current_user.id)
@@ -23,7 +23,7 @@ class EventsController < ApplicationController
         #Check if the next shift for the user is not started
         if @shift.start_event.nil?
           #add login event
-          @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour)
+          @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour, request.remote_ip)
           @shift.save
         end
         redirect_to events_path, :notice => "Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)"
@@ -50,6 +50,7 @@ class EventsController < ApplicationController
     @event = Event.new(params[:event])
     @event.user_id = current_user.id
     @event.eventtime = DateTime.current
+    @event.ip_address = Event.ip2int(request.remote_ip)
 
     if @event.save
       render(:update) do |page|
@@ -69,6 +70,7 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
     @event.user_id = current_user.id
+    @event.ip_address = Event.ip2int(request.remote_ip)
 
     if @event.update_attributes(params[:event])
       render(:update) do |page|
@@ -114,7 +116,7 @@ class EventsController < ApplicationController
     if @shift
       if @shift.start_event.nil?
         #add login event
-        @shift.start_event = Event.login(current_user.id, DateTime.current)
+        @shift.start_event = Event.login(current_user.id, DateTime.current, request.remote_ip)
         @shift.save
       end
       session[:shift_id] = @shift.id
@@ -129,7 +131,7 @@ class EventsController < ApplicationController
   def end_shift
     @shift = Shift.find(session[:shift_id])
     #add logout event
-    @shift.end_event = Event.logout(current_user.id, DateTime.current)
+    @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip)
     @shift.save
     session.delete :shift_id
     redirect_to events_path
@@ -181,7 +183,7 @@ class EventsController < ApplicationController
     if @late_coming.save
       redirect_to events_path
     else
-      flash[:error] = @late_coming.errors
+      flash[:error] = @late_coming.errors.full_messages
       redirect_to :back
     end
   end

@@ -36,6 +36,7 @@ class Admin::EventsController < ApplicationController
 
   def create
     @event = Event.new(params[:event])
+    @event.ip_address = Event.ip2int(request.remote_ip)
 
     if @event.save
       render(:update) do |page|
@@ -54,6 +55,7 @@ class Admin::EventsController < ApplicationController
 
   def update
     @event = Event.find(params[:id])
+    @event.ip_address = Event.ip2int(request.remote_ip)
 
     if @event.update_attributes(params[:event])
       render(:update) do |page|

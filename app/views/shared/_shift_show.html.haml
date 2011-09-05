@@ -4,6 +4,7 @@
       - @days_in_month.times do |day|
       - cell_wday = Date.parse("#{@template.year}-#{@template.month}-#{day+1}").wday
       - cell_color_default = (1..5) === cell_wday  ? 'ffffff' : 'FBB999'
+      - cell_color_default = shift.number == 10  ? 'eeeeee' : cell_color_default
       - cell = shift.schedule_cells.find_by_line_and_day(line+1, day+1)
       - cell_color = (cell.class == NilClass || !cell.additional_attributes) ? cell_color_default : ScheduleStatus.find_by_id(cell.additional_attributes).color
       - cell_font_weight = (cell.class != NilClass && (cell.is_modified? || cell.responsible?)) ? 'font-weight:bold;' : ''

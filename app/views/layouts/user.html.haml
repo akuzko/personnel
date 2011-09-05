@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Personnel
+    %title Zone3000 Staff
     = stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/default/style", "web-app-theme/override", "web-app-theme/jquery-ui-1.8.15.custom", :cache => true
     = javascript_include_tag :defaults, 'jscolor', 'jquery-ui-1.8.15.custom.min', 'jquery-ui-timepicker-addon', :cache => true
     = csrf_meta_tag
@@ -9,7 +9,7 @@
     #container
       #header
         %h1
-          %a{:href => "/"} Personnel
+          %a{:href => "/"} Zone3000 Staff
         #user-navigation
           %ul.wat-cf
             %li
@@ -32,7 +32,7 @@
           #footer
             .block
               %p
-                Copyright &copy; #{Time.now.year} Personnel.
+                Copyright &copy; #{Time.now.year} Zone3000 Staff.
         #sidebar
           = yield :sidebar
   :javascript

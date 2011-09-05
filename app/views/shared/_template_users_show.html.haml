@@ -5,8 +5,8 @@
     - if @admin
       %th S
       %th N
-      %th W
-      %th Norma
+      %th Off
+      %th Std
   - @users.each do |user|
     %tr{:id => user.identifier, :class => 'user_select'}
       %td{:style => 'background-color:#ffffff'}= user.identifier
@@ -29,6 +29,6 @@
   %a.button{:href => '#', :id => 'clear_selection'}
     = image_tag("web-app-theme/icons/arrow_rotate_anticlockwise.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
     = t("web-app-theme.cancel", :default => "Clear Selection")
-
-  = link_to image_tag("web-app-theme/icons/bullet_go.png", :alt => "#{t("web-app-theme.add", :default=> "Set Norms")}") + " " + t("web-app-theme.add", :default=> "Set Norms"),
-    default_norms_admin_schedule_template_path(@template), :id => 'set_norms', :class => "button modal_dialog"
+  - if @admin
+    = link_to image_tag("web-app-theme/icons/bullet_go.png", :alt => "#{t("web-app-theme.add", :default=> "Set Norms")}") + " " + t("web-app-theme.add", :default=> "Set Norms"),
+      default_norms_admin_schedule_template_path(@template), :id => 'set_norms', :class => "button modal_dialog"

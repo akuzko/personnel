@@ -29,6 +29,16 @@ class Shift < ActiveRecord::Base
     @event.nil? ? '' : @event.eventtime
   end
 
+  def start_ip
+    @event = Event.find_by_id(self.start_event)
+    @event.nil? ? '' : Event.int2ip(@event.ip_address)
+  end
+
+  def end_ip
+    @event = Event.find_by_id(self.end_event)
+    @event.nil? ? '' : Event.int2ip(@event.ip_address)
+  end
+
   def worked_min
     return '' if self.endtime == '' || self.starttime == ''
     ((self.endtime - self.starttime) / 1.minute).round

@@ -66,9 +66,11 @@
             %td
               = shift.number
             %td
-              = shift.starttime
+              = shift.starttime.to_formatted_s(:date_and_time) unless shift.starttime == ''
+              = "(#{shift.start_ip})" unless shift.start_ip == ''
             %td
-              = shift.endtime
+              = shift.endtime.to_formatted_s(:date_and_time) unless shift.endtime == ''
+              = "(#{shift.end_ip})" unless shift.end_ip == ''
             %td
               = shift.worked_min
             %td.last

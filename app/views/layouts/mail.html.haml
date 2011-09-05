@@ -1,0 +1,124 @@
+!!!
+%html
+  %head
+    %title Zone3000 Staff
+    %style{:type => "text/css"}
+      :plain
+        * {
+        margin: 0;
+        padding: 0;
+        }
+        body {
+        color: #111;
+        font-family: helvetica, arial, sans-serif;
+        font-size: 12px;
+        }
+        h2 {
+        font-size: 22px;
+        margin: 15px 0;
+        font-weight: normal;
+        }
+        h3 {
+        font-size: 18px;
+        margin: 10px 0;
+        font-weight: normal;
+        }
+        div {
+        display: block;
+        }
+        #main .block .content h2 {
+        margin-left: 15px;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: bold;
+        text-transform: none;
+        letter-spacing: -1px;
+        line-height: 1.2em;
+        }
+        .form .description {
+        font-style: italic;
+        color: #8C8C8C;
+        font-size: .9em;
+        }
+        .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+        }
+        .table td {
+        border-bottom: 1px solid #EAEAEA;
+        padding: 10px;
+        }
+        .table th {
+        background: #EAEAEA;
+        color: #222;
+        font-weight: normal;
+        padding: 10px;
+        text-align: left;
+        }
+        .table tr.even {
+        background: #F8F8F8;
+        }
+        #main{
+        -moz-border-radius-topleft: 9px;
+        -webkit-border-top-left-radius: 9px;
+        -moz-border-radius-topright: 9px;
+        -webkit-border-top-right-radius: 9px;
+        border-top-left-radius: 9px 9px;
+        border-top-right-radius: 9px 9px;
+        }
+        #main .block {
+        padding-top: 0px;
+        background-color: white;
+        -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+        #main .block .content {
+        padding-top: 1px;
+        }
+        #main .block .content .inner {
+        padding: 0 15px 15px;
+        }
+        #wrapper {
+        padding-top: 20px;
+        }
+        base.css:36
+        #header, #wrapper {
+        padding: 0 20px;
+        }
+        base.css:16
+        .wat-cf {
+        display: block;
+        }
+        #header {
+        position: relative;
+        padding: 0 20px;
+        padding-top: 1px;
+        background: #002134;
+        }
+        #header h1 {
+        padding: 15px 0;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: bold;
+        text-transform: none;
+        letter-spacing: -1px;
+        line-height: 1.2em;
+        color: white;
+        text-shadow: black 1px 1px 2px;
+        }
+        #header h1 a:link, #header h1 a:active, #header h1 a:hover, #header h1 a:visited {
+        color: white;
+        }
+  %body
+    #container
+      #header
+        %h1
+          %a{:href => root_url} Zone3000 Staff
+        #main
+          = yield
+          #footer
+            .block
+              %p
+                Copyright &copy; #{Time.now.year} Zone3000 Staff.

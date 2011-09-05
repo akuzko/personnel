@@ -74,10 +74,9 @@ class Admin::AdminsController < ApplicationController
   def update
     @admin = Admin.find(params[:id])
     old_departments = @admin.departments.map{|d|d.id.to_s}
-
     if old_departments != params[:departments]
       old_departments.each do |d|
-        AdminDepartment.find_by_admin_id_and_department_id(@admin.id,d.to_i).destroy unless params[:departments].is_a? Array || params[:departments].include?(d)
+        AdminDepartment.find_by_admin_id_and_department_id(@admin.id,d.to_i).destroy unless (params[:departments].is_a?(Array) && params[:departments].include?(d))
       end
       if params[:departments]
         new_departments = params[:departments] - old_departments

@@ -27,6 +27,7 @@ class ShiftsController < ApplicationController
     @templates.each do |template|
       missed_shifts = []
       department = Department.find(template.department_id)
+      admins = department.admins.map(&:email)
       template.schedule_shifts.each do |shift|
         if shift.number < 10
           shift.schedule_cells.each do |cell|
@@ -38,9 +39,15 @@ class ShiftsController < ApplicationController
           end
         end
       end
-      @missed_shifts_departments[department.name] = {}
-      @missed_shifts_departments[department.name][:shifts] = missed_shifts
-      @missed_shifts_departments[department.name][:admins] = department.admins.map(&:email)
+      if !missed_shifts.empty?
+        @missed_shifts_departments[department.name] = {}
+        @missed_shifts_departments[department.name][:shifts] = missed_shifts
+        @missed_shifts_departments[department.name][:admins] = admins
+        if params[:send]
+          message = MissedShift.send_missed_shifts(department.name, missed_shifts, admins)
+          message.deliver
+        end
+      end
     end
   end
 end

@@ -23,19 +23,42 @@ class Event < ActiveRecord::Base
              :order => params[:sort_by]
   end
 
-  def self.login(user_id, time)
+  def self.login(user_id, time, ip)
     #TODO: Category creation with department ID
     @category = Category.find_or_create_by_name('Login')
-    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :description => '-')
+    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :ip_address => ip2int(ip), :description => '-')
     @event.save
     @event.id
   end
 
-  def self.logout(user_id, time)
+  def self.logout(user_id, time, ip)
     @category = Category.find_or_create_by_name('Logout')
-    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :description => '-')
+    @event = Event.create(:user_id => user_id, :category_id => @category.id, :eventtime => time, :ip_address => ip2int(ip), :description => '-')
     @event.save
     @event.id
+  end
+
+
+  # Converts an IP string to integer
+  def self.ip2int(ip)
+    return 0 unless ip =~ /\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}/
+
+    v = ip.split('.').collect { |i| i.to_i }
+    (v[0] << 24) | (v[1] << 16) | (v[2] << 8 ) | (v[3])
+  end
+
+  # Converts an integer to IP string... could be prettier
+  def self.int2ip(int)
+    tmp = int.to_i
+    parts = []
+
+    3.times do ||
+      tmp = tmp / 256.0
+      parts << (256 * (tmp - tmp.to_i)).to_i
+    end
+
+    parts << tmp.to_i
+    parts.reverse.join('.')
   end
 
 end
