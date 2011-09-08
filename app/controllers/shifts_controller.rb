@@ -11,7 +11,7 @@ class ShiftsController < ApplicationController
       end
       if (shift.shiftdate + shift.schedule_shift.end.hour < DateTime.current) && @event.eventtime < DateTime.current - 1.hour
         #add logout event
-        shift.end_event = Event.logout(shift.user_id, @event.eventtime + 1.minute)
+        shift.end_event = Event.logout(shift.user_id, @event.eventtime + 1.minute, request.remote_ip)
         #close shift
         shift.save
       end

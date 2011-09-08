@@ -66,6 +66,7 @@ Personnel::Application.routes.draw do
     get 'new_late_coming', :on => :collection
     post 'create_late_coming', :on => :collection
   end
+  resources :late_comings
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
@@ -74,7 +75,7 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :shifts, :events
+    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :shifts, :events, :late_comings
     resource :schedule do
       get 'show_users', :on => :member
     end

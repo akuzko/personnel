@@ -1,0 +1,73 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_late_comings_path
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Late Comings
+    .inner
+      = form_tag(admin_late_comings_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              User
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_from_check, 1, params[:date_from_check]
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_to_check, 1, params[:date_to_check]
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.date", :default => t("activerecord.labels.date", :default => "Date"))
+          %th
+            = t("activerecord.attributes.admin_shifts.shift", :default => t("activerecord.labels.shift", :default => "Shift"))
+          %th
+            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
+          %th.last &nbsp;
+        - @late_comings.each do |late_coming|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = late_coming.shift.shiftdate if late_coming.shift
+            %td
+              = "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
+            %td
+              = late_coming.user_full_name
+            %td
+              = late_coming.description
+            %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_late_coming_path(late_coming), :class => "modal_dialog"} |
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_late_coming_path(late_coming), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @late_comings
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.modal#overlay
+  %div.contentWrap

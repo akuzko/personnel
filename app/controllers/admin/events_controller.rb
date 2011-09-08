@@ -69,7 +69,6 @@ class Admin::EventsController < ApplicationController
         page['#event_flash'].html message
       end
     end
-
   end
 
   def destroy

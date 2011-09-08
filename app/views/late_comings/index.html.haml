@@ -1,0 +1,29 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Late Comings
+    .inner
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+          %th
+            = t("activerecord.attributes.admin_event.date", :default => t("activerecord.labels.date", :default => "Date"))
+          %th
+            = t("activerecord.attributes.admin_shifts.shift", :default => t("activerecord.labels.shift", :default => "Shift"))
+          %th
+            = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
+        - @late_comings.each do |late_coming|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = late_coming.created_at.to_formatted_s(:date_and_time)
+            %td
+              = late_coming.shift.shiftdate if late_coming.shift
+            %td
+              = "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
+            %td
+              = late_coming.description
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @late_comings

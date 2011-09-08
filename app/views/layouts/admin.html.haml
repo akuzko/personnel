@@ -33,6 +33,8 @@
               %a{:href => admin_shifts_path} Shifts
             %li{:class => controller.controller_path == 'admin/events' ? 'active' : '' }
               %a{:href => admin_events_path} Events
+            %li{:class => controller.controller_path == 'admin/late_comings' ? 'active' : '' }
+              %a{:href => admin_late_comings_path} Late Comings
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|
