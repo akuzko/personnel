@@ -1,1 +1,5 @@
-rvm use ree@personnel
+#if [[ -s "/home/valnech/.rvm/environments/ree-1.8.7-2011.03@personnel" ]] ; then
+  . "/home/valnech/.rvm/environments/ree-1.8.7-2011.03@personnel"
+#else
+  rvm use ree-1.8.7-2011.03@personnel
+#fi
