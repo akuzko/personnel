@@ -8,6 +8,13 @@
   = f.label :identifier, t("activerecord.attributes.user.identifier", :default => "IDentifier"), :class => :label
   = f.text_field :identifier, :class => 'text_field', :style => "width:80px"
   = f.hidden_field :back_url, :value => @back_url
+.group
+  = f.label :hired_at, t("activerecord.attributes.user.hired", :default => "hired"), :class => :label
+  = f.text_field :hired_at, :class => 'text_field date_select', :style => "width:160px"
+.group
+  = f.label :fired_at, t("activerecord.attributes.user.fired", :default => "fired"), :class => :label
+  = f.check_box :fired, :class => 'check_box'
+  = f.text_field :fired_at, :class => 'text_field date_select', :style => "width:160px"
 = render 'shared/user_form', :f => f
 
 .group.navform.wat-cf
