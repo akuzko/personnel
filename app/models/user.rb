@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :trackable, :validatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :identifier, :department_id, :active
+  attr_accessible :email, :password, :password_confirmation, :identifier,
+                  :department_id, :active, :hired_at, :fired_at, :fired
 
   belongs_to :department
 
@@ -155,6 +156,7 @@ class User < ActiveRecord::Base
     if !self.department_id.nil?
       self.identifier = "" unless Department.find(self.department_id).has_identifier?
     end
+    self.fired_at = "" unless self.fired
   end
 
   def self.selection(department_id)
