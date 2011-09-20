@@ -11,7 +11,7 @@
   = f.date_select :birthdate, :include_blank => true, :end_year => Time.now.year - 60, :start_year => Time.now.year - 13
 .group
   = f.label :t_short_size, t("activerecord.attributes.profile.t_short_size", :default => "T-Short Size"), :class => :label
-  = f.select :t_short_size, Profile.size_selection
+  = f.select :t_short_size, Profile.size_selection, :include_blank => true
   %span.description= t("personnel.Required")
 .group.navform.wat-cf
   %button.button{:type => "submit"}
