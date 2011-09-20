@@ -24,7 +24,7 @@
         %td{:style => 'background-color:#ffffff'}= user.day_off_count @template.id
         %td{:style => 'background-color:#ffffff'}
           - if n && !n.workdays.nil?
-            = "#{n.workdays} | #{n.weekend}"
+            = "#{n.workdays} | #{n.weekend + user.day_off_count(@template.id)}"
 %p
   %a.button{:href => '#', :id => 'clear_selection'}
     = image_tag("web-app-theme/icons/arrow_rotate_anticlockwise.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")

@@ -46,19 +46,27 @@ class Admin::ScheduleTemplatesController < ApplicationController
     @template = ScheduleTemplate.find params[:id]
     @users = User.find_all_by_department_id_and_active @template.department_id, 1
 
-    @users.each do |u|
-      Norm.set_norms(u, @template,  params[:norm])
-    end
-    #if !@norm.errors.full_messages.empty?
-    #  message = '<p>' + @norm.errors.full_messages.join('</p><p>') + '</p>'
-    #  render(:update) do |page|
-    #    page['#norms_flash'].parents(0).show
-    #    page['#norms_flash'].html message
-    #  end
-    #else
+    norm = Norm.new(params[:norm])
+    month_days = Time.days_in_month(@template.month, @template.year)
+    days = params[:norm][:weekend].to_i + params[:norm][:workdays].to_i
+
+    if !norm.valid? || days != month_days
+      if !norm.errors.full_messages.empty?
+        message = '<p>' + norm.errors.full_messages.join('</p><p>') + '</p>'
+      else
+        message = '<p>' + 'There are '+month_days.to_s+ ' in this month' + '</p>'
+      end
+      render(:update) do |page|
+        page['#norms_flash'].parents(0).show
+        page['#norms_flash'].html message
+      end
+    else
+      @users.each do |u|
+        @norm = Norm.set_norms(u, @template,  params[:norm])
+      end
       render(:update) do |p|
         p.call 'app.show_users_admin'
-      #end
+      end
     end
   end
 
