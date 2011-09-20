@@ -21,7 +21,7 @@ class Norm < ActiveRecord::Base
     if vacations
       weekend = (1.0 * (days - vacations) / days * default_norm[:weekend].to_i).round
       workdays = days - vacations - weekend
-      @norm.weekend = weekend
+      @norm.weekend = weekend + vacations
       @norm.workdays = workdays
       @norm.save
     else
