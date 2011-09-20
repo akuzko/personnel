@@ -62,7 +62,7 @@
               - if category.reported?
                 &#10003;
             %td
-              = category.created_at
+              = category.created_at.to_formatted_s(:date_and_time)
             %td.last
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_category_path(category)
               |

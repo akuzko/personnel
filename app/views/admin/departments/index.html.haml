@@ -28,7 +28,7 @@
                 = admin.email
                 %br
             %td
-              = department.created_at
+              = department.created_at.to_formatted_s(:date_and_time)
             %td.last
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_department_path(department)
               |

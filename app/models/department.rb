@@ -2,6 +2,7 @@ class Department < ActiveRecord::Base
   validates_presence_of :name
   has_many :admin_departments, :dependent => :destroy
   has_many :admins, :through => :admin_departments, :uniq => true
+  scope :identified, where('has_identifier = 1')
 
   def self.selection
     order(:name).all.map do |d|

@@ -38,7 +38,7 @@
                 = d.name
                 %br
             %td
-              = admin.created_at
+              = admin.created_at.to_formatted_s(:date_and_time)
             %td.last
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_admin_path(admin)
               |

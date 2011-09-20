@@ -1,11 +1,10 @@
 .group
   = f.label :name, t("activerecord.attributes.department.name", :default => "Name"), :class => :label
   = f.text_field :name, :class => 'text_field'
-  %span.description Ex: a simple text
 .group
   = f.label :has_identifier, t("activerecord.attributes.department.has_identifier", :default => "Has identifier"), :class => :label
   = f.check_box :has_identifier, :class => 'check_box'
-  %span.description Ex: a simple text
+  %span.description Does the members of the department have unique identifiers
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

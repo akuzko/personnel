@@ -6,7 +6,7 @@
           %tr
             %td
               Department
-              = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id), params[:department_id])
+              = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id])
             %td
               &nbsp;
             %td
