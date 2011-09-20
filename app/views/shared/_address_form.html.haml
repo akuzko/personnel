@@ -1,18 +1,23 @@
 .group
   = f.label :street, t("activerecord.attributes.address.street", :default => "Street"), :class => :label
   = f.text_field :street, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group
-  = f.label :build, t("activerecord.attributes.address.build", :default => "Build №"), :class => :label
+  = f.label :build, t("activerecord.attributes.address.build", :default => "Building #"), :class => :label
   = f.text_field :build, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group
   = f.label :porch, t("activerecord.attributes.address.porch", :default => "Porch"), :class => :label
   = f.text_field :porch, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group
   = f.label :nos, t("activerecord.attributes.address.nos", :default => "Number of storeys"), :class => :label
   = f.text_field :nos, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group
-  = f.label :room, t("activerecord.attributes.address.room", :default => "Room"), :class => :label
+  = f.label :room, t("activerecord.attributes.address.room", :default => "Apt/Room"), :class => :label
   = f.text_field :room, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

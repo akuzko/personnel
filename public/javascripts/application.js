@@ -33,10 +33,12 @@
         });
         $("#overlay").dialog({
           autoOpen: false,
-          resizable: false
+          resizable: false,
+          modal: true
         });
         $("a.button.close").live('click', function() {
-          return $("#overlay").dialog("close");
+          $("#overlay").dialog("close");
+          return $('.modal_dialog').removeClass('selected');
         });
         $('.modal_dialog').live('click', function() {
           if (ctrlPressed) {

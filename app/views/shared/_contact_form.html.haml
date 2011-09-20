@@ -1,9 +1,11 @@
 .group
   = f.label :email, t("activerecord.attributes.contact.email", :default => "Personal Email"), :class => :label
   = f.text_field :email, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group
   = f.label :cell1, t("activerecord.attributes.contact.cell1", :default => "Cell 1"), :class => :label
   = f.text_field :cell1, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group
   = f.label :cell2, t("activerecord.attributes.contact.cell2", :default => "Cell 2"), :class => :label
   = f.text_field :cell2, :class => 'text_field'
@@ -13,6 +15,7 @@
 .group
   = f.label :home_phone, t("activerecord.attributes.contact.home_phone", :default => "Home Phone"), :class => :label
   = f.text_field :home_phone, :class => 'text_field'
+  %span.description= t("personnel.Required")
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

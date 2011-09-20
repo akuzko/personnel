@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
     @address = addresses.order('addresses.primary DESC').first
     return '' if @address.nil?
     attributes = %w(street build porch nos room)
-    separators = [', ', ' || ', ' / ', ', app.']
+    separators = [', ', ' || ', ' / ', ', кв.']
     return nil if attributes.any? { |a| @address[a].nil? || @address[a] == '' }
     attributes.map { |a| @address[a] }.zip(separators).flatten.compact.join
   end

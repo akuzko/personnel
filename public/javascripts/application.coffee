@@ -24,8 +24,10 @@ ctrlPressed = false
       $("#overlay").dialog
         autoOpen: false
         resizable: false
+        modal: true
       $("a.button.close").live 'click', ->
         $("#overlay").dialog("close")
+        $('.modal_dialog').removeClass('selected')
       $('.modal_dialog').live 'click', ->
         if ctrlPressed
           $(this).toggleClass('selected')
