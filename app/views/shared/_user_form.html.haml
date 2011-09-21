@@ -10,3 +10,7 @@
   = f.label :password_confirmation, t("activerecord.attributes.user.password_confirmation", :default => "Password Confirmation"), :class => :label
   = f.password_field :password_confirmation, :class => 'text_field'
   %span.description= t("personnel.Password Confirmation")
+.group
+  = f.label :avatar, t("activerecord.attributes.user.picture", :default => "Picture"), :class => :label
+  = f.file_field :avatar, :class => 'text_field'
+  %span.description= t("personnel.Picture")

@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find current_user.id
-    if params[:user][:password].empty?
+    if !params[:user][:password].nil? && params[:user][:password].empty?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
@@ -74,4 +74,11 @@ class UsersController < ApplicationController
     @users = User.with_data.active.search(params, params[:page])
   end
 
+  def crop
+    @user = User.find current_user.id
+    if !@user.avatar.exists?
+      flash[:error] = "Please upload a picture first."
+      redirect_to edit_user_url(@user)
+    end
+  end
 end
