@@ -38,7 +38,7 @@ class Category < ActiveRecord::Base
 
   def self.report_selection(department_id)
     if department_id == 0
-      order(:name).map{ |d| [d.name, d.id] }
+      order(:name).find_all_by_displayed_and_reported(1, 1).map{ |d| [d.name, d.id] }
     else
       order(:name).find_all_by_department_id_and_displayed_and_reported(department_id, 1, 1).map{ |d| [d.name, d.id] }
     end
@@ -46,7 +46,7 @@ class Category < ActiveRecord::Base
 
   def self.report_selection_by_admin(admin_id)
     admin = Admin.find_by_id(admin_id)
-    return selection(0) if admin.super_user?
+    return report_selection(0) if admin.super_user?
     departments = admin.departments.map{|d|d.id}
     categories = []
     where('reported=1').order(:name).map do |d|
