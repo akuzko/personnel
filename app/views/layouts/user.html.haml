@@ -2,8 +2,8 @@
 %html
   %head
     %title Zone3000 Staff
-    = stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/default/style", "web-app-theme/override", "web-app-theme/jquery-ui-1.8.15.custom", :cache => true
-    = javascript_include_tag :defaults, 'jscolor', 'jquery-ui-1.8.15.custom.min', 'jquery-ui-timepicker-addon', :cache => true
+    = stylesheet_link_tag "web-app-theme/base", "web-app-theme/themes/default/style", "web-app-theme/override", "web-app-theme/jquery-ui-1.8.15.custom", "web-app-theme/jquery.Jcrop", :cache => true
+    = javascript_include_tag :defaults, 'jscolor', 'jquery-ui-1.8.15.custom.min', 'jquery-ui-timepicker-addon', 'jquery.Jcrop.min', :cache => true
     = csrf_meta_tag
   %body
     #container
@@ -19,6 +19,7 @@
         #main-navigation
           %ul.wat-cf
             %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Profile", user_path
+            %li= link_to t("personnel.picture", :default => "Crop Picture"), crop_user_path
             %li= link_to t("personnel.list", :default => "Find"), find_user_path
             %li= link_to t("personnel.schedule", :default => "Schedule"), schedule_path
             %li= link_to t("personnel.timereport", :default => "TimeReport"), events_path

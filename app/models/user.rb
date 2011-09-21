@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
          :recoverable, :trackable, :validatable, :confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :identifier,
-                  :department_id, :active, :hired_at, :fired_at, :fired
+  #attr_accessible :email, :password, :password_confirmation, :identifier,
+  #                :department_id, :active, :hired_at, :fired_at, :fired, :avatar
 
   belongs_to :department
 
@@ -18,6 +18,13 @@ class User < ActiveRecord::Base
   has_many :shifts
   has_many :late_comings
   has_many :norms
+  has_attached_file :avatar, :styles => {
+      :large => "500x500>",
+      :medium => {:geometry => "200x200>", :processors => [:cropper]},
+      :thumb => {:geometry => "50x50>", :processors => [:cropper]}
+  }
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+  after_update :reprocess_avatar, :if => :cropping?
 
   after_create :create_internals
 
@@ -107,6 +114,15 @@ class User < ActiveRecord::Base
   #  shifts_count
   #end
 
+  def cropping?
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+
+  def avatar_geometry(style = :original)
+    @geometry ||= {}
+    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.path(style))
+  end
+
   private
 
   def create_internals
@@ -176,5 +192,9 @@ class User < ActiveRecord::Base
       users.push [d.full_name, d.id] if departments.include?(d.department_id)
     end
     users
+  end
+
+  def reprocess_avatar
+    avatar.reprocess!
   end
 end

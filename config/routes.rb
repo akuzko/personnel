@@ -47,6 +47,7 @@ Personnel::Application.routes.draw do
       put 'update_data', :on => :member
       get 'display_addresses', :on => :member
       get 'display_section', :on => :member
+      get 'crop', :on => :member
       get 'find', :on => :collection
   end
 
@@ -102,6 +103,8 @@ Personnel::Application.routes.draw do
       put 'update_data', :on => :member
       get 'display_addresses', :on => :member
       get 'display_section', :on => :member
+      get 'crop', :on => :member
+      put 'update_crop', :on => :member
     end
   end
   devise_for :admins

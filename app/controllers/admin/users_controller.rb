@@ -149,5 +149,25 @@ class Admin::UsersController < ApplicationController
     render '_show_'+params[:section]+'.html', :layout => false
   end
 
+  def crop
+    @user = User.find params[:id]
+    if !@user.avatar.exists?
+      flash[:error] = "Please upload a picture first."
+      redirect_to edit_admin_user_url
+    end
+  end
+
+  def update_crop
+    @user = User.find params[:id]
+    respond_to do |format|
+      if @user.update_attributes(params[:user])
+        format.html { redirect_to(admin_user_url, :notice => 'User\'s picture was successfully updated.') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "crop" }
+        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
 
 end

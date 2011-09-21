@@ -14,6 +14,7 @@ gem 'jquery-rails', '>= 0.2.6'
 gem 'ruby-debug'
 gem 'sass'
 gem 'prototype-rails'
+gem 'paperclip'
 # Use unicorn as the web server
 # gem 'unicorn'
 

@@ -40,6 +40,7 @@
                 = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
+          %th
           %th{:sort => 'active', :class => 'sortable'}= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
           %th{:sort => 'identifier', :class => 'sortable'}= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
           %th{:sort => 'full_name', :class => 'sortable'}= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
@@ -51,6 +52,8 @@
           %th.last &nbsp;
         - @users.each do |user|
           %tr{:class => cycle("odd", "even")}
+            %td
+              = image_tag user.avatar.url(:thumb)
             %td
               - if user.active?
                 &#10003;

@@ -1,5 +1,6 @@
 %h2= @user.full_name
-
+.block.notice
+  = link_to image_tag(@user.avatar.url(:medium), :alt => "#{t("web-app-theme.crop", :default => "Crop")}"), crop_admin_user_path(@user), :title => "#{t("web-app-theme.crop", :default => "Crop")}"
 .block.notice
   %h3 Profile
   #sidebar_profile.content
