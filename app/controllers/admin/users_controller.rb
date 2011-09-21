@@ -11,6 +11,11 @@ class Admin::UsersController < ApplicationController
     @users = User.with_data.search_by_admin(params, params[:page], current_admin.id)
   end
 
+  def list
+    @users = User.with_data.search_by_admin(params, params[:page], current_admin.id)
+    render :layout => 'mobile'
+  end
+
   def delivery
     if !params[:date]
       date = Date.current
