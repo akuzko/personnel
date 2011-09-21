@@ -23,6 +23,43 @@ class Event < ActiveRecord::Base
              :order => params[:sort_by]
   end
 
+  def self.processed_total(params, user_id, by_admin)
+    model_query = Event.select('categories.name, COUNT(events.id) as total')
+    model_query = model_query.where('categories.reported = 1')
+    model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
+    if by_admin
+      admin = Admin.find_by_id(user_id)
+      model_query = model_query.where("categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    else
+      model_query = model_query.where('user_id = ?', user_id)
+    end
+    model_query = model_query.where("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == ""
+    model_query = model_query.where("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == ""
+    model_query = model_query.group('categories.name')
+    model_query = model_query.order('categories.name')
+    model_query.all
+  end
+
+  def self.processed_by_person(params, admin_id)
+    model_query = Event.select('CONCAT(profiles.last_name," ",profiles.first_name) as username, categories.name, COUNT(events.id) as total')
+    model_query = model_query.where('categories.reported = 1')
+    model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
+    model_query = model_query.joins('JOIN users ON events.user_id = users.id')
+    model_query = model_query.joins('JOIN profiles ON profiles.user_id = users.id')
+    model_query = model_query.where("events.user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
+    model_query = model_query.where("categories.department_id = '" + params[:department_id] + "'") unless params[:department_id].nil? || params[:department_id] == ""
+    if admin_id != 0
+      admin = Admin.find_by_id(admin_id)
+      model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    end
+    model_query = model_query.where("category_id IN (#{params[:categories].map{|d|d}.join(',')})") unless params[:categories].nil? || params[:categories].empty?
+    model_query = model_query.where("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == ""
+    model_query = model_query.where("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == ""
+    model_query = model_query.group('categories.name, username')
+    model_query = model_query.order('username, categories.name')
+    model_query.all
+  end
+
   def self.login(user_id, time, ip)
     @general_department = Department.find_or_create_by_name('General')
     @category = Category.find_or_create_by_name_and_department_id('Login', @general_department.id)

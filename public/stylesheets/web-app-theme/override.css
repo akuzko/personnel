@@ -40,3 +40,56 @@ td.user_selected{
 td.modal_dialog.selected{
     background-color:#FAFAFA !important;
 }
+ul.dropdown,
+ul.dropdown li,
+ul.dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.dropdown {
+    position: relative;
+    z-index: 597;
+    float: left;
+}
+
+ul.dropdown li.hover,
+ul.dropdown li:hover {
+    position: relative;
+    z-index: 599;
+    cursor: default;
+}
+
+ul.dropdown ul {
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 598;
+    width: 230px;
+    font-size:11px;
+    background-color: white;
+}
+
+ul.dropdown ul li {
+    float: none;
+}
+
+ul.dropdown ul ul {
+    top: 1px;
+    left: 99%;
+}
+
+ul.dropdown li:hover > ul {
+    visibility: visible;
+    background-color: #f8f8f8;
+}
+.dropdown ul li a:hover { background-color: #ffffff; }
+.dropdown li ul li a {
+  color: #666666 !important;
+  font-size: 1.25em !important;
+  text-decoration: none !important;
+  display: block !important;
+  padding: 10px !important;
+}
