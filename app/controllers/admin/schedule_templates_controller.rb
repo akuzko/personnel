@@ -70,7 +70,34 @@ class Admin::ScheduleTemplatesController < ApplicationController
     end
   end
 
-  def set_user_norm
+  def user_norms
+    @norms = Norm.find_by_user_id params[:id]
+    @user = User.find params[:id]
+    @template = ScheduleTemplate.find params[:tmpl_id]
+    render :layout => false
+  end
 
+  def update_user_norms
+    template = ScheduleTemplate.find params[:id]
+    norm = Norm.find_by_user_id params[:norm][:user_id]
+    norm.update_attributes(params[:norm])
+    month_days = Time.days_in_month(template.month, template.year)
+    days = params[:norm][:weekend].to_i + params[:norm][:workdays].to_i
+
+    if !norm.valid? || days != month_days
+      if !norm.errors.full_messages.empty?
+        message = '<p>' + norm.errors.full_messages.join('</p><p>') + '</p>'
+      else
+        message = '<p>' + 'There are '+month_days.to_s+ ' in this month' + '</p>'
+      end
+      render(:update) do |page|
+        page['#norms_flash'].parents(0).show
+        page['#norms_flash'].html message
+      end
+    else
+      render(:update) do |p|
+        p.call 'app.show_users_admin'
+      end
+    end
   end
 end

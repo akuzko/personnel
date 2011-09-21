@@ -8,9 +8,9 @@
       %th Off
       %th Std
   - @users.each do |user|
-    %tr{:id => user.identifier, :class => 'user_select'}
+    %tr
       %td{:style => 'background-color:#ffffff'}= user.identifier
-      %td{:style => 'background-color:#ffffff;text-align:left;padding-left:5px'}= user.full_name
+      %td{:style => 'background-color:#ffffff;text-align:left;padding-left:5px', :class => 'user_select link_button', :id => user.identifier}= user.full_name
       - if @admin
         - n = user.norms.find_by_month_and_year(@template.month, @template.year)
         - s = user.work_shifts_count @template.id
@@ -24,7 +24,7 @@
         %td{:style => 'background-color:#ffffff'}= user.day_off_count @template.id
         %td{:style => 'background-color:#ffffff'}
           - if n && !n.workdays.nil?
-            = "#{n.workdays} | #{n.weekend}"
+            = link_to "#{n.workdays} | #{n.weekend}", user_norms_admin_schedule_template_path(user, :tmpl_id => @template), :class => "modal_dialog"
 %p
   %a.button{:href => '#', :id => 'clear_selection'}
     = image_tag("web-app-theme/icons/arrow_rotate_anticlockwise.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")

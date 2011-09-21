@@ -89,7 +89,9 @@ Personnel::Application.routes.draw do
       get 'check_day', :on => :member
       get 'check_month', :on => :member
       get 'default_norms', :on => :member
+      get 'user_norms', :on => :member
       post 'update_default_norms', :on => :member
+      post 'update_user_norms', :on => :member
     end
 
     resources :addresses do
