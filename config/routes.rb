@@ -76,12 +76,15 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :shifts, :late_comings
+    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings
     resource :schedule do
       get 'show_users', :on => :member
     end
     resources :schedule_cells do
       put 'mass_update', :on => :collection
+    end
+    resources :shifts do
+      get :available_shift_numbers, :on => :collection
     end
     resources :events do
       get :processed_total, :on => :collection

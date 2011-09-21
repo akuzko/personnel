@@ -12,7 +12,7 @@ class Admin::LateComingsController < ApplicationController
     params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
 
 
-    @late_comings = LateComing.joins('JOIN users ON late_comings.user_id = users.id').joins('JOIN shifts ON late_comings.shift_id = shifts.id').search(params, params[:page], current_admin.id)
+    @late_comings = LateComing.joins('JOIN users ON late_comings.user_id = users.id').joins('JOIN profiles ON profiles.user_id = users.id').joins('JOIN shifts ON late_comings.shift_id = shifts.id').search(params, params[:page], current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb

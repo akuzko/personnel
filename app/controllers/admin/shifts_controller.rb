@@ -34,7 +34,6 @@ class Admin::ShiftsController < ApplicationController
 
   def create
     @shift = Shift.new(params[:shift])
-
     if @shift.save
       render(:update) do |page|
         page["#overlay"].dialog("close")
@@ -76,5 +75,25 @@ class Admin::ShiftsController < ApplicationController
       format.html { redirect_to :back }
       format.xml { head :ok }
     end
+  end
+
+  def available_shift_numbers
+    @date = params[:date].to_date
+    user = User.find(params[:user_id])
+    @template = ScheduleTemplate.find_by_department_id_and_year_and_month(user.department_id, @date.year, @date.month)
+    @shifts = @template.schedule_shifts.where('number < 10').order(:number) unless @template.nil?
+
+    # user's shifts
+    @shift_numbers = []
+    @shifts.each do |shift|
+      if shift.schedule_cells.find_all_by_user_id_and_day(user.identifier, @date.day).count > 0
+        @shift_numbers.push ["#{shift.number} (#{shift.start}:00-#{shift.end}:00)", shift.number]
+      end
+    end
+
+    # selected shift number
+    shift = @shifts.where('start<=? and end>?', (Time.now.hour + 2), Time.now.hour).last
+    @selected_number = shift.number unless shift.nil?
+    render :layout => false
   end
 end

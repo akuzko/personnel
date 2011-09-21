@@ -13,6 +13,10 @@
           %th
             = t("activerecord.attributes.admin_shifts.shift", :default => t("activerecord.labels.shift", :default => "Shift"))
           %th
+            = t("activerecord.attributes.late_comings.minutes", :default => t("activerecord.labels.minutes", :default => "Diff Minutes"))
+          %th
+            = t("activerecord.attributes.shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked"))
+          %th
             = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
         - @late_comings.each do |late_coming|
           %tr{:class => cycle("odd", "even")}
@@ -22,6 +26,10 @@
               = late_coming.shift.shiftdate if late_coming.shift
             %td
               = "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
+            %td
+              = late_coming.late_minutes
+            %td
+              = late_coming.shift.worked_min
             %td
               = late_coming.description
       .actions-bar.wat-cf
