@@ -1,0 +1,27 @@
+%table.table
+  %tr
+    %th{:sort => 'active', :class => 'sortable'}= t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
+    %th{:sort => 'identifier', :class => 'sortable'}= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
+    %th{:sort => 'full_name', :class => 'sortable'}= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+    %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
+    %th= t("activerecord.attributes.contact.home_phone", :default => t("activerecord.labels.home_phone", :default => "Home Phone"))
+    %th= t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department", :default => "Department"))
+    %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
+    %th= t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate"))
+    - @users.each do |user|
+      %tr{:class => cycle("odd", "even")}
+        %td
+          - if user.active?
+            &#10003;
+        %td= user.identifier
+        %td= user.full_name
+        %td
+          = user.cell1
+          %br
+          = user.cell2
+          %br
+          = user.cell3
+        %td= user.home_phone
+        %td= user.department_name if user.department_id
+        %td= user.full_address_admin
+        %td= l(user.birthdate) if user.birthdate

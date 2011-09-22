@@ -1,0 +1,26 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_permissions_path
+      %li
+        = link_to "#{t("web-app-theme.add", :default => "Add")}", new_admin_permission_path, :class => "modal_dialog"
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Permissions
+    .inner
+      %table.table
+        %tr
+          %th
+            %b
+              = t("activerecord.attributes.admin_event.title", :default => t("activerecord.labels.title", :default => "Title"))
+          %th.last &nbsp;
+        - @permissions.each do |permission|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = permission.title
+            %td.last
+              #{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_permission_path(permission), :class => "modal_dialog"} |
+              #{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_permission_path(permission), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+%div.modal#overlay
+  %div.contentWrap
