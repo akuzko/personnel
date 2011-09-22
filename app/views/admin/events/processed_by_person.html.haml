@@ -39,17 +39,19 @@
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
       %table.table
-        %tr
-          %th
-            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "User Name"))
-          %th
-            = t("activerecord.attributes.admin_event.name", :default => t("activerecord.labels.name", :default => "Name"))
-          %th
-            = t("activerecord.attributes.admin_user.total", :default => t("activerecord.labels.total", :default => "Total"))
+        - user = ''
         - @events.each do |event|
+          - if user != event.username
+            - user = event.username
+            %tr
+              %td{:colspan => 6}
+                %h3= user
+            %tr
+              %th
+                = t("activerecord.attributes.admin_event.category", :default => t("activerecord.labels.category", :default => "Category"))
+              %th
+                = t("activerecord.attributes.admin_event.count", :default => t("activerecord.labels.count", :default => "Count"))
           %tr{:class => cycle("odd", "even")}
-            %td
-              = event.username
             %td
               = event.name
             %td

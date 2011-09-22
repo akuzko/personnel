@@ -48,12 +48,6 @@ ul.dropdown ul {
     padding: 0;
 }
 
-ul.dropdown {
-    position: relative;
-    z-index: 597;
-    float: left;
-}
-
 ul.dropdown li.hover,
 ul.dropdown li:hover {
     position: relative;

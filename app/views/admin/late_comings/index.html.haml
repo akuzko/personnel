@@ -50,7 +50,7 @@
             %tr
               %td{:colspan => 6}
                 %b
-                  = "Total : #{distance_of_time_in_words(total*60)}" if user != ''
+                  = "Total : #{(Date.current + total.minutes).strftime("%H hrs %M min")}" if user != ''
             - user = late_coming.user_full_name
             - total = 0
             %tr
@@ -76,7 +76,7 @@
             %td
               = "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
             %td
-              = late_coming.late_minutes
+              = (Date.current + late_coming.late_minutes.minutes).strftime("%H hrs %M min")
             %td
               = late_coming.shift.worked_min
             %td
@@ -86,7 +86,7 @@
         %tr
           %td{:colspan => 6}
             %b
-              = "Total : #{distance_of_time_in_words(total*60)}"
+              = "Total : #{(Date.current + total.minutes).strftime("%H hrs %M min")}"
 - content_for :sidebar, render(:partial => 'sidebar')
 %div.modal#overlay
   %div.contentWrap
