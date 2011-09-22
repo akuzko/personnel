@@ -55,6 +55,11 @@ class Admin::DepartmentsController < ApplicationController
 
     respond_to do |format|
       if @department.save
+        if params[:permissions].is_a? Array
+          params[:permissions].each do |d|
+            DepartmentPermission.find_or_create_by_department_id_and_permission_id(@department.id,d.to_i)
+          end
+        end
         format.html { redirect_to([:admin, @department], :notice => 'Department was successfully created.') }
         format.xml  { render :xml => @department, :status => :created, :location => @department }
       else
@@ -68,6 +73,19 @@ class Admin::DepartmentsController < ApplicationController
   # PUT /departments/1.xml
   def update
     @department = Department.find(params[:id])
+
+    old_permissions = @department.permissions.map{|d|d.id.to_s}
+    if old_permissions != params[:permissions]
+      old_permissions.each do |d|
+        DepartmentPermission.find_by_department_id_and_permission_id(@department.id,d.to_i).destroy unless (params[:permissions].is_a?(Array) && params[:permissions].include?(d))
+      end
+      if params[:permissions]
+        new_permissions = params[:permissions] - old_permissions
+        new_permissions.each do |d|
+          DepartmentPermission.find_or_create_by_department_id_and_permission_id(@department.id,d.to_i)
+        end
+      end
+    end
 
     respond_to do |format|
       if @department.update_attributes(params[:department])

@@ -5,9 +5,11 @@
   = f.label :has_identifier, t("activerecord.attributes.department.has_identifier", :default => "Has identifier"), :class => :label
   = f.check_box :has_identifier, :class => 'check_box'
   %span.description Does the members of the department have unique identifiers
+.group
+  = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Permissions"), :class => :label
+  = select_tag 'permissions[]', options_for_select(Permission.selection, @department.permissions.map{|d|d.id}), { :multiple => true, :size =>Permission.selection.size }
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
     = t("web-app-theme.save", :default => "Save")
-  %span.text_button_padding= t("web-app-theme.or", :default => "or")
   = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}") + t("web-app-theme.cancel", :default => "Cancel"), admin_departments_path, :class => "button"

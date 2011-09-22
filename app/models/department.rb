@@ -1,7 +1,12 @@
 class Department < ActiveRecord::Base
   validates_presence_of :name
+
   has_many :admin_departments, :dependent => :destroy
   has_many :admins, :through => :admin_departments, :uniq => true
+
+  has_many :department_permissions, :dependent => :destroy
+  has_many :permissions, :through => :department_permissions, :uniq => true
+
   scope :identified, where('has_identifier = 1')
 
   def self.selection
