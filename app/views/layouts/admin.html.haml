@@ -16,7 +16,7 @@
               %strong= Admin.find(current_admin.id).email unless current_admin.nil?
             %li= link_to t("web-app-theme.logout", :default => "Logout"), destroy_admin_session_path, :class => 'logout'
         #main-navigation
-          %ul.wat-cf
+          %ul.wat-cf.dropdown
             %li{:class => controller.controller_path == 'admin/admins' ? 'active' : '' }
               %a{:href => admin_admins_path} Admins
             %li{:class => controller.controller_path == 'admin/departments' ? 'active' : '' }
@@ -37,6 +37,19 @@
               %a{:href => admin_late_comings_path} Late Comings
             %li{:class => controller.controller_path == 'admin/permissions' ? 'active' : '' }
               %a{:href => admin_permissions_path} Permissions
+            %li
+              %a{:href => '#'} Reports
+              %ul
+                %li
+                  %a{:href => processed_total_admin_events_path} Processed: Total
+                %li
+                  %a{:href => processed_by_person_admin_events_path} Processed: By Person
+                %li
+                  %a{:href => admin_late_comings_path} Late Comings
+                %li
+                  %a{:href => '#'} Working hours
+                %li
+                  %a{:href => '#'} Processed: By Days Of Week
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|

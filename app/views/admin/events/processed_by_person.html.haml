@@ -1,0 +1,58 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Processed: By Person
+    .inner
+      = form_tag(processed_by_person_admin_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              = select_tag 'categories[]', options_for_select(Category.report_selection_by_admin(current_admin.id), params[:categories]),
+              { :multiple => true, :size => 5, :style => "font-size:10px" }
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id), params[:department_id]), { :include_blank => true }
+            %td
+              User
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'datetime_select'
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'datetime_select'
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "User Name"))
+          %th
+            = t("activerecord.attributes.admin_event.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            = t("activerecord.attributes.admin_user.total", :default => t("activerecord.labels.total", :default => "Total"))
+        - @events.each do |event|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = event.username
+            %td
+              = event.name
+            %td
+              = event.total
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.contentWrap

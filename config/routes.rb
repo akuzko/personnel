@@ -83,7 +83,13 @@ Personnel::Application.routes.draw do
     resources :schedule_cells do
       put 'mass_update', :on => :collection
     end
-
+    resources :shifts do
+      get :available_shift_numbers, :on => :collection
+    end
+    resources :events do
+      get :processed_total, :on => :collection
+      get :processed_by_person, :on => :collection
+    end
     resources :schedule_templates do
       post 'set_visibility', :on => :member
       get 'check_day', :on => :member

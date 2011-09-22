@@ -158,6 +158,17 @@
         }
       });
     },
+    reload_shift_numbers_admin: function() {
+      var dt;
+      dt = $("#shift_shiftdate_1i").val() + '-' + $("#shift_shiftdate_2i").val() + '-' + $("#shift_shiftdate_3i").val();
+      return $("#shift_numbers").load('/admin/shifts/available_shift_numbers/?date=' + dt + '&user_id=' + $("#shift_user_id").val(), function() {
+        if ($("select#shift_number option").size() === 0) {
+          return $("#new_shift .navform").hide();
+        } else {
+          return $("#new_shift .navform").show();
+        }
+      });
+    },
     mass_update: function(responsible, additional_attributes, user_id, is_modified) {
       var regex;
       regex = /cell_(\d+)_(\d+)_(\d+)/;

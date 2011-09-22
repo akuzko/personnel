@@ -1,0 +1,39 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Processed: Total
+    .inner
+      = form_tag(processed_total_admin_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            = t("activerecord.attributes.admin_user.total", :default => t("activerecord.labels.total", :default => "Total"))
+        - @events.each do |event|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = event.name
+            %td
+              = event.total
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.contentWrap

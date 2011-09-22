@@ -112,6 +112,13 @@ ctrlPressed = false
         $("#new_shift .navform").hide()
       else
         $("#new_shift .navform").show()
+  reload_shift_numbers_admin: ->
+    dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()
+    $("#shift_numbers").load '/admin/shifts/available_shift_numbers/?date='+dt+'&user_id='+$("#shift_user_id").val(), ->
+      if $("select#shift_number option").size() == 0
+        $("#new_shift .navform").hide()
+      else
+        $("#new_shift .navform").show()
   mass_update: (responsible, additional_attributes, user_id, is_modified) ->
     regex = /cell_(\d+)_(\d+)_(\d+)/
     $("td.modal_dialog.selected").each ->

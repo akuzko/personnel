@@ -80,4 +80,25 @@ class Admin::EventsController < ApplicationController
       format.xml { head :ok }
     end
   end
+
+  def processed_total
+    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_only)  if !params[:date_from]
+    params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
+    @events = Event.processed_total(params, current_admin, true)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render :xml => @events }
+    end
+  end
+
+  def processed_by_person
+    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time)  if !params[:date_from]
+    params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+    @events = Event.processed_by_person(params, current_admin)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render :xml => @events }
+    end
+  end
 end
