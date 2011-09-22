@@ -8,6 +8,10 @@ class Admin::UsersController < ApplicationController
   end
 
   def index
+    if !params[:sort_by]
+      params[:active] = "1"
+      params[:employed] = "1"
+    end
     @users = User.with_data.search_by_admin(params, params[:page], current_admin.id)
   end
 

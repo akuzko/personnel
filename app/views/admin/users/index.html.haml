@@ -34,6 +34,11 @@
             %td
               &nbsp;
             %td
+              Presently Employed
+              = check_box_tag :employed, 1, params[:employed]
+            %td
+              &nbsp;
+            %td
               = hidden_field_tag 'sort_by', params[:sort_by]
               = hidden_field_tag 'sort_order', params[:sort_order]
               %button.button{:type => "submit"}

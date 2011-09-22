@@ -162,6 +162,7 @@ class User < ActiveRecord::Base
     [:active, :department_id, :identifier].each do |field|
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
+    conditions.push("fired = 0") unless params[:employed].nil? || params[:employed] == ""
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => 15, :page => page,
              :conditions => conditions.join(' and '),
