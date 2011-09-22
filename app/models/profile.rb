@@ -1,5 +1,6 @@
 class Profile < ActiveRecord::Base
   belongs_to :user
+  has_many :logs, :as => :subject
   validates_presence_of :last_name, :first_name, :t_short_size, :on => :update
 
   def self.size_selection

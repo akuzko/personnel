@@ -6,6 +6,8 @@ class Admin < ActiveRecord::Base
 
   has_many :admin_departments, :dependent => :destroy
   has_many :departments, :through => :admin_departments, :uniq => true
+  has_many :logs_entered, :class_name => 'Log', :as => :author
+  has_many :logs, :as => :subject
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :approved, :super_user

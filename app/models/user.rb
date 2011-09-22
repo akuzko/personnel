@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   has_many :shifts
   has_many :late_comings
   has_many :norms
+  has_many :logs_entered, :class_name => 'Log', :as => :author
+  has_many :logs, :as => :subject
   has_attached_file :avatar, :styles => {
       :large => "500x500>",
       :medium => {:geometry => "200x200>", :processors => [:cropper]},

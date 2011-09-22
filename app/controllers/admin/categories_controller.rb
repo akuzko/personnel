@@ -44,6 +44,13 @@ class Admin::CategoriesController < ApplicationController
     redirect_to 'index' unless current_admin.manage_department(@category.department_id)
     respond_to do |format|
       if @category.save
+        subject_id = @category.id
+        subject_type = @category.class.name
+        body = subject_type+' '+params[:action]+"\r\n"+params[subject_type.downcase.to_sym].to_a.map{|k,v| k+":"+v}.join("; ")
+        current_admin.logs_entered.create(
+            :body => body,
+            :subject_id => subject_id,
+            :subject_type => subject_type)
         format.html { redirect_to([:admin, @category], :notice => 'Category was successfully created.') }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
       else

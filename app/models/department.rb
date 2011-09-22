@@ -6,6 +6,7 @@ class Department < ActiveRecord::Base
 
   has_many :department_permissions, :dependent => :destroy
   has_many :permissions, :through => :department_permissions, :uniq => true
+  has_many :logs, :as => :subject
 
   scope :identified, where('has_identifier = 1')
 
