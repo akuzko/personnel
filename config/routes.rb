@@ -76,7 +76,7 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :shifts, :late_comings, :permissions
+    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions
     resource :schedule do
       get 'show_users', :on => :member
     end
@@ -89,6 +89,7 @@ Personnel::Application.routes.draw do
     resources :events do
       get :processed_total, :on => :collection
       get :processed_by_person, :on => :collection
+      get :processed_by_day_of_week, :on => :collection
     end
     resources :schedule_templates do
       post 'set_visibility', :on => :member
