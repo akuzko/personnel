@@ -9,7 +9,7 @@ class Log < ActiveRecord::Base
     end
   end
 
-  def self.add_by_admin(admin, obj, params)
+  def self.add(author, obj, params)
     subject_id = obj.id
     subject_type = obj.class.name
     case subject_type
@@ -53,7 +53,7 @@ class Log < ActiveRecord::Base
              else
                'test'
            end
-    admin.logs_entered.create(
+    author.logs_entered.create(
         :body => body,
         :subject_id => subject_id,
         :subject_type => record_type)

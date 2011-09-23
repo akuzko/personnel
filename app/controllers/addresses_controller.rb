@@ -25,6 +25,7 @@ class AddressesController < ApplicationController
     @address.user_id = current_user.id
     @address.primary = 1 if Address.find_all_by_user_id_and_primary(current_user.id, 1).count == 0
     if @address.save
+      Log.add(current_user, @address, params)
       render(:update){ |p| p.call 'app.display_addresses', @address.id }
     else
       message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
@@ -37,7 +38,9 @@ class AddressesController < ApplicationController
 
   def update
     @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
+    params[:previous_attributes] = @address.attributes
     if @address.update_attributes(params[:address])
+      Log.add(current_user, @address, params)
       render(:update){ |p| p.call 'app.display_addresses', @address.id }
     else
       message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
@@ -51,6 +54,7 @@ class AddressesController < ApplicationController
   def destroy
     @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
     @address_primary = Address.find_by_user_id_and_primary(@address.user_id, 1)
+    Log.add(current_user, @address, params)
     Address.delete(@address)
     respond_to do |format|
       format.js { render() { |p| p.call 'app.display_addresses', @address_primary.id } }
@@ -66,6 +70,7 @@ class AddressesController < ApplicationController
     end
 
     @address.update_attributes({'primary' => 1})
+    Log.add(current_user, @address, params)
     respond_to do |format|
       format.js { render() { |p| p.call 'app.display_addresses', @address.id } }
     end

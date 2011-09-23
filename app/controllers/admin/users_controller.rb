@@ -87,7 +87,7 @@ class Admin::UsersController < ApplicationController
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     respond_to do |format|
       if @user.save
-        Log.add_by_admin(current_admin, @user, params)
+        Log.add(current_admin, @user, params)
         format.html { redirect_to([:admin, @user], :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
@@ -109,7 +109,7 @@ class Admin::UsersController < ApplicationController
     end
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        Log.add_by_admin(current_admin, @user, params)
+        Log.add(current_admin, @user, params)
         format.html { redirect_to @back_url }#redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -122,7 +122,7 @@ class Admin::UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
-    Log.add_by_admin(current_admin, @user, params)
+    Log.add(current_admin, @user, params)
     @user.destroy
 
     respond_to do |format|
@@ -143,7 +143,7 @@ class Admin::UsersController < ApplicationController
     data = user.send(params[:data])
     params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
-      Log.add_by_admin(current_admin, data, params)
+      Log.add(current_admin, data, params)
       render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
     else
       message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'

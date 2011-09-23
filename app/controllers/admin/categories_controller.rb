@@ -44,7 +44,7 @@ class Admin::CategoriesController < ApplicationController
     redirect_to 'index' unless current_admin.manage_department(@category.department_id)
     respond_to do |format|
       if @category.save
-        Log.add_by_admin(current_admin, @category, params)
+        Log.add(current_admin, @category, params)
         format.html { redirect_to([:admin, @category], :notice => 'Category was successfully created.') }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
       else
@@ -60,7 +60,7 @@ class Admin::CategoriesController < ApplicationController
     params[:previous_attributes] = @category.attributes
     respond_to do |format|
       if @category.update_attributes(params[:category])
-        Log.add_by_admin(current_admin, @category, params)
+        Log.add(current_admin, @category, params)
         format.html { redirect_to([:admin, @category], :notice => 'Category was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -73,7 +73,7 @@ class Admin::CategoriesController < ApplicationController
   def destroy
     @category = Category.find(params[:id])
     redirect_to 'index' unless current_admin.manage_department(@category.department_id)
-    Log.add_by_admin(current_admin, @category, params)
+    Log.add(current_admin, @category, params)
     @category.destroy
 
     respond_to do |format|

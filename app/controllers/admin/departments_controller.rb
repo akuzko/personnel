@@ -55,7 +55,7 @@ class Admin::DepartmentsController < ApplicationController
 
     respond_to do |format|
       if @department.save
-        Log.add_by_admin(current_admin, @department, params)
+        Log.add(current_admin, @department, params)
         if params[:permissions].is_a? Array
           params[:permissions].each do |d|
             DepartmentPermission.find_or_create_by_department_id_and_permission_id(@department.id,d.to_i)
@@ -91,7 +91,7 @@ class Admin::DepartmentsController < ApplicationController
 
     respond_to do |format|
       if @department.update_attributes(params[:department])
-        Log.add_by_admin(current_admin, @department, params)
+        Log.add(current_admin, @department, params)
         format.html { redirect_to([:admin, @department], :notice => 'Department was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -105,7 +105,7 @@ class Admin::DepartmentsController < ApplicationController
   # DELETE /departments/1.xml
   def destroy
     @department = Department.find(params[:id])
-    Log.add_by_admin(current_admin, @department, params)
+    Log.add(current_admin, @department, params)
     @department.destroy
 
     respond_to do |format|
