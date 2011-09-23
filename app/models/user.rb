@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
   has_many :norms
   has_many :user_permissions, :dependent => :destroy
   has_many :permissions, :through => :user_permissions, :uniq => true
+  has_many :logs_entered, :class_name => 'Log', :as => :author
+  has_many :logs, :as => :subject
+
   has_attached_file :avatar, :styles => {
       :large => "500x500>",
       :medium => {:geometry => "200x200>", :processors => [:cropper]},
@@ -164,6 +167,7 @@ class User < ActiveRecord::Base
     [:active, :department_id, :identifier].each do |field|
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
+    conditions.push("fired = 0") unless params[:employed].nil? || params[:employed] == ""
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => 15, :page => page,
              :conditions => conditions.join(' and '),

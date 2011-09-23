@@ -10,6 +10,7 @@
       #header
         %h1
           %a{:href => "/"} Zone3000 Staff
+          = image_tag(User.find(current_user.id).avatar.url(:thumb), :style => 'float:right;padding-right:13px')
         #user-navigation
           %ul.wat-cf
             %li

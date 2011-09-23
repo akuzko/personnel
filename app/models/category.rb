@@ -1,5 +1,6 @@
 class Category < ActiveRecord::Base
   belongs_to :department
+  has_many :logs, :as => :subject
   validates_presence_of :name, :department_id
   delegate :name, :to => :department, :prefix => true
 

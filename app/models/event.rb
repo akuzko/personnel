@@ -60,6 +60,23 @@ class Event < ActiveRecord::Base
     model_query.all
   end
 
+  def self.processed_by_day_of_week(params, user_id, by_admin)
+    model_query = Event.select('DAYOFWEEK(eventtime) as weekday, categories.name, COUNT(events.id) as total')
+    model_query = model_query.where('categories.reported = 1')
+    model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
+    if by_admin
+      admin = Admin.find_by_id(user_id)
+      model_query = model_query.where("categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    else
+      model_query = model_query.where('user_id = ?', user_id)
+    end
+    model_query = model_query.where("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == ""
+    model_query = model_query.where("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == ""
+    model_query = model_query.group('weekday, categories.name')
+    model_query = model_query.order('weekday, categories.name')
+    model_query.all
+  end
+
   def self.login(user_id, time, ip)
     @general_department = Department.find_or_create_by_name('General')
     @category = Category.find_or_create_by_name_and_department_id('Login', @general_department.id)

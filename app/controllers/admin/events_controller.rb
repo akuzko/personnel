@@ -101,4 +101,14 @@ class Admin::EventsController < ApplicationController
       format.xml { render :xml => @events }
     end
   end
+
+  def processed_by_day_of_week
+    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_only)  if !params[:date_from]
+    params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
+    @events = Event.processed_by_day_of_week(params, current_admin, true)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render :xml => @events }
+    end
+  end
 end

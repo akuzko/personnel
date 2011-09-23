@@ -1,5 +1,6 @@
 class Address < ActiveRecord::Base
   belongs_to :user
+  has_many :logs, :as => :subject
   validates_presence_of :street, :build, :porch, :nos, :room
   validates_numericality_of :porch, :nos
 
