@@ -1,0 +1,8 @@
+%p
+  = form_for :user, :url => admin_user_path(@user), :html => { :class => :form } do ||
+    = select_tag 'permission_ids[]', options_for_select(@department.permissions.map{|d|[d.title, d.id]}, @user.permissions.map(&:id)), { :multiple => true, :size =>@department.permissions.size }
+%p
+  %b
+.wat-cf
+  = link_to image_tag("web-app-theme/icons/page_save.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Save Changes"),
+    edit_data_admin_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_admin_user_path(@user, :data => 'contact')

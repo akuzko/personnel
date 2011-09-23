@@ -18,7 +18,7 @@
   %span.description Password Confirmation
 .group
   = f.label :departments, t("activerecord.attributes.admin.departments", :default => "Assigned Departments"), :class => :label
-  = select_tag 'departments[]', options_for_select(Department.selection, @admin.departments.map{|d|d.id}), { :multiple => true, :size =>Department.selection.size }
+  = select_tag 'departments[]', options_for_select(Department.selection, @admin.departments.map(&:id)), { :multiple => true, :size =>Department.selection.size }
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

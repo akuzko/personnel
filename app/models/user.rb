@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
   has_many :shifts
   has_many :late_comings
   has_many :norms
+  has_many :user_permissions, :dependent => :destroy
+  has_many :permissions, :through => :user_permissions, :uniq => true
   has_attached_file :avatar, :styles => {
       :large => "500x500>",
       :medium => {:geometry => "200x200>", :processors => [:cropper]},
@@ -33,7 +35,7 @@ class User < ActiveRecord::Base
   delegate :home_phone, :to => :contact, :allow_nil => false
   delegate :name, :to => :department, :prefix => true
 
-  scope :with_data, includes(:profile, :addresses, :contact)
+  scope :with_data, includes(:profile, :addresses, :contact, :permissions)
   scope :identified, where('identifier IS NOT NULL')
   scope :active, where('active = 1')
   #scope :identifiers, order('identifier ASC').select('identifier')
