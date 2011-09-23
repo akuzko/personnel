@@ -10,8 +10,6 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
-  # GET /departments
-  # GET /departments.xml
   def index
     @admins = Admin.paginate :page => params[:page], :per_page => 20, :order => 'email DESC'
 
@@ -21,8 +19,6 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
-  # GET /departments/1
-  # GET /departments/1.xml
   def show
     @admin = Admin.find(params[:id])
 
@@ -32,8 +28,6 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
-  # GET /departments/new
-  # GET /departments/new.xml
   def new
     @admin = Admin.new
 
@@ -43,13 +37,10 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
-  # GET /departments/1/edit
   def edit
     @admin = Admin.find(params[:id])
   end
 
-  # POST /departments
-  # POST /departments.xml
   def create
     @admin = Admin.new(params[:admin])
 
@@ -60,6 +51,7 @@ class Admin::AdminsController < ApplicationController
             AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
           end
         end
+        Log.add_by_admin(current_admin, @admin, params)
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully created.') }
         format.xml  { render :xml => @admin, :status => :created, :location => @admin }
       else
@@ -69,10 +61,9 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
-  # PUT /departments/1
-  # PUT /departments/1.xml
   def update
     @admin = Admin.find(params[:id])
+    params[:previous_attributes] = @admin.attributes
     old_departments = @admin.departments.map{|d|d.id.to_s}
     if old_departments != params[:departments]
       old_departments.each do |d|
@@ -91,6 +82,7 @@ class Admin::AdminsController < ApplicationController
     end
     respond_to do |format|
       if @admin.update_attributes(params[:admin])
+        Log.add_by_admin(current_admin, @admin, params)
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -100,10 +92,9 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
-  # DELETE /departments/1
-  # DELETE /departments/1.xml
   def destroy
     @admin = Admin.find(params[:id])
+    Log.add_by_admin(current_admin, @admin, params)
     @admin.destroy
 
     respond_to do |format|
