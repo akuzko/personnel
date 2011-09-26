@@ -34,4 +34,8 @@ class Admin < ActiveRecord::Base
     #departments.map{|d|d.id}.include?(department_id)
   end
 
+  def name
+    email
+  end
+
 end

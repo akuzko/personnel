@@ -30,6 +30,8 @@
             %td
               = department.created_at.to_formatted_s(:date_and_time)
             %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'Department', :subject_id => department.id)}
+              |
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_department_path(department)
               |
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_department_path(department)} |

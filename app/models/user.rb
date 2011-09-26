@@ -61,6 +61,10 @@ class User < ActiveRecord::Base
     name == ' ' ? email : name
   end
 
+  def name
+    full_name
+  end
+
   def full_address
     @address = addresses.order('addresses.primary DESC').first
     return '' if @address.nil?

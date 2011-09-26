@@ -1,0 +1,51 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Logs
+    .inner
+      = form_tag(admin_logs_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              By Author
+              = select_tag :author_type, options_for_select(Log.author_selection, params[:author_type]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = text_field_tag :author_id, params[:author_id], :class => 'text_field'
+            %td
+              &nbsp;
+            %td
+              By Subject
+              = select_tag :subject_type, options_for_select(Log.subject_selection, params[:subject_type]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = text_field_tag :subject_id, params[:subject_id], :class => 'text_field'
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th{:style => 'width:100px'}
+            = t("activerecord.attributes.log.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+          %th{:colspan => 2}= t("activerecord.attributes.log.author", :default => t("activerecord.labels.author", :default => "Author"))
+          %th{:colspan => 2}= t("activerecord.attributes.log.subject", :default => t("activerecord.labels.subject", :default => "Subject"))
+          %th= t("activerecord.attributes.log.body", :default => t("activerecord.labels.body", :default => "Body"))
+        - @logs.each do |log|
+          %tr{:class => cycle("odd", "even")}
+            %td= log.created_at.to_formatted_s(:date_and_time)
+            %td= log.author_type
+            %td= log.author
+            %td= log.subject_type
+            %td= log.subject
+            %td.last{:style => 'text-align:left'}
+              = log.body.gsub!(/\n/, '<br />').html_safe
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @logs
+- content_for :sidebar, render(:partial => 'sidebar')

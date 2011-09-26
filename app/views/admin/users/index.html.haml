@@ -76,9 +76,12 @@
             %td= user.full_address_admin
             %td= l(user.birthdate) if user.birthdate
             %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'User', :subject_id => user.id)}
+              |
               %a{:href => admin_user_path(user), :data => {'load-user' => admin_user_path(user)}}= t("web-app-theme.show", :default => "Show")
               |
-              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user)} |
+              \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user)}
+              |
               \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(user), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
       .actions-bar.wat-cf
         .actions

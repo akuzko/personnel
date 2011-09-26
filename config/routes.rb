@@ -76,7 +76,7 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions
+    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions, :logs
     resource :schedule do
       get 'show_users', :on => :member
     end

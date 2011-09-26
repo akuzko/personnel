@@ -64,6 +64,8 @@
             %td
               = category.created_at.to_formatted_s(:date_and_time)
             %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'Category', :subject_id => category.id)}
+              |
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_category_path(category)
               |
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_category_path(category)} |
