@@ -1,0 +1,48 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Working Hours
+    .inner
+      = form_tag(working_hours_admin_users_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id), params[:department_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.labels.name", :default => "Name")
+          %th
+            = t("activerecord.attributes.admin_event.count", :default => t("activerecord.labels.count", :default => "Count"))
+          %th
+            = t("activerecord.attributes.user.norm", :default => t("activerecord.labels.norm", :default => "Over"))
+        - user_name = ''
+        - @users.each do |k, v|
+          - v.each do |user|
+            - if user_name != user.full_name
+              - user_name = user.full_name
+              - n = user.norms.find_by_month_and_year(params[:date].month, params[:date].year)
+              - w = user.work_shifts_count(k)
+              %tr{:class => cycle("odd", "even")}
+                %td
+                  = user_name
+                %td
+                  = w
+                %td
+                  = w - n.workdays if !n.nil? and w - n.workdays != 0
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.contentWrap

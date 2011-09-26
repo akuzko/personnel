@@ -187,4 +187,22 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def working_hours
+    if params[:date]
+      params[:date] = Date.parse(params[:date]["year"].to_s+"-"+params[:date]["month"].to_s+"-1")
+    else
+      params[:date] = Date.current
+    end
+    @users = {}
+    ScheduleTemplate.find_all_by_year_and_month(params[:date].year, params[:date].month).each do |template|
+      if params[:department_id] && !params[:department_id].empty?
+        redirect_to 'index' unless current_admin.manage_department(params[:department_id])
+        @users[template.id] = User.order(:identifier).find_all_by_department_id_and_active(template.department_id, 1) if params[:department_id].to_i == template.department_id
+      else
+        @users[template.id] = User.order(:identifier).find_all_by_department_id_and_active(template.department_id, 1)
+      end
+    end
+    ap @users
+  end
+
 end
