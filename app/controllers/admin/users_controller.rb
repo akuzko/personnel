@@ -202,7 +202,6 @@ class Admin::UsersController < ApplicationController
         @users[template.id] = User.order(:identifier).find_all_by_department_id_and_active(template.department_id, 1)
       end
     end
-    ap @users
   end
 
 end
