@@ -1,0 +1,15 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "permissions_flash", :class => "message error"}
+%div{:style=>"margin-top:10px"}
+  = form_for user, :url => update_permissions_admin_user_path(user, :data => 'permissions'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do ||
+    - for  dp in @department.permissions
+      .group
+        = check_box_tag "permissions[]", "#{dp.id}", user.permissions.include?(dp)
+        = dp.title
+    .group.navform.wat-cf
+      %button.button{:type => "submit"}
+        = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+        = t("web-app-theme.save", :default => "Save")
+      %a.button{:href => '#', :data => {'cancel-permissions' => true}}
+        = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+        = t("web-app-theme.cancel", :default => "Cancel")
