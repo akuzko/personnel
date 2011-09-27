@@ -6,7 +6,7 @@ ctrlPressed = false
       $('[data-load-user]').live 'click', ->
         $('#sidebar').load $(this).data('load-user')
         no
-      _.each ['profile', 'address', 'contact'], (data) ->
+      _.each ['profile', 'address', 'contact', 'permissions'], (data) ->
         $("[data-edit-#{data}]").live 'click', ->
           $("#sidebar_#{data}").append('<div/>')
           $("#sidebar_#{data}").children(':last').load $(this).data("edit-#{data}"), ->

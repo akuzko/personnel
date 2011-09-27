@@ -133,6 +133,9 @@ class Admin::UsersController < ApplicationController
 
   def edit_data
     user = User.find params[:id]
+    if params[:data] == 'permissions'
+      @department = Department.find user.department_id
+    end
     redirect_to 'index' unless current_admin.manage_department(user.department_id)
     render :partial => params[:data], :object => user.send(params[:data]), :locals => {:user => user}
   end
@@ -154,6 +157,45 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def update_permissions
+    user = User.find params[:id]
+
+    redirect_to 'index' unless current_admin.manage_department(user.department_id)
+
+    old_permissions = user.permissions.map(&:id)
+
+    if params[:permissions].nil?
+      user_perms = UserPermission.find_all_by_user_id(user.id)
+      user_perms.each do |up|
+        up.destroy
+      end
+    elsif old_permissions != params[:permissions]
+      old_permissions.each do |p|
+        unless (params[:permissions].include?(p))
+            UserPermission.find_by_user_id_and_permission_id(user.id, p).destroy
+        end
+      end
+      new_permissions = params[:permissions] - old_permissions
+      new_permissions.each do |p|
+        UserPermission.find_or_create_by_user_id_and_permission_id(user.id,p.to_i)
+      end
+    end
+
+
+
+    render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
+    #if data.update_attributes(params[params[:data]])
+    #  Log.add_by_admin(current_admin, data, params)
+    #  render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
+    #else
+    #  message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
+    #  render(:update) do |page|
+    #    page['#'+params[:data]+'_flash'].parents(0).show
+    #    page['#'+params[:data]+'_flash'].html message
+    #  end
+    #end
+  end
+
   def display_addresses
     @user = User.find params[:id]
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
@@ -162,6 +204,9 @@ class Admin::UsersController < ApplicationController
 
   def display_section
     @user = User.find params[:id]
+    if params[:section] == 'permissions'
+      @department = Department.find(@user.department_id)
+    end
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     render '_show_'+params[:section]+'.html', :layout => false
   end
