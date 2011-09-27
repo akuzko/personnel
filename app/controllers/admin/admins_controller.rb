@@ -103,4 +103,12 @@ class Admin::AdminsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def settings_edit
+    @admin = Admin.find(current_admin.id)
+  end
+
+  def settings_update
+    @admin = Admin.find(current_admin.id)
+  end
 end

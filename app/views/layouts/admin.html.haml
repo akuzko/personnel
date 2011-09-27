@@ -14,6 +14,7 @@
           %ul.wat-cf
             %li
               %strong= Admin.find(current_admin.id).email unless current_admin.nil?
+            %li= link_to t("web-app-theme.settings", :default => "Settings"), settings_edit_admin_admins_path
             %li= link_to t("web-app-theme.logout", :default => "Logout"), destroy_admin_session_path, :class => 'logout'
         #main-navigation
           %ul.wat-cf.dropdown

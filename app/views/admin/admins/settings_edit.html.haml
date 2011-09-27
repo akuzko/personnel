@@ -1,0 +1,9 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.edit", :default => "Edit")
+      Settings
+    .inner
+      = form_tag settings_update_admin_admins_path, :html => { :class => :form }
+        .group
+          = text_field_tag('name', 'value')
