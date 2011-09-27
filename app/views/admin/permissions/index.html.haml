@@ -20,6 +20,8 @@
             %td
               = permission.name
             %td.last
+              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'Permission', :subject_id => permission.id)}
+              |
               #{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_permission_path(permission), :class => "modal_dialog"} |
               #{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_permission_path(permission), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
 %div.modal#overlay
