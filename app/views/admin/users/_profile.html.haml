@@ -1,4 +1,5 @@
 %div{:class => "flash", :style => 'display:none;'}
   %div{:id => "profile_flash", :class => "message error"}
+- @user = user
 = form_for profile, :url => update_data_admin_user_path(user, :data => 'profile'), :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
   = render 'shared/profile_form', :f => f

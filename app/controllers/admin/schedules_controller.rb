@@ -11,7 +11,7 @@ class Admin::SchedulesController < ApplicationController
     if params[:date]
       params[:date] = Date.parse(params[:date]["year"].to_s+"-"+params[:date]["month"].to_s+"-1")
     else
-      params[:date] = Time.now
+      params[:date] = Date.current
     end
     params[:department_id] = Department.identified.selection_by_admin(current_admin.id).first[1] unless params[:department_id]
     redirect_to admin_users_path unless current_admin.manage_department(params[:department_id].to_i)

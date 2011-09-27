@@ -13,8 +13,9 @@
     = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
     \:
   = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
-%p
-  %b
-    = t("activerecord.attributes.profile.t_short_size", :default => "T-Short Size")
-    \:
-  = @user.profile.t_short_size
+- if @user.profile.has_t_short?
+  %p
+    %b
+      = t("activerecord.attributes.profile.t_short_size", :default => "T-Short Size")
+      \:
+    = @user.profile.t_short_size

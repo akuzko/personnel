@@ -43,7 +43,6 @@ class Admin::AdminsController < ApplicationController
 
   def create
     @admin = Admin.new(params[:admin])
-
     respond_to do |format|
       if @admin.save
         if params[:departments].is_a? Array
@@ -51,7 +50,8 @@ class Admin::AdminsController < ApplicationController
             AdminDepartment.find_or_create_by_admin_id_and_department_id(@admin.id,d.to_i)
           end
         end
-        Log.add_by_admin(current_admin, @admin, params)
+        Log.add(current_admin, @admin, params)
+        Log.add_set(current_admin, @admin, params, 'departments')
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully created.') }
         format.xml  { render :xml => @admin, :status => :created, :location => @admin }
       else
@@ -82,7 +82,8 @@ class Admin::AdminsController < ApplicationController
     end
     respond_to do |format|
       if @admin.update_attributes(params[:admin])
-        Log.add_by_admin(current_admin, @admin, params)
+        Log.add(current_admin, @admin, params)
+        Log.add_set(current_admin, @admin, params, 'departments')
         format.html { redirect_to([:admin, @admin], :notice => 'Admin was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -94,7 +95,7 @@ class Admin::AdminsController < ApplicationController
 
   def destroy
     @admin = Admin.find(params[:id])
-    Log.add_by_admin(current_admin, @admin, params)
+    Log.add(current_admin, @admin, params)
     @admin.destroy
 
     respond_to do |format|

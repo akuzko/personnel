@@ -23,7 +23,7 @@
               %a{:href => admin_departments_path} Departments
             %li{:class => controller.controller_path == 'admin/categories' ? 'active' : '' }
               %a{:href => admin_categories_path} Categories
-            %li{:class => controller.controller_path == 'admin/users' ? 'active' : '' }
+            %li{:class => (controller.controller_path == 'admin/users'  && controller.action_name != 'working_hours') ? 'active' : '' }
               %a{:href => admin_users_path} Users
             %li{:class => controller.controller_path == 'admin/schedule_statuses' ? 'active' : '' }
               %a{:href => admin_schedule_statuses_path} Schedule Statuses
@@ -31,23 +31,23 @@
               %a{:href => admin_schedule_path} Schedule
             %li{:class => controller.controller_path == 'admin/shifts' ? 'active' : '' }
               %a{:href => admin_shifts_path} Shifts
-            %li{:class => controller.controller_path == 'admin/events' ? 'active' : '' }
+            %li{:class => (controller.controller_path == 'admin/events' && controller.action_name == 'index') ? 'active' : '' }
               %a{:href => admin_events_path} Events
             %li{:class => controller.controller_path == 'admin/permissions' ? 'active' : '' }
               %a{:href => admin_permissions_path} Permissions
-            %li
+            %li{:class => ((controller.controller_path == 'admin/events' && controller.action_name != 'index') || (controller.controller_path == 'admin/late_comings') || (controller.action_name == 'working_hours')) ? 'active' : '' }
               %a{:href => '#'} Reports
               %ul
-                %li
-                  %a{:href => processed_total_admin_events_path} Processed: Total
                 %li
                   %a{:href => processed_by_person_admin_events_path} Processed: By Person
                 %li
                   %a{:href => admin_late_comings_path} Late Comings
                 %li
-                  %a{:href => '#'} Working hours
+                  %a{:href => working_hours_admin_users_path} Working hours
                 %li
                   %a{:href => processed_by_day_of_week_admin_events_path} Processed: By Days Of Week
+            %li{:class => controller.controller_path == 'admin/logs' ? 'active' : '' }
+              %a{:href => admin_logs_path} Logs
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|

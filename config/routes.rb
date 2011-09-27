@@ -43,29 +43,29 @@ Personnel::Application.routes.draw do
   #   end
   devise_for :users
   resource :user do
-      get 'edit_data', :on => :member
-      put 'update_data', :on => :member
-      get 'display_addresses', :on => :member
-      get 'display_section', :on => :member
-      get 'crop', :on => :member
-      get 'find', :on => :collection
+      get :edit_data, :on => :member
+      put :update_data, :on => :member
+      get :display_addresses, :on => :member
+      get :display_section, :on => :member
+      get :crop, :on => :member
+      get :find, :on => :collection
   end
 
   resources :addresses do
-    get 'make_primary', :on => :member
+    get :make_primary, :on => :member
   end
   resources :shifts do
-    get 'close_old', :on => :collection
-    get 'check', :on => :collection
+    get :close_old, :on => :collection
+    get :check, :on => :collection
   end
   resource :schedule
   resources :events do
-    get 'start_shift', :on => :collection
-    get 'end_shift', :on => :collection
-    post 'create_shift', :on => :collection
-    get 'available_shift_numbers', :on => :collection
-    get 'new_late_coming', :on => :collection
-    post 'create_late_coming', :on => :collection
+    get :start_shift, :on => :collection
+    get :end_shift, :on => :collection
+    post :create_shift, :on => :collection
+    get :available_shift_numbers, :on => :collection
+    get :new_late_coming, :on => :collection
+    post :create_late_coming, :on => :collection
   end
   resources :late_comings
   # Sample resource route within a namespace:
@@ -76,12 +76,12 @@ Personnel::Application.routes.draw do
   #   end
   namespace :admin do
     root :to => "users#index"
-    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions
+    resources :admins, :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions, :logs
     resource :schedule do
-      get 'show_users', :on => :member
+      get :show_users, :on => :member
     end
     resources :schedule_cells do
-      put 'mass_update', :on => :collection
+      put :mass_update, :on => :collection
     end
     resources :shifts do
       get :available_shift_numbers, :on => :collection
@@ -92,30 +92,31 @@ Personnel::Application.routes.draw do
       get :processed_by_day_of_week, :on => :collection
     end
     resources :schedule_templates do
-      post 'set_visibility', :on => :member
-      get 'check_day', :on => :member
-      get 'check_month', :on => :member
-      get 'default_norms', :on => :member
-      get 'user_norms', :on => :member
-      post 'update_default_norms', :on => :member
-      post 'update_user_norms', :on => :member
+      post :set_visibility, :on => :member
+      get :check_day, :on => :member
+      get :check_month, :on => :member
+      get :default_norms, :on => :member
+      get :user_norms, :on => :member
+      post :update_default_norms, :on => :member
+      post :update_user_norms, :on => :member
     end
 
     resources :addresses do
-      get 'make_primary', :on => :member
+      get :make_primary, :on => :member
     end
 
     resources :users do
-      get 'delivery', :on => :collection
-      get 'list', :on => :collection
-      get 'find', :on => :collection
-      get 'edit_data', :on => :member
-      put 'update_data', :on => :member
-      put 'update_permissions', :on => :member
-      get 'display_addresses', :on => :member
-      get 'display_section', :on => :member
-      get 'crop', :on => :member
-      put 'update_crop', :on => :member
+      get :delivery, :on => :collection
+      get :list, :on => :collection
+      get :find, :on => :collection
+      get :edit_data, :on => :member
+      put :update_data, :on => :member
+      put :update_permissions, :on => :member
+      get :display_addresses, :on => :member
+      get :display_section, :on => :member
+      get :crop, :on => :member
+      put :update_crop, :on => :member
+      get :working_hours, :on => :collection
     end
   end
   devise_for :admins

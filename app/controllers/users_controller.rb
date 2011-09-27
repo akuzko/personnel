@@ -20,12 +20,14 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find current_user.id
+    params[:previous_attributes] = @user.attributes
     if !params[:user][:password].nil? && params[:user][:password].empty?
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
     respond_to do |format|
       if @user.update_attributes(params[:user])
+        Log.add(current_user, @user, params)
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -41,14 +43,15 @@ class UsersController < ApplicationController
 
   def edit_data
     user = User.find current_user.id
-
     render :partial => params[:data], :object => user.send(params[:data]), :locals => {:user => user}
   end
 
   def update_data
     user = User.find current_user.id
     data = user.send(params[:data])
+    params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
+      Log.add(current_admin, data, params)
       render(:update){ |p| p.call 'app.reload_section', params[:data]}
     else
       message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'

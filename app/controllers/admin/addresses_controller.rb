@@ -25,7 +25,7 @@ class Admin::AddressesController < ApplicationController
     @address = Address.new(params[:address])
     @address.primary = 1 if Address.find_all_by_user_id_and_primary(@address.user_id, 1).count == 0
     if @address.save
-      Log.add_by_admin(current_admin, @address, params)
+      Log.add(current_admin, @address, params)
       render(:update) { |p| p.call 'app.display_addresses_admin', @address.user_id, @address.id }
     else
       message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
@@ -40,7 +40,7 @@ class Admin::AddressesController < ApplicationController
     @address = Address.find(params[:id])
     params[:previous_attributes] = @address.attributes
     if @address.update_attributes(params[:address])
-      Log.add_by_admin(current_admin, @address, params)
+      Log.add(current_admin, @address, params)
       render(:update) { |p| p.call 'app.display_addresses_admin', @address.user_id, @address.id }
     else
       message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
@@ -53,7 +53,7 @@ class Admin::AddressesController < ApplicationController
 
   def destroy
     @address = Address.find(params[:id])
-    Log.add_by_admin(current_admin, @address, params)
+    Log.add(current_admin, @address, params)
     @address = Address.find_by_user_id_and_primary(@address.user_id, 1)
     Address.delete(params[:id])
     respond_to do |format|
@@ -69,7 +69,7 @@ class Admin::AddressesController < ApplicationController
       addr.update_attributes({:primary => 0})
     end
     @address.update_attributes({:primary => 1})
-    Log.add_by_admin(current_admin, @address, params)
+    Log.add(current_admin, @address, params)
     respond_to do |format|
       format.js { render() { |p| p.call 'app.display_addresses_admin', @address.user_id, @address.id } }
     end

@@ -25,8 +25,8 @@ class User < ActiveRecord::Base
 
   has_attached_file :avatar, :styles => {
       :large => "500x500>",
-      :medium => {:geometry => "200x200>", :processors => [:cropper]},
-      :thumb => {:geometry => "50x50>", :processors => [:cropper]}
+      :medium => {:geometry => "200x200", :processors => [:cropper]},
+      :thumb => {:geometry => "50x50", :processors => [:cropper]}
   }
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :reprocess_avatar, :if => :cropping?
@@ -59,6 +59,10 @@ class User < ActiveRecord::Base
   def full_name
     name = [profile.last_name, profile.first_name] * ' '
     name == ' ' ? email : name
+  end
+
+  def name
+    full_name
   end
 
   def full_address
