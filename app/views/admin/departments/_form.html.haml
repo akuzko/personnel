@@ -11,7 +11,19 @@
   %span.description Does the department offer T-shorts
 .group
   = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Permissions"), :class => :label
-  = select_tag 'permissions[]', options_for_select(Permission.selection, @department.permissions.map{|d|d.id}), { :multiple => true, :size =>Permission.selection.size }
+  %br
+  - k = 0
+  - for  dp in Permission.all
+    - k = 0 if (k += 1) == 4
+    - if Permission.all.last == dp
+      %div{:style => "width:300px"}
+        = check_box_tag "permissions[]", "#{dp.id}", @department.permissions.include?(dp)
+        = dp.name
+    - else
+      %div{:style => "width:300px; float:left"}
+        = check_box_tag "permissions[]", "#{dp.id}", @department.permissions.include?(dp)
+        = dp.name
+
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
