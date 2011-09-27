@@ -5,6 +5,8 @@ class Permission < ActiveRecord::Base
   has_many :user_permissions, :dependent => :destroy
   has_many :users, :through => :user_permissions, :uniq => true
 
+  has_many :logs, :as => :subject
+
   validates_presence_of :name
 
   def self.selection

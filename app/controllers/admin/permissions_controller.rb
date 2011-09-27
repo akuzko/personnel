@@ -25,6 +25,7 @@ class Admin::PermissionsController < ApplicationController
     @permission = Permission.new(params[:permission])
 
     if @permission.save
+      Log.add(current_admin, @permission, params)
       render(:update) do |page|
         page["#overlay"].dialog("close")
         page.call 'app.reload'
@@ -45,8 +46,9 @@ class Admin::PermissionsController < ApplicationController
 
   def update
     @permission = Permission.find(params[:id])
-
+    params[:previous_attributes] = @permission.attributes
     if @permission.update_attributes(params[:permission])
+      Log.add(current_admin, @permission, params)
       render(:update) do |page|
         page["#overlay"].dialog("close")
         page.call 'app.reload'
@@ -62,6 +64,7 @@ class Admin::PermissionsController < ApplicationController
 
   def destroy
     @late_coming = Permission.find(params[:id])
+    Log.add(current_admin, @permission, params)
     @late_coming.destroy
 
     respond_to do |format|
