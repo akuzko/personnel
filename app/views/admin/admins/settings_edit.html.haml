@@ -4,6 +4,16 @@
       = t("web-app-theme.edit", :default => "Edit")
       Settings
     .inner
-      = form_tag settings_update_admin_admins_path, :html => { :class => :form }
-        .group
-          = text_field_tag('name', 'value')
+      = form_tag(settings_update_admin_admins_path, :method => :put, :html => { :class => :form }) do
+        - AdminSetting.selection.each do |key|
+          .group
+            = key
+            = text_field_tag "settings[#{key}]", @admin.admin_settings.find_or_create_by_key(key).value, :class => 'text_field'
+        %br
+        .group.navform.wat-cf
+          %button.button{:type => "submit"}
+            = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+            = t("web-app-theme.save", :default => "Save")
+          %span.text_button_padding= t("web-app-theme.or", :default => "or")
+          = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}") + t("web-app-theme.cancel", :default => "Cancel"), admin_admins_path, :class => "button"
+- content_for :sidebar, render(:partial => 'sidebar')

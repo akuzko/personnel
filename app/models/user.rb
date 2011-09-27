@@ -139,7 +139,7 @@ class User < ActiveRecord::Base
     create_contact
   end
 
-  def self.search(params, page)
+  def self.search(params)
     params[:sort_by] ||= :full_name
     sort_by = {
         :identifier => '`users`.identifier',
@@ -153,12 +153,12 @@ class User < ActiveRecord::Base
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
-    paginate :per_page => 15, :page => page,
+    paginate :per_page => 15, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => sort_by[params[:sort_by].to_sym]
   end
 
-  def self.search_by_admin(params, page, admin_id)
+  def self.search_by_admin(params, admin_id)
     params[:sort_by] ||= :full_name
     sort_by = {
         :identifier => '`users`.identifier',
@@ -173,7 +173,7 @@ class User < ActiveRecord::Base
     end
     conditions.push("fired = 0") unless params[:employed].nil? || params[:employed] == ""
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
-    paginate :per_page => 15, :page => page,
+    paginate :per_page => params[:per_page], :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => sort_by[params[:sort_by].to_sym]
   end

@@ -10,9 +10,10 @@ class Admin::LateComingsController < ApplicationController
   def index
     params[:date_from] = Date.current.to_formatted_s(:date_only)  if !params[:date_from]
     params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
 
-
-    @late_comings = LateComing.joins('JOIN users ON late_comings.user_id = users.id').joins('JOIN profiles ON profiles.user_id = users.id').joins('JOIN shifts ON late_comings.shift_id = shifts.id').search(params, params[:page], current_admin.id)
+    @late_comings = LateComing.joins('JOIN users ON late_comings.user_id = users.id').joins('JOIN profiles ON profiles.user_id = users.id').joins('JOIN shifts ON late_comings.shift_id = shifts.id').search(params, current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb

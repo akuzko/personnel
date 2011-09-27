@@ -11,7 +11,9 @@ class Admin::AdminsController < ApplicationController
   end
 
   def index
-    @admins = Admin.paginate :page => params[:page], :per_page => 20, :order => 'email DESC'
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @admins = Admin.paginate :page => params[:page], :per_page => params[:per_page], :order => 'email DESC'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -110,5 +112,9 @@ class Admin::AdminsController < ApplicationController
 
   def settings_update
     @admin = Admin.find(current_admin.id)
+    params[:settings].keys.each do |key|
+      @admin.admin_settings.find_or_create_by_key(key).update_attributes({:value => params[:settings][key]})
+    end
+    redirect_to([:admin, @admin], :notice => 'Settings were successfully updated.')
   end
 end

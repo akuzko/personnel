@@ -12,11 +12,15 @@ class Admin::UsersController < ApplicationController
       params[:active] = "1"
       params[:employed] = "1"
     end
-    @users = User.with_data.search_by_admin(params, params[:page], current_admin.id)
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @users = User.with_data.search_by_admin(params, current_admin.id)
   end
 
   def list
-    @users = User.with_data.search_by_admin(params, params[:page], current_admin.id)
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @users = User.with_data.search_by_admin(params, current_admin.id)
     render :layout => 'mobile'
   end
 

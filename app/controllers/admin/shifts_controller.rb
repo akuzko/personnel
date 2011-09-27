@@ -10,7 +10,9 @@ class Admin::ShiftsController < ApplicationController
   def index
     params[:date_from] = Date.current.to_formatted_s(:date_only)  if !params[:date_from]
     params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
-    @shifts = Shift.joins('JOIN users ON shifts.user_id = users.id').search(params, params[:page], current_admin.id)
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @shifts = Shift.joins('JOIN users ON shifts.user_id = users.id').search(params, current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb

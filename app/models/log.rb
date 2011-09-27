@@ -31,7 +31,7 @@ class Log < ActiveRecord::Base
     [:subject_id, :subject_type, :author_id, :author_type].each do |field|
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
-    paginate :per_page => 15, :page => params[:page],
+    paginate :per_page => params[:per_page], :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => 'created_at DESC'
   end

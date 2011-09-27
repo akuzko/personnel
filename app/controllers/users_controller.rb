@@ -74,7 +74,7 @@ class UsersController < ApplicationController
 
   def find
     @user = User.find current_user.id
-    @users = User.with_data.active.search(params, params[:page])
+    @users = User.with_data.active.search(params)
   end
 
   def crop

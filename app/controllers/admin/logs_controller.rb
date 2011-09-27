@@ -11,6 +11,8 @@ class Admin::LogsController < ApplicationController
   end
 
   def index
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
     @logs = Log.search(params)
   end
 end

@@ -8,7 +8,9 @@ class Admin::CategoriesController < ApplicationController
   end
 
   def index
-    @categories = Category.search(params, params[:page], current_admin.id)
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @categories = Category.search(params, current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb

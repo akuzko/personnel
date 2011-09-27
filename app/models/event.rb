@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
 
   scope :identified, where('identifier IS NOT NULL')
 
-  def self.search(params, page, admin_id)
+  def self.search(params, admin_id)
     params[:sort_by] ||= :eventtime
 
     admin = Admin.find_by_id(admin_id)
@@ -18,7 +18,7 @@ class Event < ActiveRecord::Base
     conditions.push("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
     conditions.push("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
 
-    paginate :per_page => 15, :page => page,
+    paginate :per_page => params[:per_page], :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => params[:sort_by]
   end

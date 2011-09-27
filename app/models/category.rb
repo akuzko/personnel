@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
   validates_presence_of :name, :department_id
   delegate :name, :to => :department, :prefix => true
 
-  def self.search(params, page, admin_id)
+  def self.search(params, admin_id)
     params[:sort_by] ||= :name
     admin = Admin.find_by_id(admin_id)
     conditions = []
@@ -13,7 +13,7 @@ class Category < ActiveRecord::Base
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
     conditions.push("name LIKE '%#{params[:name]}%'") unless params[:name].nil? || params[:name] == ""
-    paginate :per_page => 15, :page => page,
+    paginate :per_page => params[:per_page], :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => params[:sort_by]
   end

@@ -13,7 +13,9 @@ class Admin::DepartmentsController < ApplicationController
   # GET /departments
   # GET /departments.xml
   def index
-    @departments = Department.paginate :page => params[:page], :order => 'name DESC'
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @departments = Department.paginate :page => params[:page], :per_page => params[:per_page], :order => 'name DESC'
 
     respond_to do |format|
       format.html # index.html.erb

@@ -10,9 +10,10 @@ class Admin::EventsController < ApplicationController
   def index
     params[:date_from] = (DateTime.current - 2.hour).to_formatted_s(:date_and_time)  if !params[:date_from]
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
 
-
-    @events = Event.joins('JOIN users ON events.user_id = users.id').search(params, params[:page], current_admin.id)
+    @events = Event.joins('JOIN users ON events.user_id = users.id').search(params, current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb
