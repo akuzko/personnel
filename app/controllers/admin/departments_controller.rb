@@ -82,7 +82,8 @@ class Admin::DepartmentsController < ApplicationController
         unless (params[:permissions].is_a?(Array) && params[:permissions].include?(d))
           users = User.find_all_by_department_id @department.id
           users.each do |u|
-            UserPermission.find_by_user_id_and_permission_id(u.id, d.to_i).destroy
+            up = UserPermission.find_by_user_id_and_permission_id(u.id, d.to_i)
+            up.destroy unless up.nil?
           end
           DepartmentPermission.find_by_department_id_and_permission_id(@department.id,d.to_i).destroy
         end
