@@ -1,8 +1,13 @@
 %p
-  = form_for :user, :url => admin_user_path(@user), :html => { :class => :form } do ||
-    = select_tag 'permission_ids[]', options_for_select(@department.permissions.map{|d|[d.title, d.id]}, @user.permissions.map(&:id)), { :multiple => true, :size =>@department.permissions.size }
+  - @department.permissions.each do |dp|
+    %p
+      - if @user.permissions.map(&:id).include?(dp.id)
+        = image_tag("web-app-theme/icons/accept.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      - else
+        = image_tag("web-app-theme/icons/cancel.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      %b
+        = dp.title
 %p
-  %b
-.wat-cf
-  = link_to image_tag("web-app-theme/icons/page_save.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Save Changes"),
-    edit_data_admin_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_admin_user_path(@user, :data => 'contact')
+  .wat-cf
+    = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+      edit_data_admin_user_path(@user, :data => 'permissions'), :class => "button", 'data-edit-permissions' => edit_data_admin_user_path(@user, :data => 'permissions')

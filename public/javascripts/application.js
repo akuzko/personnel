@@ -10,7 +10,7 @@
           $('#sidebar').load($(this).data('load-user'));
           return false;
         });
-        _.each(['profile', 'address', 'contact'], function(data) {
+        _.each(['profile', 'address', 'contact', 'permissions'], function(data) {
           $("[data-edit-" + data + "]").live('click', function() {
             $("#sidebar_" + data).append('<div/>');
             $("#sidebar_" + data).children(':last').load($(this).data("edit-" + data), function() {

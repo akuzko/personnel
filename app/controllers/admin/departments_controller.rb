@@ -79,7 +79,13 @@ class Admin::DepartmentsController < ApplicationController
     old_permissions = @department.permissions.map{|d|d.id.to_s}
     if old_permissions != params[:permissions]
       old_permissions.each do |d|
-        DepartmentPermission.find_by_department_id_and_permission_id(@department.id,d.to_i).destroy unless (params[:permissions].is_a?(Array) && params[:permissions].include?(d))
+        unless (params[:permissions].is_a?(Array) && params[:permissions].include?(d))
+          users = User.find_all_by_department_id @department.id
+          users.each do |u|
+            UserPermission.find_by_user_id_and_permission_id(u.id, d.to_i).destroy
+          end
+          DepartmentPermission.find_by_department_id_and_permission_id(@department.id,d.to_i).destroy
+        end
       end
       if params[:permissions]
         new_permissions = params[:permissions] - old_permissions

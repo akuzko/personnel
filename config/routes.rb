@@ -111,6 +111,7 @@ Personnel::Application.routes.draw do
       get 'find', :on => :collection
       get 'edit_data', :on => :member
       put 'update_data', :on => :member
+      put 'update_permissions', :on => :member
       get 'display_addresses', :on => :member
       get 'display_section', :on => :member
       get 'crop', :on => :member
