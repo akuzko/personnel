@@ -184,7 +184,7 @@ class Admin::UsersController < ApplicationController
         UserPermission.find_or_create_by_user_id_and_permission_id(user.id,p.to_i)
       end
     end
-
+    Log.add_set(current_admin, user, params, 'permissions')
 
 
     render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}

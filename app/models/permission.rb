@@ -5,11 +5,11 @@ class Permission < ActiveRecord::Base
   has_many :user_permissions, :dependent => :destroy
   has_many :users, :through => :user_permissions, :uniq => true
 
-  validates_presence_of :title
+  validates_presence_of :name
 
   def self.selection
-    order(:title).all.map do |d|
-      [d.title, d.id]
+    order(:name).all.map do |d|
+      [d.name, d.id]
     end
   end
 

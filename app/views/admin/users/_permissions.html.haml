@@ -5,7 +5,7 @@
     - for  dp in @department.permissions
       .group
         = check_box_tag "permissions[]", "#{dp.id}", user.permissions.include?(dp)
-        = dp.title
+        = dp.name
     .group.navform.wat-cf
       %button.button{:type => "submit"}
         = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
