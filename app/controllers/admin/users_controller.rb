@@ -18,9 +18,8 @@ class Admin::UsersController < ApplicationController
   end
 
   def list
-    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
-    params[:per_page] ||= 15
-    @users = User.with_data.search_by_admin(params, current_admin.id)
+    users = User.where("identifier != '' AND active = 1").order("identifier")
+    @u = users.to_a.in_groups_of(2)
     render :layout => 'mobile'
   end
 
