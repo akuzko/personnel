@@ -7,7 +7,7 @@ class Admin::ScheduleShiftsController < ApplicationController
     @shift = ScheduleShift.find(params[:id])
     @template = ScheduleTemplate.find @shift.schedule_template_id
     @days_in_month = Time.days_in_month(@template.month, @template.year)
-    @shift_leader_color = ScheduleStatus.find_by_name('shift_leader').color
+    @shift_leader_color = ScheduleStatus.find_by_name('Shift Leader').color
     render :partial => 'shared/shift_show_admin', :layout => false, :locals => {:shift => @shift}
   end
 

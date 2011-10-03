@@ -96,7 +96,11 @@ class Log < ActiveRecord::Base
       else
         record_type = subject_type
     end
-    body = '<b>'+subject_type+' '+set_name+'</b>'+"\r\n"+params[set_name.to_sym].map{ |id| set_name.capitalize.singularize.constantize.find_by_id(id).name }.join(", ")
+    if params[set_name.to_sym]
+      body = '<b>'+subject_type+' '+set_name+'</b>'+"\r\n"+params[set_name.to_sym].map{ |id| set_name.capitalize.singularize.constantize.find_by_id(id).name }.join(", ")
+    else
+      body = '<b>'+subject_type+' '+set_name+'</b>'+"\r\n"+'empty'
+    end
     author.logs_entered.create(
         :body => body,
         :subject_id => subject_id,

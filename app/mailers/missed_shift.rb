@@ -8,7 +8,7 @@ class MissedShift < ActionMailer::Base
     @admins = admins
     mail(
       :to => admins.join(","),
-      :from => "valnech@zone3000.net",
+      :from => "Zone3000 <valnech@zone3000.net>",
       :subject => "Missed Shifts"
     )
   end

@@ -39,6 +39,11 @@
             %td
               &nbsp;
             %td
+              per page
+              = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
+            %td
+              &nbsp;
+            %td
               = hidden_field_tag 'sort_by', params[:sort_by]
               = hidden_field_tag 'sort_order', params[:sort_order]
               %button.button{:type => "submit"}
@@ -82,7 +87,7 @@
               |
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_user_path(user)}
               |
-              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(user), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_user_path(user), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to delete #{user.name} user?")}"}
       .actions-bar.wat-cf
         .actions
         = will_paginate @users

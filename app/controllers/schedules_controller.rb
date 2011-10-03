@@ -16,7 +16,7 @@ class SchedulesController < ApplicationController
     end
     @users = User.order(:identifier).find_all_by_department_id_and_active params[:department_id], 1
     @days_in_month = Time.days_in_month(@template.month, @template.year)
-    @shift_leader_color = ScheduleStatus.find_by_name('shift_leader').color
+    @shift_leader_color = ScheduleStatus.find_by_name('Shift Leader').color
     @statuses = ScheduleStatus.order(:name).all
   end
 

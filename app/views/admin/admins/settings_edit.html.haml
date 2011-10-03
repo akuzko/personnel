@@ -5,9 +5,9 @@
       Settings
     .inner
       = form_tag(settings_update_admin_admins_path, :method => :put, :html => { :class => :form }) do
-        - AdminSetting.selection.each do |key|
+        - AdminSetting.selection.each do |key,label|
           .group
-            = key
+            = label
             = text_field_tag "settings[#{key}]", @admin.admin_settings.find_or_create_by_key(key).value, :class => 'text_field'
         %br
         .group.navform.wat-cf
