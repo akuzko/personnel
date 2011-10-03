@@ -80,10 +80,14 @@
           return app.reload_shift_numbers();
         });
         $(".datetime_select").datetimepicker({
-          dateFormat: 'yy-mm-dd'
+          dateFormat: 'yy-mm-dd',
+          changeMonth: true,
+          changeYear: true
         });
         $(".date_select").datepicker({
-          dateFormat: 'yy-mm-dd'
+          dateFormat: 'yy-mm-dd',
+          changeMonth: true,
+          changeYear: true
         });
         $(window).keydown(function(evt) {
           if (evt.which === 17) {
