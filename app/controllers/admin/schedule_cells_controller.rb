@@ -21,6 +21,7 @@ class Admin::ScheduleCellsController < ApplicationController
     @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
     id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
     cell_color_default = (1..5) === @wday  ? 'ffffff' : 'FBB999'
+    cell_color_default = @shift.number == 10  ? 'eeeeee' : cell_color_default
     if params[:schedule_cell][:user_id] == ''
       @cell.destroy
       render(:update) do |page|
