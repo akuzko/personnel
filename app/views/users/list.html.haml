@@ -1,0 +1,25 @@
+%table{:style=>"border: 1px solid black; font-size:11px", :cellpadding => 0, :cellspacing => 0}
+  %tr
+    %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "ID"))
+    %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
+    %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+    %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
+    %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "ID"))
+    %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
+    %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+    %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
+
+    - @u.each do |l|
+      %tr{:style=>"border: 1px solid black"}
+      - l.each do |item|
+        - if !item.nil?
+          %td{:style=>"border: 1px solid black"}
+            %b
+              = item.identifier
+          %td{:style=>"border: 1px solid black"}
+            = item.cell1
+          %td{:style=>"border: 1px solid black"}= item.full_name
+          %td{:style=>"border: 1px solid black"}
+            - item.addresses.each do |addr|
+              = addr.street + " " + addr.build + ", " + addr.porch.to_s + "/" + addr.nos.to_s
+              %br
