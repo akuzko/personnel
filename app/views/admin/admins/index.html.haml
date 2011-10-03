@@ -47,7 +47,7 @@
             %td
               = admin.created_at.to_formatted_s(:date_and_time)
             %td.last
-              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'Admin', :subject_id => admin.id)}
+              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:author_type => 'Admin', :author_id => admin.id)}
               |
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_admin_path(admin)
               |
