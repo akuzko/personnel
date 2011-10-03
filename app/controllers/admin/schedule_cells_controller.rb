@@ -41,7 +41,7 @@ class Admin::ScheduleCellsController < ApplicationController
             page[id].css('background-color', '#'+cell_color_default)
           end
           if @cell.responsible?
-            page[id].css('color', '#'+ScheduleStatus.find_by_name('shift_leader').color)
+            page[id].css('color', '#'+ScheduleStatus.find_by_name('Shift Leader').color)
           else
             page[id].css('color', '#000000')
           end
