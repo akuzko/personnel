@@ -8,14 +8,21 @@
       = t("web-app-theme.all", :default => "All")
       Departments
     .inner
+      = form_tag(admin_departments_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
       %table.table
         %tr
           %th.first ID
-          %th
+          %th{:sort => 'name', :class => 'sortable'}
             = t("activerecord.attributes.admin_department.name", :default => t("activerecord.labels.name", :default => "Name"))
           %th
             Admins
-          %th= t("web-app-theme.created_at", :default => "Created on")
+          %th{:sort => 'created_at', :class => 'sortable'}
+            = t("web-app-theme.created_at", :default => "Created on")
           %th.last &nbsp;
         - @departments.each do |department|
           %tr{:class => cycle("odd", "even")}

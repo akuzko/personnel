@@ -49,6 +49,13 @@ shiftPressed = false
         $.get $(this).attr('href')
         no
       $("th.sortable").click ->
+        if $("#sort_by").val() == $(this).attr('sort')
+          if $("#sort_order").val() == 'ASC'
+            $("#sort_order").val('DESC')
+          else
+            $("#sort_order").val('ASC')
+        else
+          $("#sort_order").val('ASC')
         $("#sort_by").val($(this).attr('sort'))
         $("#find_form").submit()
       $(".user_select").live 'click', ->

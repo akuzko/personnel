@@ -155,7 +155,7 @@ class User < ActiveRecord::Base
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => 15, :page => params[:page],
              :conditions => conditions.join(' and '),
-             :order => sort_by[params[:sort_by].to_sym]
+             :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
   end
 
   def self.search_by_admin(params, admin_id)
@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => params[:per_page], :page => params[:page],
              :conditions => conditions.join(' and '),
-             :order => sort_by[params[:sort_by].to_sym]
+             :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
   end
 
   def clean_unused_identifier

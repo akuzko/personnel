@@ -67,6 +67,15 @@
           return false;
         });
         $("th.sortable").click(function() {
+          if ($("#sort_by").val() === $(this).attr('sort')) {
+            if ($("#sort_order").val() === 'ASC') {
+              $("#sort_order").val('DESC');
+            } else {
+              $("#sort_order").val('ASC');
+            }
+          } else {
+            $("#sort_order").val('ASC');
+          }
           $("#sort_by").val($(this).attr('sort'));
           return $("#find_form").submit();
         });
