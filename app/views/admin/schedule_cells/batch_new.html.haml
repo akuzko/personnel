@@ -1,0 +1,18 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "cell_flash", :class => "message error"}
+= form_for :cell, :url => batch_update_admin_schedule_cells_path, :method => :put, :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+  .group
+    %label.label
+      Schedule file
+    = file_field_tag :schedule
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/page_white_get.png", :alt => "#{t("web-app-theme.upload", :default => "Upload")}")
+      = t("web-app-theme.save", :default => "Upload")
+    = f.hidden_field :schedule_shift_id
+    = f.hidden_field :line
+    = f.hidden_field :day
+    = hidden_field_tag "wday", @wday
+    %a.button.close{:href => '#'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")
