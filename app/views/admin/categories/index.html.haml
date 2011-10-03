@@ -50,7 +50,7 @@
             = t("activerecord.attributes.admin_category.displayed", :default => t("activerecord.labels.name", :default => "Display"))
           %th
             = t("activerecord.attributes.admin_category.reported", :default => t("activerecord.labels.name", :default => "Report"))
-          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th= t("web-app-theme.created_at", :default => "Created on")
           %th.last &nbsp;
         - @categories.each do |category|
           %tr{:class => cycle("odd", "even")}

@@ -4,11 +4,11 @@
 .group
   = f.label :has_identifier, t("activerecord.attributes.department.has_identifier", :default => "Has identifier"), :class => :label
   = f.check_box :has_identifier, :class => 'check_box'
-  %span.description Does the members of the department have unique identifiers
+  %span.description check this box if members of the department have unique identifiers/numbers
 .group
   = f.label :has_t_short, t("activerecord.attributes.department.has_t_short", :default => "Has T-shorts"), :class => :label
   = f.check_box :has_t_short, :class => 'check_box'
-  %span.description Does the department offer T-shorts
+  %span.description check this box if the department offers T-Shirts
 .group
   = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Permissions"), :class => :label
   %br

@@ -19,7 +19,7 @@
             = t("activerecord.attributes.admin_admin.email", :default => t("activerecord.labels.email", :default => "Email"))
           %th
             Departments
-          %th= t("web-app-theme.created_at", :default => "Created at")
+          %th= t("web-app-theme.created_at", :default => "Created on")
           %th.last &nbsp;
         - @admins.each do |admin|
           %tr{:class => cycle("odd", "even")}
