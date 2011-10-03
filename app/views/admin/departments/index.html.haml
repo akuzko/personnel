@@ -35,7 +35,7 @@
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_department_path(department)
               |
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_department_path(department)} |
-              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_department_path(department), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_department_path(department), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to delete #{department.name} department?")}"}
       .actions-bar.wat-cf
         .actions
         = will_paginate @departments

@@ -83,7 +83,7 @@
               = shift.worked_min
             %td.last
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_shift_path(shift), :class => "modal_dialog"} |
-              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_shift_path(shift), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_shift_path(shift), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to delete ##{shift.number} shift?")}"}
       .actions-bar.wat-cf
         .actions
         = will_paginate @shifts

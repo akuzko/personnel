@@ -70,7 +70,7 @@
               = event.description
             %td.last
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_event_path(event), :class => "modal_dialog"} |
-              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_event_path(event), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
+              \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_event_path(event), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to delete #{event.category_name}:#{event.description} event?")}"}
       .actions-bar.wat-cf
         .actions
         = will_paginate @events
