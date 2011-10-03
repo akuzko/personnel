@@ -10,6 +10,7 @@
       - cell_font_weight = (cell.class != NilClass && (cell.is_modified? || cell.responsible?)) ? 'font-weight:bold;' : ''
       - cell_font_color = (cell.class != NilClass && cell.responsible?) ? 'color:#' + @shift_leader_color + ';' : '';
         %td.cells.modal_dialog{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color,
-        :href => new_admin_schedule_cell_path(:shift => shift, :line => line+1, :day => day+1)}
+        :href => new_admin_schedule_cell_path(:shift => shift, :line => line+1, :day => day+1),
+        :batch => batch_new_admin_schedule_cells_path(:shift => shift, :line => line+1, :day => day+1)}
           - identifier = (cell.class == NilClass || !cell.user_id?) ? ' ' : cell.user_id
           = identifier

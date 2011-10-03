@@ -1,7 +1,8 @@
 (function() {
-  var ctrlPressed;
+  var ctrlPressed, shiftPressed;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   ctrlPressed = false;
+  shiftPressed = false;
   this.app = {
     init: function() {
       return $(__bind(function() {
@@ -43,6 +44,12 @@
         $('.modal_dialog').live('click', function() {
           if (ctrlPressed) {
             $(this).toggleClass('selected');
+            return false;
+          } else if (shiftPressed) {
+            $(this).addClass('selected');
+            $("#overlay .contentWrap").load($(this).attr("batch"), function() {
+              return $("#overlay").dialog("open");
+            });
             return false;
           } else {
             $(this).addClass('selected');
@@ -87,12 +94,18 @@
         });
         $(window).keydown(function(evt) {
           if (evt.which === 17) {
-            return ctrlPressed = true;
+            ctrlPressed = true;
+          }
+          if (evt.which === 16) {
+            return shiftPressed = true;
           }
         });
         return $(window).keyup(function(evt) {
           if (evt.which === 17) {
-            return ctrlPressed = false;
+            ctrlPressed = false;
+          }
+          if (evt.which === 16) {
+            return shiftPressed = false;
           }
         });
       }, this));

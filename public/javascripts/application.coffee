@@ -1,4 +1,5 @@
 ctrlPressed = false
+shiftPressed = false
 @app =
   init: ->
     $ =>
@@ -32,6 +33,11 @@ ctrlPressed = false
         if ctrlPressed
           $(this).toggleClass('selected')
           no
+        else if shiftPressed
+          $(this).addClass('selected')
+          $("#overlay .contentWrap").load $(this).attr("batch"), ->
+            $("#overlay").dialog("open")
+          no
         else
           $(this).addClass('selected')
           $("#overlay .contentWrap").load $(this).attr("href"), ->
@@ -59,12 +65,18 @@ ctrlPressed = false
         dateFormat: 'yy-mm-dd'
       $(".date_select").datepicker
         dateFormat: 'yy-mm-dd'
+
       $(window).keydown (evt) ->
         if (evt.which == 17)
           ctrlPressed = true
+        if (evt.which == 16)
+          shiftPressed = true
+
       $(window).keyup (evt) ->
         if (evt.which == 17)
           ctrlPressed = false
+        if (evt.which == 16)
+          shiftPressed = false
 
 
   flashFade: ->

@@ -86,6 +86,8 @@ Personnel::Application.routes.draw do
     end
     resources :schedule_cells do
       put :mass_update, :on => :collection
+      get :batch_new, :on => :collection
+      put :batch_update, :on => :collection
     end
     resources :shifts do
       get :available_shift_numbers, :on => :collection

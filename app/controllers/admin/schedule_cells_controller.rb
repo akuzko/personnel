@@ -65,6 +65,21 @@ class Admin::ScheduleCellsController < ApplicationController
     end
   end
 
+  def batch_new
+    @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(params[:shift], params[:line], params[:day])
+    @shift = ScheduleShift.find params[:shift]
+    @template = ScheduleTemplate.find @shift.schedule_template_id
+    @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
+    render :layout => false
+  end
+
+  def batch_update
+    render(:update) do |page|
+      #page.call 'app.mass_update', params[:schedule_cell][:responsible], params[:schedule_cell][:additional_attributes], params[:schedule_cell][:user_id], params[:schedule_cell][:is_modified]
+      page["#overlay"].dialog("close")
+    end
+  end
+
   def destroy
     ScheduleCell.delete(params[:id])
     respond_to do |format|
