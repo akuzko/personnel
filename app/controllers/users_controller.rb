@@ -51,7 +51,7 @@ class UsersController < ApplicationController
     data = user.send(params[:data])
     params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
-      Log.add(current_admin, data, params)
+      Log.add(current_user, data, params)
       render(:update){ |p| p.call 'app.reload_section', params[:data]}
     else
       message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
