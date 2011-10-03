@@ -49,6 +49,7 @@ Personnel::Application.routes.draw do
       get :display_section, :on => :member
       get :crop, :on => :member
       get :find, :on => :collection
+      get :list, :on => :collection
   end
 
   resources :addresses do

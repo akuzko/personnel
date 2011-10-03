@@ -62,6 +62,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def list
+    users = User.where("identifier != '' AND active = 1").order("identifier")
+    @u = users.to_a.in_groups_of(2)
+    render :layout => 'mobile'
+  end
+
   def display_addresses
     @user = User.find current_user.id
     render '_show_addresses.html', :layout => false
