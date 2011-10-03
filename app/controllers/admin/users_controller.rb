@@ -65,8 +65,8 @@ class Admin::UsersController < ApplicationController
 
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     respond_to do |format|
-      format.html{ render :partial => 'show' if request.xhr? }
-      format.xml{ render :xml => @user }
+      format.html { render :partial => 'show' if request.xhr? }
+      format.xml { render :xml => @user }
     end
   end
 
@@ -75,7 +75,7 @@ class Admin::UsersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @user }
+      format.xml { render :xml => @user }
     end
   end
 
@@ -93,10 +93,10 @@ class Admin::UsersController < ApplicationController
       if @user.save
         Log.add(current_admin, @user, params)
         format.html { redirect_to([:admin, @user], :notice => 'User was successfully created.') }
-        format.xml  { render :xml => @user, :status => :created, :location => @user }
+        format.xml { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -114,11 +114,11 @@ class Admin::UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         Log.add(current_admin, @user, params)
-        format.html { redirect_to @back_url }#redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
-        format.xml  { head :ok }
+        format.html { redirect_to @back_url } #redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -131,7 +131,7 @@ class Admin::UsersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(admin_users_url, :notice => 'User was successfully deleted.') }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 
@@ -151,7 +151,7 @@ class Admin::UsersController < ApplicationController
     params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
       Log.add(current_admin, data, params)
-      render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
+      render(:update) { |p| p.call 'app.reload_section_admin', params[:id], params[:data] }
     else
       message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|
@@ -176,18 +176,18 @@ class Admin::UsersController < ApplicationController
     elsif old_permissions != params[:permissions]
       old_permissions.each do |p|
         unless (params[:permissions].include?(p))
-            UserPermission.find_by_user_id_and_permission_id(user.id, p).destroy
+          UserPermission.find_by_user_id_and_permission_id(user.id, p).destroy
         end
       end
       new_permissions = params[:permissions] - old_permissions
       new_permissions.each do |p|
-        UserPermission.find_or_create_by_user_id_and_permission_id(user.id,p.to_i)
+        UserPermission.find_or_create_by_user_id_and_permission_id(user.id, p.to_i)
       end
     end
     Log.add_set(current_admin, user, params, 'permissions')
 
 
-    render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
+    render(:update) { |p| p.call 'app.reload_section_admin', params[:id], params[:data] }
     #if data.update_attributes(params[params[:data]])
     #  Log.add_by_admin(current_admin, data, params)
     #  render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
@@ -228,10 +228,10 @@ class Admin::UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to(admin_user_url, :notice => 'User\'s picture was successfully updated.') }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "crop" }
-        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -251,6 +251,13 @@ class Admin::UsersController < ApplicationController
         @users[template.id] = User.order(:identifier).find_all_by_department_id_and_active(template.department_id, 1)
       end
     end
+  end
+
+  def t_shorts
+    params[:active] = "1"
+    params[:employed] = "1"
+    params[:sort_by] = :department_id
+    @users = User.t_shorts(current_admin.id)
   end
 
 end

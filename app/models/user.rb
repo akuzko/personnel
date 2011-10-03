@@ -163,7 +163,8 @@ class User < ActiveRecord::Base
     sort_by = {
         :identifier => '`users`.identifier',
         :active => '`users`.active',
-        :full_name => '`profiles`.last_name'
+        :full_name => '`profiles`.last_name',
+        :department_id => 'department_id'
     }
     admin = Admin.find_by_id(admin_id)
     conditions = []
@@ -206,5 +207,19 @@ class User < ActiveRecord::Base
 
   def reprocess_avatar
     avatar.reprocess!
+  end
+
+  def self.t_shorts(admin_id)
+    model_query = Profile.select('`profiles`.t_short_size, `departments`.name, COUNT(`users`.id) as total')
+    model_query = model_query.where("`profiles`.t_short_size != ''")
+    model_query = model_query.joins('JOIN `users` ON `profiles`.user_id = `users`.id')
+    model_query = model_query.joins('JOIN `departments` ON `users`.department_id = `departments`.id')
+    if admin_id != 0
+      admin = Admin.find_by_id(admin_id)
+      model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    end
+    model_query = model_query.group('`departments`.name, `profiles`.t_short_size')
+    model_query = model_query.order('`departments`.name', '`profiles`.t_short_size')
+    model_query.all
   end
 end

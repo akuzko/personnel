@@ -124,6 +124,7 @@ Personnel::Application.routes.draw do
       get :crop, :on => :member
       put :update_crop, :on => :member
       get :working_hours, :on => :collection
+      get :t_shorts, :on => :collection
     end
   end
   devise_for :admins
