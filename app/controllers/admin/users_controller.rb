@@ -81,6 +81,7 @@ class Admin::UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @department = Department.find @user.department_id
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     @back_url = request.env["HTTP_REFERER"]
   end
