@@ -4,6 +4,25 @@
       = t("web-app-theme.all", :default => "All")
       Late Comings
     .inner
+      = form_tag(late_comings_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag :date_from, params[:date_from], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag :date_to, params[:date_to], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
           %th
