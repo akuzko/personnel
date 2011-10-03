@@ -40,6 +40,11 @@
             %td
               &nbsp;
             %td
+              per page
+              = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
+            %td
+              &nbsp;
+            %td
               = hidden_field_tag 'sort_by', params[:sort_by]
               = hidden_field_tag 'sort_order', params[:sort_order]
               %button.button{:type => "submit"}
