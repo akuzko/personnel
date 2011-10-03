@@ -71,15 +71,15 @@ class Admin::ScheduleTemplatesController < ApplicationController
   end
 
   def user_norms
-    @norms = Norm.find_by_user_id params[:id]
     @user = User.find params[:id]
     @template = ScheduleTemplate.find params[:tmpl_id]
+    @norms = Norm.find_by_user_id_and_year_and_month params[:id], @template.year, @template.month
     render :layout => false
   end
 
   def update_user_norms
     template = ScheduleTemplate.find params[:id]
-    norm = Norm.find_by_user_id params[:norm][:user_id]
+    norm = Norm.find_by_user_id_and_year_and_month params[:norm][:user_id], template.year, template.month
     norm.update_attributes(params[:norm])
     month_days = Time.days_in_month(template.month, template.year)
     days = params[:norm][:weekend].to_i + params[:norm][:workdays].to_i

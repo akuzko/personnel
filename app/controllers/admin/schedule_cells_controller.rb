@@ -74,10 +74,21 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def batch_update
-    render(:update) do |page|
-      #page.call 'app.mass_update', params[:schedule_cell][:responsible], params[:schedule_cell][:additional_attributes], params[:schedule_cell][:user_id], params[:schedule_cell][:is_modified]
-      page["#overlay"].dialog("close")
+    path = Rails.root.join('public', 'uploads', params[:schedule].original_filename)
+
+    File.open(path, 'w') do |file|
+      file.write(params[:schedule].read)
     end
+
+    aFile = File.open(path) if File::exists?(path)
+    if aFile
+      content = aFile.sysread(1000)
+      puts content
+    else
+      puts "Unable to open file!"
+    end
+
+    render :layout => false
   end
 
   def destroy
