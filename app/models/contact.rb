@@ -6,4 +6,12 @@ class Contact < ActiveRecord::Base
   validates_numericality_of :cell1, :home_phone, :on => :update
   validates_format_of :email,
     :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :message => 'incorrect email format', :on => :update
+
+  before_validation :replace_na_home_phone
+
+  private
+
+  def replace_na_home_phone
+    self.home_phone = 0 if self.home_phone == 'n/a'
+  end
 end

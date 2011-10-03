@@ -22,4 +22,4 @@
   %b
     = t("activerecord.attributes.contact.home_phone", :default => "Home Phone")
     \:
-  = @user.contact.home_phone
+  = @user.contact.home_phone == '0' ? 'n/a' : @user.contact.home_phone
