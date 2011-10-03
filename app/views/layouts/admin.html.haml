@@ -35,7 +35,7 @@
             %li{:class => (controller.controller_path == 'admin/events' && controller.action_name == 'index') ? 'active' : '' }
               %a{:href => admin_events_path} Events
             %li{:class => controller.controller_path == 'admin/permissions' ? 'active' : '' }
-              %a{:href => admin_permissions_path} Permissions
+              %a{:href => admin_permissions_path} Check List
             %li{:class => ((controller.controller_path == 'admin/events' && controller.action_name != 'index') || (controller.controller_path == 'admin/late_comings') || (controller.action_name == 'working_hours')) ? 'active' : '' }
               %a{:href => '#'} Reports
               %ul

@@ -63,9 +63,9 @@ class Admin::PermissionsController < ApplicationController
   end
 
   def destroy
-    @late_coming = Permission.find(params[:id])
+    @permission = Permission.find(params[:id])
     Log.add(current_admin, @permission, params)
-    @late_coming.destroy
+    @permission.destroy
 
     respond_to do |format|
       format.html { redirect_to :back }
