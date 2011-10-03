@@ -16,12 +16,18 @@
   = f.label :confirm_password, t("activerecord.attributes.admin.confirm_password", :default => "Confirm Password"), :class => :label
   = f.password_field :password_confirmation, :class => 'text_field'
   %span.description Password Confirmation
+-#.group
+-#  = f.label :departments, t("activerecord.attributes.admin.departments", :default => "Assigned Departments"), :class => :label
+-#  = select_tag 'departments[]', options_for_select(Department.selection, @admin.departments.map(&:id)), { :multiple => true, :size =>Department.selection.size }
 .group
   = f.label :departments, t("activerecord.attributes.admin.departments", :default => "Assigned Departments"), :class => :label
-  = select_tag 'departments[]', options_for_select(Department.selection, @admin.departments.map(&:id)), { :multiple => true, :size =>Department.selection.size }
+  - Department.selection.each do |d|
+    = check_box_tag "departments[]", d.last, @admin.departments.map(&:id).include?(d.last)
+    = d.first
+    %br
+
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
     = t("web-app-theme.save", :default => "Save")
-  %span.text_button_padding= t("web-app-theme.or", :default => "or")
   = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}") + t("web-app-theme.cancel", :default => "Cancel"), admin_admins_path, :class => "button"
