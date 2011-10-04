@@ -21,7 +21,7 @@
           %ul.wat-cf
             %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to "Profile", user_path
             %li= link_to t("personnel.picture", :default => "Crop Picture"), crop_user_path
-            %li= link_to t("personnel.list", :default => "Find"), find_user_path
+            %li= link_to t("personnel.list", :default => "Find People"), find_user_path
             %li= link_to t("personnel.schedule", :default => "Schedule"), schedule_path
             %li= link_to t("personnel.timereport", :default => "TimeReport"), events_path
             %li= link_to t("personnel.late_comings", :default => "Late Comings"), late_comings_path
