@@ -253,11 +253,11 @@ class Admin::UsersController < ApplicationController
     end
   end
 
-  def t_shorts
+  def t_shirts
     params[:active] = "1"
     params[:employed] = "1"
     params[:sort_by] = :department_id
-    @users = User.t_shorts(current_admin.id)
+    @users = User.t_shirts(current_admin.id)
   end
 
 end

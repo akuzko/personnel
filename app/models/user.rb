@@ -209,17 +209,17 @@ class User < ActiveRecord::Base
     avatar.reprocess!
   end
 
-  def self.t_shorts(admin_id)
-    model_query = Profile.select('`profiles`.t_short_size, `departments`.name, COUNT(`users`.id) as total')
-    model_query = model_query.where("`profiles`.t_short_size != ''")
+  def self.t_shirts(admin_id)
+    model_query = Profile.select('`profiles`.t_shirt_size, `departments`.name, COUNT(`users`.id) as total')
+    model_query = model_query.where("`profiles`.t_shirt_size != ''")
     model_query = model_query.joins('JOIN `users` ON `profiles`.user_id = `users`.id')
     model_query = model_query.joins('JOIN `departments` ON `users`.department_id = `departments`.id')
     if admin_id != 0
       admin = Admin.find_by_id(admin_id)
       model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     end
-    model_query = model_query.group('`departments`.name, `profiles`.t_short_size')
-    model_query = model_query.order('`departments`.name', '`profiles`.t_short_size')
+    model_query = model_query.group('`departments`.name, `profiles`.t_shirt_size')
+    model_query = model_query.order('`departments`.name', '`profiles`.t_shirt_size')
     model_query.all
   end
 end

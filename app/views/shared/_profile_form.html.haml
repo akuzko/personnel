@@ -9,10 +9,10 @@
 .group
   = f.label :birthdate, t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate")), :class => :label
   = f.date_select :birthdate, :include_blank => true, :end_year => Time.now.year - 60, :start_year => Time.now.year - 13
-- if @user.profile.has_t_short?
+- if @user.profile.has_t_shirt?
   .group
-    = f.label :t_short_size, t("activerecord.attributes.profile.t_short_size", :default => "T-Short Size"), :class => :label
-    = f.select :t_short_size, Profile.size_selection, :include_blank => true
+    = f.label :t_shirt_size, t("activerecord.attributes.profile.t_shirt_size", :default => "T-Shirt Size"), :class => :label
+    = f.select :t_shirt_size, Profile.size_selection, :include_blank => true
     %span.description= t("personnel.Required")
 .group.navform.wat-cf
   %button.button{:type => "submit"}
