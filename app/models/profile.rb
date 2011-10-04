@@ -5,7 +5,7 @@ class Profile < ActiveRecord::Base
   validates_presence_of :t_short_size, :if => :has_t_short?, :on => :update
 
   def self.size_selection
-    ['XS men','S men', 'L men', 'XL men', 'XXL men', 'XXXL men','XS women','S women', 'L women', 'XL women', 'XXL women', 'XXXL women'].map do |d|
+    ['S men', 'L men', 'XL men', 'XXL men', 'XXXL men','XS women','S women', 'L women', 'XL women', 'XXL women'].map do |d|
       [d, d]
     end
   end
