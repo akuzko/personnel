@@ -47,7 +47,7 @@ module Personnel
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
 
-    config.action_mailer.default_url_options = {:host => 'staff.valnech.sv'}
+    config.action_mailer.default_url_options = {:host => 'staff.zone3000.net'}
     config.to_prepare do
       Devise::SessionsController.layout "sign"
       Devise::PasswordsController.layout "sign"

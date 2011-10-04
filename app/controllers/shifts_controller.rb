@@ -1,5 +1,6 @@
 class ShiftsController < ApplicationController
   def close_old
+    # Close old shifts, run every hour
     @shifts = Shift.where('shiftdate <= ?', Date.current).where('end_event =0 OR end_event IS NULL').all
     @shifts.each do |shift|
       next_shift = Shift.where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
