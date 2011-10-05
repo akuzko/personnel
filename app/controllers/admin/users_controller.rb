@@ -87,6 +87,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def create
+    params[:user].delete(:back_url)
     @user = User.new(params[:user])
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     respond_to do |format|
