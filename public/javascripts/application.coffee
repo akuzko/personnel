@@ -26,8 +26,13 @@ shiftPressed = false
         autoOpen: false
         resizable: false
         modal: true
+      $("#batch_data").dialog
+        autoOpen: false
+        resizable: false
+        modal: true
+        width: 500
       $("a.button.close").live 'click', ->
-        $("#overlay").dialog("close")
+        $("#overlay, #batch_data").dialog("close")
         $('.modal_dialog').removeClass('selected')
       $('.modal_dialog').live 'click', ->
         if ctrlPressed
@@ -35,8 +40,8 @@ shiftPressed = false
           no
         else if shiftPressed
           $(this).addClass('selected')
-          $("#overlay .contentWrap").load $(this).attr("batch"), ->
-            $("#overlay").dialog("open")
+          $("#batch_data .contentWrap").load $(this).attr("batch"), ->
+            $("#batch_data").dialog("open")
           no
         else
           $(this).addClass('selected')
