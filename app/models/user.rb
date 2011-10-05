@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password
   validates_format_of :email,
                       :with => /\A([^@\s]+)@zone3000\.net\Z/i,
-                      :message => 'Only Zone3000 local email is acceptable'
+                      :message => 'Please use your zone3000 email address'
 
   before_validation :clean_unused_identifier
 
