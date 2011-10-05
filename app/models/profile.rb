@@ -12,6 +12,6 @@ class Profile < ActiveRecord::Base
 
   def has_t_shirt?
     false if user.department_id.nil?
-    Department.find(user.department_id).has_t_shirt?
+    Department.find(user.department_id).has_t_shirt? if user.department_id
   end
 end
