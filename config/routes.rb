@@ -1,6 +1,6 @@
 Personnel::Application.routes.draw do
 
-  get "users/show"
+  #get "users/show"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -41,7 +41,6 @@ Personnel::Application.routes.draw do
   #       get 'recent', :on => :collection
   #     end
   #   end
-  devise_for :users
   resource :user do
       get :edit_data, :on => :member
       put :update_data, :on => :member
@@ -51,6 +50,7 @@ Personnel::Application.routes.draw do
       get :find, :on => :collection
       get :list, :on => :collection
   end
+  devise_for :users, :controllers => { :registrations => "registrations" }
 
   resources :addresses do
     get :make_primary, :on => :member

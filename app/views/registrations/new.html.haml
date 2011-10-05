@@ -1,0 +1,24 @@
+%h1 Zone3000 Staff
+.block#block-login
+  %h2 Sign up
+  .content.login
+    .flash
+      - resource.errors.each do |type, message|
+        %div{ :class => "message error" }
+          %p= "#{type.to_s.capitalize} #{message}"
+    = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :class => "form login" }) do |f|
+      .group.wat-cf
+        .left= f.label :email, :class => "label right"
+        .right= f.email_field :email, :class => "text_field"
+      .group.wat-cf
+        .left= f.label :password, :class => "label right"
+        .right= f.password_field :password, :class => "text_field"
+      .group.wat-cf
+        .left= f.label :password_confirmation, :class => "label right"
+        .right= f.password_field :password_confirmation, :class => "text_field"
+      .group.wat-cf
+        .right
+          %button.button{ :type => "submit" }
+            = image_tag "web-app-theme/icons/key.png"
+            Sign up
+    = render :partial => "devise/shared/links"
