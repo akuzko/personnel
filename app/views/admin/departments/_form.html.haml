@@ -10,7 +10,7 @@
   = f.check_box :has_t_shirt, :class => 'check_box'
   %span.description check this box if the department offers T-Shirts
 .group
-  = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Permissions"), :class => :label
+  = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Accounts"), :class => :label
   %br
   - k = 0
   - for  dp in Permission.all
