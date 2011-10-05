@@ -50,7 +50,7 @@ Personnel::Application.routes.draw do
       get :find, :on => :collection
       get :list, :on => :collection
   end
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  devise_for :users
 
   resources :addresses do
     get :make_primary, :on => :member
