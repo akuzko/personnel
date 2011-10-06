@@ -75,21 +75,61 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def batch_update
-    path = Rails.root.join('public', 'uploads', params[:schedule].original_filename)
+    ap params[:schedule]
+    lines = params[:schedule].split("\r\n")
+    ap lines
+    k = 0
+    hash = Hash.new
 
-    File.open(path, 'w') do |file|
-      file.write(params[:schedule].read)
+    lines.each do |l|
+      hash[k+=1] = l.split("\t", -1)
     end
 
-    aFile = File.open(path) if File::exists?(path)
-    if aFile
-      content = aFile.sysread(1000)
-      puts content
-    else
-      puts "Unable to open file!"
+    ap hash
+
+    shift_id  = params[:cell][:schedule_shift_id].to_i
+    line      = params[:cell][:line].to_i
+    day       = params[:cell][:day].to_i
+
+    shift       = ScheduleShift.find(shift_id)
+    template    = ScheduleTemplate.find(shift.schedule_template_id)
+    month_days  = (Date.new(template.year,12,31).to_date<<(12-template.month)).day
+
+    array = hash.sort
+
+    ap array
+
+    array.each do |k, cells|
+      cells.each do |c|
+        if day <= month_days
+          cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(shift_id, line, day)
+          cell.update_attributes({:schedule_shift_id => shift_id, :line => line, :day => day, :user_id => c})
+          day += 1
+        end
+      end
+      if shift.lines > line
+        line += 1
+      else
+        next_shift = ScheduleShift.find_by_schedule_template_id_and_number(template.id, shift.number.next)
+        if !next_shift.nil?
+          shift_id = next_shift.id
+          shift = next_shift
+          line = 1
+        elsif shift.number != 10
+          next_shift = ScheduleShift.find_by_schedule_template_id_and_number(template.id, 10)
+          shift_id = next_shift.id
+          shift = next_shift
+          line = 1
+        else
+          break
+        end
+      end
+      day = params[:cell][:day].to_i
     end
 
-    render :layout => false
+    respond_to do |format|
+      format.js { render() { |p| p.call 'app.reload' } }
+    end
   end
 
   def destroy

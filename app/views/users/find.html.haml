@@ -1,8 +1,14 @@
 .block
   .content
-    %h2.title
-      = t("web-app-theme.find", :default => "Find")
-      People
+    %div{:style => "float:left"}
+      %h2.title
+        = t("web-app-theme.find", :default => "Find")
+        People
+
+    %div{:style => "float:right;margin:20px"}
+      = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button"
+    %div{:style => "margin-top:50px"}
+      &nbsp;
     .inner
       = form_tag(find_user_path, :method => :get) do
         %table
@@ -26,7 +32,6 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
-              = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button"
       %table.table
         %tr
           %th

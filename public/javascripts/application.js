@@ -37,8 +37,14 @@
           resizable: false,
           modal: true
         });
+        $("#batch_data").dialog({
+          autoOpen: false,
+          resizable: false,
+          modal: true,
+          width: 500
+        });
         $("a.button.close").live('click', function() {
-          $("#overlay").dialog("close");
+          $("#overlay, #batch_data").dialog("close");
           return $('.modal_dialog').removeClass('selected');
         });
         $('.modal_dialog').live('click', function() {
@@ -47,8 +53,8 @@
             return false;
           } else if (shiftPressed) {
             $(this).addClass('selected');
-            $("#overlay .contentWrap").load($(this).attr("batch"), function() {
-              return $("#overlay").dialog("open");
+            $("#batch_data .contentWrap").load($(this).attr("batch"), function() {
+              return $("#batch_data").dialog("open");
             });
             return false;
           } else {
