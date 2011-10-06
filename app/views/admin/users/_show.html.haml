@@ -8,8 +8,10 @@
     = render 'show_profile'
 
 .block.notice
-  %h3 Accounts
-  #sidebar_permissions.content
+  %h3
+    Accounts
+    %a{:onclick=> '$("#sidebar_permissions").toggle();', :style => 'float:right;cursor:pointer'} show/hide
+  #sidebar_permissions.content{:style => 'display:none;'}
     = render 'show_permissions'
 
 .block.notice
