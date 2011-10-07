@@ -13,9 +13,10 @@ class EventsController < ApplicationController
     if @shift.is_over
       @template = ScheduleTemplate.find_by_department_id_and_year_and_month(current_user.department_id, Date.current.year, Date.current.month)
       @shift_next = @template.schedule_shifts.where('number < 10 AND number > ?', @shift.number).order(:number).first unless @template.nil?
-      if @shift_next.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, Date.current.day).count > 0
+      if @shift_next && @shift_next.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, Date.current.day).count > 0
         #End current shift
-        @shift.end_event = Event.logout(current_user.id, @shift.shiftdate + @shift.schedule_shift.end.hour, request.remote_ip)
+        @event = User.find(current_user.id).events.order(:eventtime).last
+        @shift.end_event = Event.logout(current_user.id, [@shift.shiftdate + @shift.schedule_shift.end.hour, @event.eventtime + 1.minute].max, request.remote_ip)
         @shift.save
         #Start new shift
         @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(Date.current, @shift_next.number, current_user.id)
