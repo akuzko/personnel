@@ -41,6 +41,7 @@ Personnel::Application.routes.draw do
   #       get 'recent', :on => :collection
   #     end
   #   end
+  devise_for :users
   resource :user do
       get :edit_data, :on => :member
       put :update_data, :on => :member
@@ -50,7 +51,7 @@ Personnel::Application.routes.draw do
       get :find, :on => :collection
       get :list, :on => :collection
   end
-  devise_for :users
+
 
   resources :addresses do
     get :make_primary, :on => :member
@@ -75,6 +76,7 @@ Personnel::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+  devise_for :admins
   namespace :admin do
     root :to => "users#index"
     resources :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions, :logs
@@ -127,7 +129,7 @@ Personnel::Application.routes.draw do
       get :t_shirts, :on => :collection
     end
   end
-  devise_for :admins
+
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => "home#index"
