@@ -8,7 +8,7 @@ class Admin::PermissionsController < ApplicationController
   end
 
   def index
-    @permissions = Permission.all
+    @permissions = Permission.order(:name).all
 
     respond_to do |format|
       format.html  # index.html.erb

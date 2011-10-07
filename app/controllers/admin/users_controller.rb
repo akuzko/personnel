@@ -187,18 +187,7 @@ class Admin::UsersController < ApplicationController
     end
     Log.add_set(current_admin, user, params, 'permissions')
 
-
     render(:update) { |p| p.call 'app.reload_section_admin', params[:id], params[:data] }
-    #if data.update_attributes(params[params[:data]])
-    #  Log.add_by_admin(current_admin, data, params)
-    #  render(:update){ |p| p.call 'app.reload_section_admin', params[:id],  params[:data]}
-    #else
-    #  message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
-    #  render(:update) do |page|
-    #    page['#'+params[:data]+'_flash'].parents(0).show
-    #    page['#'+params[:data]+'_flash'].html message
-    #  end
-    #end
   end
 
   def display_addresses
