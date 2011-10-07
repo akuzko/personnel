@@ -1,5 +1,5 @@
 %p
-  - @department.permissions.each do |dp|
+  - @department.permissions.order(:name).each do |dp|
     %p
       - if @user.permissions.map(&:id).include?(dp.id)
         = image_tag("web-app-theme/icons/accept.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
