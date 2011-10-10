@@ -1,0 +1,55 @@
+ru:
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+
+    day_names: [Воскресенье, Понедельник, Вторник, Среда, Четверг, Пятница, Суббота]
+    abbr_day_names: [Вс, Пн, Вт, Ср, Чт, Пт, Сб]
+
+    month_names: [~, Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Октябрь, Ноябрь, Декабрь]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    order:
+      - :year
+      - :month
+      - :day
+  activerecord:
+    errors:
+      models:
+        contact:
+          attributes:
+            home_phone:
+              blank: 'не заполнен'
+              not_a_number: 'не числовой'
+  personnel:
+    'Required': 'Обязательное поле'
+    'Fill in Russian': 'Заполнять на русском языке'
+    address:
+      title: 'Адрес'
+      primary: 'Основной'
+      street: 'Улица'
+      build: 'Дом №'
+      porch: 'Подъезд'
+      nos: 'Этажность'
+      room: 'Квартира'
+    profile:
+      title: 'Профиль'
+      last_name: 'Фамилия'
+      first_name: 'Имя'
+      birthdate: 'Дата рождения'
+      t_shirt_size: 'Размер футболки'
+    contact:
+      title: 'Контакты'
+      email: 'Email'
+      cell: 'Мобильный'
+      cell1: 'Мобильный 1'
+      cell2: 'Мобильный 2'
+      cell3: 'Мобильный 3'
+      home_phone: 'Домашний'
+      'put `n/a` only if you don`t have one': 'впишите `n/a` если нет домашнего номера'
+    user:
+      department: 'Отдел'
+      active: 'Активный'
+      identifier: 'Идентификатор'
+      full_name: 'Полное имя'

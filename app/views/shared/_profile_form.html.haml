@@ -1,17 +1,19 @@
 .group
-  = f.label :last_name, t("activerecord.attributes.profile.last_name", :default => "Last Name"), :class => :label
+  = f.label :last_name, t("personnel.profile.last_name", :default => "Last Name"), :class => :label
   = f.text_field :last_name, :class => 'text_field'
-  %span.description= t("personnel.Required")
+  %span.description
+    = t("personnel.Required")
+    = t("personnel.Fill in Russian")
 .group
-  = f.label :first_name, t("activerecord.attributes.profile.first_name", :default => "First Name"), :class => :label
+  = f.label :first_name, t("personnel.profile.first_name", :default => "First Name"), :class => :label
   = f.text_field :first_name, :class => 'text_field'
   %span.description= t("personnel.Required")
 .group
-  = f.label :birthdate, t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate")), :class => :label
+  = f.label :birthdate, t("personnel.profile.birthdate", :default => "BirthDate"), :class => :label
   = f.date_select :birthdate, :include_blank => true, :end_year => Time.now.year - 60, :start_year => Time.now.year - 13
 - if @user.profile.has_t_shirt?
   .group
-    = f.label :t_shirt_size, t("activerecord.attributes.profile.t_shirt_size", :default => "T-Shirt Size"), :class => :label
+    = f.label :t_shirt_size, t("personnel.profile.t_shirt_size", :default => "T-Shirt Size"), :class => :label
     = f.select :t_shirt_size, Profile.size_selection, :include_blank => true
     %span.description= t("personnel.Required")
 .group.navform.wat-cf

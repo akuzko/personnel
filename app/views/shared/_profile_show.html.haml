@@ -1,21 +1,21 @@
 %p
   %b
-    = t("activerecord.attributes.profile.last_name", :default => "Last Name")
+    = t("personnel.profile.last_name", :default => "Last Name")
     \:
   = @user.profile.last_name
 %p
   %b
-    = t("activerecord.attributes.profile.first_name", :default => "First Name")
+    = t("personnel.profile.first_name", :default => "First Name")
     \:
   = @user.profile.first_name
 %p
   %b
-    = t("activerecord.attributes.profile.birthdate", :default => "Birthdate")
+    = t("personnel.profile.birthdate", :default => "Birthdate")
     \:
   = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
 - if @user.profile.has_t_shirt?
   %p
     %b
-      = t("activerecord.attributes.profile.t_shirt_size", :default => "T-Shirt Size")
+      = t("personnel.profile.t_shirt_size", :default => "T-Shirt Size")
       \:
     = @user.profile.t_shirt_size

@@ -1,29 +1,29 @@
 - if addr.primary
   %p
     %b{:style => "color:red;"}
-      Primary Address
+      = t("personnel.address.primary", :default => "Primary Address")
 %p
   %b
-    = t("activerecord.attributes.address.street", :default => "Street")
+    = t("personnel.address.street", :default => "Street")
     \:
   = addr.street
 %p
   %b
-    = t("activerecord.attributes.address.build", :default => "Building #")
+    = t("personnel.address.build", :default => "Building #")
     \:
   = addr[:build]
 %p
   %b
-    = t("activerecord.attributes.address.porch", :default => "Porch")
+    = t("personnel.address.porch", :default => "Porch")
     \:
   = addr.porch
 %p
   %b
-    = t("activerecord.attributes.address.nos", :default => "Number of storeys")
+    = t("personnel.address.nos", :default => "Number of storeys")
     \:
   = addr.nos
 %p
   %b
-    = t("activerecord.attributes.address.room", :default => "Apt/Room")
+    = t("personnel.address.room", :default => "Apt/Room")
     \:
   = addr.room
