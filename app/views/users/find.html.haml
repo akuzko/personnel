@@ -2,8 +2,7 @@
   .content
     %div{:style => "float:left"}
       %h2.title
-        = t("web-app-theme.find", :default => "Find")
-        People
+        = t("personnel.user.find_people", :default => "Find People")
 
     %div{:style => "float:right;margin:20px"}
       = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button"
@@ -14,17 +13,17 @@
         %table
           %tr
             %td
-              By ID
+              ID
               = text_field_tag :identifier, params[:identifier], :class => 'text_field', :style => "width:80px"
             %td
               &nbsp;
             %td
-              Full Name
+              = t("personnel.user.full_name", :default => "Full Name")
               = text_field_tag :full_name, params[:full_name], :class => 'text_field'
             %td
               &nbsp;
             %td
-              Department
+              = t("personnel.user.department", :default => "Department")
               = select_tag :department_id, options_for_select(Department.selection, params[:department_id]), { :include_blank => true }
             %td
               &nbsp;
@@ -35,12 +34,12 @@
       %table.table
         %tr
           %th
-          %th= t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "IDentifier"))
-          %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
-          %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
-          %th= t("activerecord.attributes.contact.address", :default => t("activerecord.labels.address", :default => "Address"))
-          %th= t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department", :default => "Department"))
-          %th= t("activerecord.attributes.profile.birthdate", :default => t("activerecord.labels.birthdate", :default => "BirthDate"))
+          %th= t("personnel.user.identifier", :default => "IDentifier")
+          %th= t("personnel.user.full_name", :default => "Full Name")
+          %th= t("personnel.contact.cell", :default => "Cell")
+          %th= t("personnel.address.title", :default => "Address")
+          %th= t("personnel.user.department", :default => "Department")
+          %th= t("personnel.profile.birthdate", :default => "BirthDate")
         - @users.each do |user|
           %tr{:class => cycle("odd", "even")}
             %td

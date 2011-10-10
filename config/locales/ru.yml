@@ -16,12 +16,38 @@ ru:
       - :day
   activerecord:
     errors:
+      messages:
+        blank: 'не заполнен'
+        confirmation: 'требуется подтверждение'
+        too_short: 'слишком короткий'
+        not_a_number: 'не числовой'
       models:
-        contact:
+        user:
           attributes:
-            home_phone:
-              blank: 'не заполнен'
-              not_a_number: 'не числовой'
+            email:
+              invalid: 'Пожалуйста, используйте Ваш локальный почтовый ящик @zone3000'
+    labels:
+      date: 'Дата'
+      datetime: 'Дата, время'
+      number: 'Номер'
+      start: 'Начало'
+      end: 'Конец'
+      description: 'Описание'
+  web-app-theme:
+    list: 'Список'
+    new: 'Новый'
+    add: 'Добавить'
+    edit: 'Редактировать'
+    save: 'Сохранить'
+    delete: 'Удалить'
+    cancel: 'Отмена'
+    find: 'Поиск'
+    start: 'Начать'
+    check: 'Проверить'
+    or: 'или'
+    confirm: 'Вы уверены?'
+    from: 'С'
+    to: 'По'
   personnel:
     'Required': 'Обязательное поле'
     'Fill in Russian': 'Заполнять на русском языке'
@@ -53,3 +79,29 @@ ru:
       active: 'Активный'
       identifier: 'Идентификатор'
       full_name: 'Полное имя'
+      picture: 'Фото'
+      preview: 'Предварительный просмотр'
+      crop_picture: 'Редактировать фото'
+      find_people: 'Поиск сотрудников'
+      email: 'Email'
+      password: 'Пароль'
+      password_confirmation: 'Подтверждение пароля'
+      'Please use your zone3000 email address': 'Пожалуйста, используйте Ваш локальный почтовый ящик @zone3000'
+      'User was successfully updated': 'Данные пользователя обновлены'
+    schedule:
+      title: 'Расписание'
+      legend: 'Легенда'
+      color: 'Цвет'
+      shift: 'Смена'
+      dayoff: 'Выходной'
+    late_coming:
+      title: 'Опоздание'
+      all: 'Все опоздания'
+      reason: 'Вы опоздали на %d минут. Пожалуйста, укажите причину'
+      diff_minutes: 'Разница, мин'
+    shift:
+      missed: 'Пропущенные смены'
+      not_available: 'Нет доступных смен'
+      start_new: 'Начать новую смену'
+      end: 'Закончить смену'
+      worked_min: 'Работа, мин'

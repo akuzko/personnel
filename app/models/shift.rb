@@ -1,6 +1,6 @@
 class Shift < ActiveRecord::Base
   belongs_to :user
-  has_one :late_coming
+  has_one :late_coming, :dependent => :destroy
   validates_presence_of :number, :user_id
   delegate :full_name, :to => :user, :prefix => true
 

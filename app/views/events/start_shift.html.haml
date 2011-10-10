@@ -1,12 +1,13 @@
 #box
   .block
-    %h2 Start Shift
+    %h2
+      = t("personnel.shift.start_new", :default => "Start Shift")
     .content.login
       %div{:class => "flash", :style => 'display:none;'}
         %div{:id => "shift_flash", :class => "message error"}
       = form_for @shift, :url => create_shift_events_path, :html => {:class => 'form login'} do |f|
         .group.wat-cf
-          = f.label :shiftdate, t("activerecord.attributes.shift.date", :default => t("activerecord.labels.date", :default => "Date")), :class => :label
+          = f.label :shiftdate, t("activerecord.labels.date", :default => "Date"), :class => :label
           = f.date_select :shiftdate, :end_year => Time.now.year+1, :start_year => Time.now.year - 1
         %div#shift_numbers.group
         .group.navform.wat-cf

@@ -47,8 +47,7 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :identifier, :scope => :active, :if => :has_identifier?, :on => :update
   validates_confirmation_of :password
   validates_format_of :email,
-                      :with => /\A([^@\s]+)@zone3000\.net\Z/i,
-                      :message => 'Please use your zone3000 email address'
+                      :with => /\A([^@\s]+)@zone3000\.net\Z/i
 
   before_validation :clean_unused_identifier
 

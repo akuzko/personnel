@@ -1,7 +1,7 @@
 = image_tag(@user.avatar.url(:medium))
 %p
   %b
-    = t("activerecord.attributes.user.active", :default => t("activerecord.labels.active", :default => "Active"))
+    = t("personnel.user.active", :default => "Active")
     \:
     - if @user.active?
       &#10003;
@@ -9,16 +9,16 @@
       \--
 %p
   %b
-    = t("activerecord.attributes.user.email", :default => t("activerecord.labels.email", :default => "Email"))
+    = t("personnel.user.email", :default => "Email")
     \:
   = @user.email
 %p
   %b
-    = t("activerecord.attributes.user.department_id", :default => t("activerecord.labels.department_id", :default => "Department"))
+    = t("personnel.user.department", :default => "Department")
     \:
   = @user.department_name if @user.department_id
 %p
   %b
-    = t("activerecord.attributes.user.identifier", :default => t("activerecord.labels.identifier", :default => "Identifier"))
+    = t("personnel.user.identifier", :default => "Identifier")
     \:
   = @user.identifier || '--'

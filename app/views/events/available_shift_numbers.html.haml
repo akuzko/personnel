@@ -1,6 +1,6 @@
 - if !@shift_numbers.empty?
   %label
-    Number
+    =t("activerecord.labels.number", :default => "Number")
   = select_tag "shift[number]", options_for_select(@shift_numbers, @selected_number)
 - else
-  No shifts
+  =t("personnel.shift.not_available", :default => "No shifts")

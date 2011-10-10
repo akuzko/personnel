@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_attributes(params[:user])
         Log.add(current_user, @user, params)
-        format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
+        format.html { redirect_to(@user, :notice => t('personnel.user.User was successfully updated', :default => 'User was successfully updated')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

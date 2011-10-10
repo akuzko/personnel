@@ -25,7 +25,7 @@
   }
 = image_tag @user.avatar.url(:large), :id => "cropbox"
 
-%h4 Preview:
+%h4= t('personnel.user.preview', :default => 'Preview')
 %div{:style =>"width:100px; height:100px; overflow:hidden; float:left"}
   = image_tag @user.avatar.url(:large), :id => "preview"
 = form_for @user, {:url => update_crop_admin_user_path(@user)} do |f|

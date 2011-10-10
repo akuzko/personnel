@@ -1,7 +1,7 @@
 %table{:width =>240, :cellpadding => 5, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
   %tr
     %th.first ID
-    %th Name
+    %th= t("personnel.user.full_name", :default => "Full Name")
     - if @admin
       %th S
       %th N

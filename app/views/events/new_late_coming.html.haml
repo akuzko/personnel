@@ -1,6 +1,6 @@
 #box
   .block
-    %h2 Late Coming
+    %h2= t('personnel.late_coming.title', :default => 'Late Coming')
     .content.login
       %div{:class => "flash", :style => 'display:none;'}
         %div{:id => "late_coming_flash", :class => "message error"}
@@ -8,15 +8,13 @@
         .group.wat-cf
 
         .group.wat-cf
-          You are
-          %b
-            = "#{@late_coming.late_minutes}"
-          minutes late. Please input your reason here
+          = t('personnel.late_coming.reason', :default => 'You are %d minutes late. Please input your reason here').% @late_coming.late_minutes
+
           = f.text_field :description, :size => 70
         .group.navform.wat-cf
           %button.button{:type => "submit"}
-            = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.start", :default => "Start")}")
-            = t("web-app-theme.start", :default => "Start")
+            = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.add", :default => "Add")}")
+            = t("web-app-theme.add", :default => "Add")
           %span.text_button_padding= t("web-app-theme.or", :default => "or")
           %a.button{:href => user_path}
             = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")

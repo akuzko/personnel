@@ -3,7 +3,7 @@
   = link_to image_tag(@user.avatar.url(:medium), :alt => "#{t("web-app-theme.crop", :default => "Crop")}"), crop_admin_user_path(@user), :title => "#{t("web-app-theme.crop", :default => "Crop")}"
 
 .block.notice
-  %h3= t("personnel.profile.title")
+  %h3= t("personnel.profile.title", :default => 'Profile')
   #sidebar_profile.content
     = render 'show_profile'
 
@@ -15,11 +15,11 @@
     = render 'show_permissions'
 
 .block.notice
-  %h3= t("personnel.address.title")
+  %h3= t("personnel.address.title", :default => 'Address')
   %div#sidebar_address.content{:style => "margin:10px;"}
     = render 'show_addresses'
 
 .block.notice
-  %h3= t("personnel.contact.title")
+  %h3= t("personnel.contact.title", :default => 'Contacts')
   #sidebar_contact.content
     = render 'show_contact'

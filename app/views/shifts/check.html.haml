@@ -1,7 +1,7 @@
 .block
   .content
     %h2.title
-      Missed shifts
+      = t("personnel.shift.missed", :default => "Missed shifts")
     .inner.form
       - @missed_shifts_departments.each do |key, department|
         %h3
@@ -12,7 +12,7 @@
         %table.table
           %tr
             %th
-              = t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
+              = t("personnel.user.full_name", :default => "Full Name")
             %th
               = t("activerecord.labels.date", :default => "Date")
             %th

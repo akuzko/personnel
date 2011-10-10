@@ -5,7 +5,7 @@
         %table
           %tr
             %td
-              Department
+              = t("personnel.user.department", :default => "Department")
               = select_tag :department_id, options_for_select(Department.identified.selection, params[:department_id])
             %td
               &nbsp;

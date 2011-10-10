@@ -1,0 +1,49 @@
+# Additional translations at http://github.com/plataformatec/devise/wiki/I18n
+
+ru:
+  errors:
+    messages:
+      not_found: "не найден"
+      already_confirmed: "уже поджвержден, попробуйте войти"
+      not_locked: "не заблокирован"
+      not_saved:
+        one: "1 error prohibited this %{resource} from being saved:"
+        other: "%{count} errors prohibited this %{resource} from being saved:"
+
+  devise:
+    failure:
+      unauthenticated: 'Вам необходимо зарегистрироваться или войти для продолжения.'
+      unconfirmed: 'Вам необходимо подтвердить акаунт перед продолжением.'
+      locked: 'Ваш акаунт заблокирован.'
+      invalid: 'Неправильный email или пароль.'
+      invalid_token: 'Некорректный токен.'
+      timeout: 'Истекло время Вашей сессии, пожалуйста, войдите заново.'
+      inactive: 'Ваш акаунт еще не был активирован.'
+      not_approved: 'Ваш акаунт еще не был подтвержден администратором.'
+    sessions:
+      signed_in: 'Вход осуществлен успешно.'
+      signed_out: 'Выход осуществлен успешно.'
+    passwords:
+      send_instructions: 'Вы получите письмо с инструкциями для восстановления пароля в течение нескольких минут.'
+      updated: 'Ваш пароль успешно изменен. Вход осуществлен.'
+    confirmations:
+      send_instructions: 'Вы получите письмо с инструкциями для подтверждения акаунта в течение нескольких минут.'
+      confirmed: 'Ваш акаунт успешно подтвержден. Вход осуществлен.'
+    registrations:
+      signed_up: 'Добро пожаловать! Вы успешно зарегистрировались в Системе.'
+      inactive_signed_up: 'Вы успешно зарегистрировались в Системе. Однако мы не можем авторизовать Вас, так как Ваш акаунт %{reason}.'
+      updated: 'You updated your account successfully.'
+      destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+    unlocks:
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
+      unlocked: 'Your account was successfully unlocked. You are now signed in.'
+    omniauth_callbacks:
+      success: 'Successfully authorized from %{kind} account.'
+      failure: 'Could not authorize you from %{kind} because "%{reason}".'
+    mailer:
+      confirmation_instructions:
+        subject: 'Инструкции для подтверждения'
+      reset_password_instructions:
+        subject: 'Инструкции для восстановления пароля'
+      unlock_instructions:
+        subject: 'Unlock Instructions'

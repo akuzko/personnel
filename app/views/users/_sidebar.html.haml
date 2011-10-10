@@ -2,16 +2,16 @@
 .block.notice
   = link_to image_tag(@user.avatar.url(:medium), :alt => "#{t("web-app-theme.crop", :default => "Crop")}"), crop_user_path, :title => "#{t("web-app-theme.crop", :default => "Crop")}"
 .block.notice
-  %h3 Profile
+  %h3= t("personnel.profile.title", :default => 'Profile')
   #sidebar_profile.content
     = render 'show_profile'
 
 .block.notice
-  %h3 Addresses
+  %h3= t("personnel.address.title", :default => 'Address')
   %div#sidebar_address.content{:style => "margin:10px;"}
     = render 'show_addresses'
 
 .block.notice
-  %h3 Contacts
+  %h3= t("personnel.contact.title", :default => 'Contacts')
   #sidebar_contact.content
     = render 'show_contact'

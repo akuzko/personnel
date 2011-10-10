@@ -1,8 +1,7 @@
 .block
   .content
     %h2.title
-      = t("web-app-theme.all", :default => "All")
-      Late Comings
+      = t("personnel.late_coming.all", :default => "All Late Comings")
     .inner
       = form_tag(late_comings_path, :method => :get, :id => 'find_form') do
         %table
@@ -10,12 +9,12 @@
             %td
               &nbsp;
             %td
-              From
+              = t("web-app-theme.from", :default => "From")
               = text_field_tag :date_from, params[:date_from], :class => 'date_select'
             %td
               &nbsp;
             %td
-              To
+              =t("web-app-theme.to", :default => "To")
               = text_field_tag :date_to, params[:date_to], :class => 'date_select'
             %td
               &nbsp;
@@ -26,17 +25,17 @@
       %table.table
         %tr
           %th
-            = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+            = t("activerecord.labels.datetime", :default => "DateTime")
           %th
             = t("activerecord.attributes.admin_event.date", :default => t("activerecord.labels.date", :default => "Date"))
           %th
-            = t("activerecord.attributes.admin_shifts.shift", :default => t("activerecord.labels.shift", :default => "Shift"))
+            = t("personnel.schedule.shift", :default => "Shift")
           %th
-            = t("activerecord.attributes.late_comings.minutes", :default => t("activerecord.labels.minutes", :default => "Diff Minutes"))
+            = t("personnel.late_coming.diff_minutes", :default => "Diff Minutes")
           %th
-            = t("activerecord.attributes.shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked"))
+            = t("personnel.shift.worked_min", :default => "Worked")
           %th
-            = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
+            = t("activerecord.labels.description", :default => "Description")
         - @late_comings.each do |late_coming|
           %tr{:class => cycle("odd", "even")}
             %td

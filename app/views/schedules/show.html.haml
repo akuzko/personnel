@@ -5,7 +5,7 @@
         %table
           %tr
             %td
-              Department
+              = t("personnel.user.department", :default => "Department")
               = select_tag :department_id, options_for_select(Department.identified.selection, params[:department_id])
             %td
               &nbsp;
@@ -23,9 +23,9 @@
           %table{:width =>200, :cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
             %tr
               %th
-                Legend
+                = t("personnel.schedule.legend", :default => "Legend")
               %th
-                = t("activerecord.attributes.admin_admin.color", :default => t("activerecord.labels.color", :default => "Color"))
+                = t("personnel.schedule.color", :default => "Color")
               %th.last &nbsp;
             - @statuses.each do |status|
               %tr{:class => cycle("odd", "even")}
@@ -50,9 +50,10 @@
                 %td{:style => 'background-color:#eeeeee'}
                   %b
                     - if shift.number == 10
-                      DayOff
+                      = t("personnel.schedule.dayoff", :default => "DayOff")
+
                     - else
-                      Shift #
+                      = t("personnel.schedule.shift", :default => "Shift") #
                       = shift.number
                       %br
                       = shift.start

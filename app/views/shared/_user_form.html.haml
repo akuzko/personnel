@@ -1,16 +1,13 @@
 .group
-  = f.label :email, t("activerecord.attributes.user.email", :default => "Email"), :class => :label
+  = f.label :email, t("personnel.user.email", :default => "Email"), :class => :label
   = f.text_field :email, :class => 'text_field'
-  %span.description= t("personnel.Z3K email address")
+  %span.description= t("personnel.user.Please use your zone3000 email address", :default => 'Please use your zone3000 email address')
 .group
-  = f.label :password, t("activerecord.attributes.user.password", :default => "Password"), :class => :label
+  = f.label :password, t("personnel.user.password", :default => "Password"), :class => :label
   = f.password_field :password, :class => 'text_field'
-  %span.description= t("personnel.Password")
 .group
-  = f.label :password_confirmation, t("activerecord.attributes.user.password_confirmation", :default => "Password Confirmation"), :class => :label
+  = f.label :password_confirmation, t("personnel.user.password_confirmation", :default => "Password Confirmation"), :class => :label
   = f.password_field :password_confirmation, :class => 'text_field'
-  %span.description= t("personnel.Password Confirmation")
 .group
-  = f.label :avatar, t("activerecord.attributes.user.picture", :default => "Picture"), :class => :label
+  = f.label :avatar, t("personnel.user.picture", :default => "Picture"), :class => :label
   = f.file_field :avatar, :class => 'text_field'
-  %span.description= t("personnel.Picture")
