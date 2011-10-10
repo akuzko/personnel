@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def index
-    expires_in 3.hours, :public => true
+    redirect_to user_url()
   end
 
 end
