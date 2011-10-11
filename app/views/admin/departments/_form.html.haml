@@ -9,20 +9,19 @@
   = f.label :has_t_shirt, t("activerecord.attributes.department.has_t_shirt", :default => "Has T-shirts"), :class => :label
   = f.check_box :has_t_shirt, :class => 'check_box'
   %span.description check this box if the department offers T-Shirts
-.group
+.group.navform.wat-cf{:id => "check_list"}
   = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Accounts"), :class => :label
+  = link_to t("web-app-theme.check_all", :default => "Check All"), "#", :id => "check_all"
+  |
+  = link_to t("web-app-theme.uncheck_all", :default => "Uncheck All"), "#", :id => "uncheck_all"
   %br
-  - k = 0
-  - for  dp in Permission.all
-    - k = 0 if (k += 1) == 4
-    - if Permission.all.last == dp
-      %div{:style => "width:300px"}
-        = check_box_tag "permissions[]", "#{dp.id}", @department.permissions.include?(dp)
-        = dp.name
-    - else
-      %div{:style => "width:300px; float:left"}
-        = check_box_tag "permissions[]", "#{dp.id}", @department.permissions.include?(dp)
-        = dp.name
+  %br
+  - Permission.in_columns.each do |col|
+    %div{:style => "width:300px;float:left"}
+      - col.each do |item|
+        %div{:style => "width:300px;float:left"}
+          = check_box_tag "permissions[]", "#{item.id}", @department.permissions.include?(item)
+          = item.name
 
 .group.navform.wat-cf
   %button.button{:type => "submit"}

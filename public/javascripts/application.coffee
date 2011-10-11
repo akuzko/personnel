@@ -31,6 +31,14 @@ shiftPressed = false
         resizable: false
         modal: true
         width: 500
+      $("a.#check_all").live 'click', ->
+        $("#check_list :checkbox").each ->
+          $(this).attr("checked", "checked")
+        no
+      $("a.#uncheck_all").live 'click', ->
+        $("#check_list :checkbox").each ->
+          $(this).attr("checked", "")
+        no
       $("a.button.close").live 'click', ->
         $("#overlay, #batch_data").dialog("close")
         $('.modal_dialog').removeClass('selected')

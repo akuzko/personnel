@@ -43,6 +43,18 @@
           modal: true,
           width: 500
         });
+        $("a.#check_all").live('click', function() {
+          $("#check_list :checkbox").each(function() {
+            return $(this).attr("checked", "checked");
+          });
+          return false;
+        });
+        $("a.#uncheck_all").live('click', function() {
+          $("#check_list :checkbox").each(function() {
+            return $(this).attr("checked", "");
+          });
+          return false;
+        });
         $("a.button.close").live('click', function() {
           $("#overlay, #batch_data").dialog("close");
           return $('.modal_dialog').removeClass('selected');
