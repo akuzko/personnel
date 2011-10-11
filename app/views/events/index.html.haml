@@ -20,7 +20,7 @@
         - @events.each do |event|
           %tr{:class => cycle("odd", "even")}
             %td
-              = event.eventtime
+              = event.eventtime.to_formatted_s(:date_and_time)
             %td
               = event.category_name
             %td
