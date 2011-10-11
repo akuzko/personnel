@@ -8,9 +8,12 @@
     %h2.title
       = "#{t('personnel.schedule.shift', :default => 'Shift')} ##{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)"
     .inner
+      = form_tag(events_path, :method => :get, :id => 'find_form') do
+        = hidden_field_tag 'sort_by', params[:sort_by]
+        = hidden_field_tag 'sort_order', params[:sort_order]
       %table.table
         %tr
-          %th
+          %th{:sort => 'eventtime', :class => 'sortable'}
             = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
           %th
             = t("activerecord.attributes.category.name", :default => t("activerecord.labels.category", :default => "Category"))

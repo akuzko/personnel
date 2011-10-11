@@ -27,10 +27,12 @@ class EventsController < ApplicationController
           @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour, request.remote_ip)
           @shift.save
         end
-        redirect_to events_path, :notice => "Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)"
+        redirect_to events_path, :notice => (flash[:notice] + "<br/>Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)").html_safe
       end
     end
-    @events = current_user.events.where('events.id > ?', @shift.start_event).joins('INNER JOIN `categories` ON `events`.`category_id` = `categories`.`id`').where('`categories`.`displayed` =1').paginate :page => params[:page], :per_page => 30
+    params[:sort_by] ||= :eventtime
+    params[:sort_order] ||= 'DESC'
+    @events = current_user.events.where('events.id > ?', @shift.start_event).joins('INNER JOIN `categories` ON `events`.`category_id` = `categories`.`id`').where('`categories`.`displayed` =1').paginate :page => params[:page], :per_page => 30, :order => "#{params[:sort_by]} #{params[:sort_order]}"
   end
 
   def show
@@ -56,6 +58,7 @@ class EventsController < ApplicationController
     if @event.save
       render(:update) do |page|
         page["#overlay"].dialog("close")
+        flash[:notice] = t("personnel.event.Record has been added", :default => "Record has been added")
         page.call 'app.reload'
       end
     else
