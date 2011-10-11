@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   belongs_to :department
   has_many :logs, :as => :subject
-  validates_presence_of :name, :department_id
+  validates_presence_of :name, :department_id, :display_order
   delegate :name, :to => :department, :prefix => true
 
   def self.search(params, admin_id)
@@ -15,14 +15,14 @@ class Category < ActiveRecord::Base
     conditions.push("name LIKE '%#{params[:name]}%'") unless params[:name].nil? || params[:name] == ""
     paginate :per_page => params[:per_page], :page => params[:page],
              :conditions => conditions.join(' and '),
-             :order => params[:sort_by]
+             :order => "#{params[:sort_by]} #{params[:sort_order]}"
   end
 
   def self.selection(department_id)
     if department_id == 0
-      order(:name).map{ |d| [d.name, d.id] }
+      order('display_order, name').map{ |d| [d.name, d.id] }
     else
-      order(:name).find_all_by_department_id_and_displayed(department_id, 1).map{ |d| [d.name, d.id] }
+      order('display_order, name').find_all_by_department_id_and_displayed(department_id, 1).map{ |d| [d.name, d.id] }
     end
   end
 
@@ -31,7 +31,7 @@ class Category < ActiveRecord::Base
     return selection(0) if admin.super_user?
     departments = admin.departments.map{|d|d.id}
     categories = []
-    order(:name).map do |d|
+    order('display_order, name').map do |d|
       categories.push [d.name, d.id] if departments.include?(d.department_id)
     end
     categories

@@ -8,22 +8,27 @@
     .inner
       %p
         %b
-          = t("activerecord.attributes.admin_category.name", :default => t("activerecord.labels.name", :default => "Name"))
+          = t("activerecord.attributes.admin_category.name", :default => "Name")
           \:
         = @category.name
       %p
         %b
-          = t("activerecord.attributes.admin_category.department_id", :default => t("activerecord.labels.department_id", :default => "Department"))
+          = t("activerecord.attributes.admin_category.department_id", :default => "Department")
           \:
         = @category.department_name
       %p
         %b
-          = t("activerecord.attributes.admin_category.displayed", :default => t("activerecord.labels.has_identifier", :default => "Display"))
+          = t("activerecord.attributes.admin_category.displayed", :default => "Display")
           \:
         = @category.displayed
       %p
         %b
-          = t("activerecord.attributes.admin_category.reported", :default => t("activerecord.labels.has_identifier", :default => "Report"))
+          = t("activerecord.attributes.admin_category.display_order", :default => t("activerecord.labels.order", :default => "Display Order"))
+          \:
+        = @category.display_order
+      %p
+        %b
+          = t("activerecord.attributes.admin_category.reported", :default => "Report")
           \:
         = @category.reported
       .wat-cf

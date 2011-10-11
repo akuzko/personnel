@@ -48,6 +48,8 @@
             = t("activerecord.attributes.admin_category.department", :default => t("activerecord.labels.name", :default => "Department"))
           %th{:sort => 'displayed', :class => 'sortable'}
             = t("activerecord.attributes.admin_category.displayed", :default => t("activerecord.labels.name", :default => "Display"))
+          %th{:sort => 'display_order', :class => 'sortable'}
+            = t("activerecord.attributes.admin_category.display_order", :default => t("activerecord.labels.order", :default => "Display Order"))
           %th
             = t("activerecord.attributes.admin_category.reported", :default => t("activerecord.labels.name", :default => "Report"))
           %th= t("web-app-theme.created_at", :default => "Created on")
@@ -63,6 +65,8 @@
             %td
               - if category.displayed?
                 &#10003;
+            %td
+              = category.display_order
             %td
               - if category.reported?
                 &#10003;
