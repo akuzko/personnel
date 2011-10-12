@@ -18,9 +18,6 @@ class Permission < ActiveRecord::Base
   def self.in_columns
     arr = order(:name).all
     count_el_in_col = arr.length / 3
-    cols = arr.length / count_el_in_col
-    ap count_el_in_col
-    ap cols
     arr.each_slice(count_el_in_col).to_a
   end
 
