@@ -17,22 +17,6 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
                 = t("web-app-theme.find", :default => "Show")
-        %div{:style => 'float:left'}
-          = render 'shared/template_users_show', :layout => false, :template => @template, :users => @users, :admin => false
-          %br
-          %table{:width =>200, :cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
-            %tr
-              %th
-                = t("personnel.schedule.legend", :default => "Legend")
-              %th
-                = t("personnel.schedule.color", :default => "Color")
-              %th.last &nbsp;
-            - @statuses.each do |status|
-              %tr{:class => cycle("odd", "even")}
-                %td{:style => 'background-color:#ffffff;width:100%'}
-                  = status.name
-                %td{:style => "background-color:##{status.color};width:100%"}
-                  &nbsp;
 
         %div{:style => 'float:left;padding-left:5px'}
           %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
@@ -62,3 +46,4 @@
                 %td{:id => "shift_#{shift.id}"}
                   = render 'shared/shift_show', :layout => false, :shift => shift
         %div{:style => 'clear:both'}
+- content_for :sidebar, render(:partial => 'sidebar')
