@@ -75,17 +75,13 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def batch_update
-    ap params[:schedule]
     lines = params[:schedule].split("\r\n")
-    ap lines
     k = 0
     hash = Hash.new
 
     lines.each do |l|
       hash[k+=1] = l.split("\t", -1)
     end
-
-    ap hash
 
     shift_id  = params[:cell][:schedule_shift_id].to_i
     line      = params[:cell][:line].to_i
@@ -96,8 +92,6 @@ class Admin::ScheduleCellsController < ApplicationController
     month_days  = (Date.new(template.year,12,31).to_date<<(12-template.month)).day
 
     array = hash.sort
-
-    ap array
 
     array.each do |k, cells|
       cells.each do |c|
