@@ -27,6 +27,7 @@ class EventsController < ApplicationController
           @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour, request.remote_ip)
           @shift.save
         end
+        flash[:notice] ||= ''
         redirect_to events_path, :notice => (flash[:notice] + "<br/>Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)").html_safe
       end
     end
