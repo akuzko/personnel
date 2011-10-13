@@ -78,6 +78,7 @@ hr {
 
 #main {
   width: 71%;
+  min-width: 845px;
 }
 
 #main .block {
@@ -114,6 +115,7 @@ hr {
 
 #sidebar .block h4 {
   font-weight: bold;
+  min-width: 250px;
 }
 
 #sidebar .notice {
