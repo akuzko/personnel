@@ -236,9 +236,9 @@ class Admin::UsersController < ApplicationController
     ScheduleTemplate.find_all_by_year_and_month(params[:date].year, params[:date].month).each do |template|
       if params[:department_id] && !params[:department_id].empty?
         redirect_to 'index' unless current_admin.manage_department(params[:department_id])
-        @users[template.id] = User.order(:identifier).find_all_by_department_id_and_active(template.department_id, 1) if params[:department_id].to_i == template.department_id
+        @users[Department.find_by_id(template.department_id).name] = User.includes(:profile).order('profiles.last_name').find_all_by_department_id_and_active(template.department_id, 1) if params[:department_id].to_i == template.department_id
       else
-        @users[template.id] = User.order(:identifier).find_all_by_department_id_and_active(template.department_id, 1)
+        @users[Department.find_by_id(template.department_id).name] = User.includes(:profile).order('profiles.last_name').find_all_by_department_id_and_active(template.department_id, 1)
       end
     end
   end
