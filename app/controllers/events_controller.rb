@@ -196,6 +196,7 @@ class EventsController < ApplicationController
   def processed_by_person
     params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time)  if !params[:date_from]
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+    params[:user_id] = (current_user.id).to_s
     @events = Event.processed_by_person(params, 0)
 
     respond_to do |format|
