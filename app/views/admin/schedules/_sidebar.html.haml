@@ -2,6 +2,31 @@
   %h3 Usage
   .content
     %p
-    = t("activerecord.attributes.schedule.usage", :default => "Press and hold Control key to select more than one cell")
+      = t("activerecord.attributes.schedule.usage", :default => "Press and hold Control key to select more than one cell")
+    %p
+      = t("activerecord.attributes.schedule.shift_usage", :default => "Для того чтобы вставить часть рассписания в таблицу - зажмите Shift и кликните левой кнопкой мыши по ячейке. Это ячейка, относительно которой будет вставлятся рассписание.")
+
+  %h3 Users
+  .content
+    %br
+    %div#template_users
+      - @admin = true
+      = render 'shared/template_users_show', :layout => false
+    %div{:style => 'clear:both;'}
+    %br
+    %table{:width =>240, :cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
+      %tr
+        %th
+          = t("personnel.schedule.legend", :default => "Legend")
+        %th
+          = t("personnel.schedule.color", :default => "Color")
+        %th.last &nbsp;
+      - @statuses.each do |status|
+        %tr{:class => cycle("odd", "even")}
+          %td{:style => 'background-color:#ffffff;width:100%'}
+            = status.name
+          %td{:style => "background-color:##{status.color};width:100%"}
+            &nbsp;
+    %div{:style => "clear:both"}
 .block
 
