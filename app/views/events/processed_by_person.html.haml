@@ -1,0 +1,49 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Processed: By Person
+    .inner
+      = form_tag(processed_by_person_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              = select_tag 'categories[]', options_for_select(Category.selection(current_user.department_id), params[:categories]),
+              { :multiple => true, :size => 5, :style => "font-size:10px" }
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'datetime_select'
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'datetime_select'
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        - user = ''
+        - @events.each do |event|
+          - if user != event.username
+            - user = event.username
+            %tr
+              %td{:colspan => 6}
+                %h3= user
+            %tr
+              %th
+                = t("activerecord.attributes.admin_event.category", :default => t("activerecord.labels.category", :default => "Category"))
+              %th
+                = t("activerecord.attributes.admin_event.count", :default => t("activerecord.labels.count", :default => "Count"))
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = event.name
+            %td
+              = event.total
+%div.contentWrap

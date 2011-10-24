@@ -68,6 +68,7 @@ Personnel::Application.routes.draw do
     get :available_shift_numbers, :on => :collection
     get :new_late_coming, :on => :collection
     post :create_late_coming, :on => :collection
+    get :processed_by_person, :on => :collection
   end
   resources :late_comings
   # Sample resource route within a namespace:

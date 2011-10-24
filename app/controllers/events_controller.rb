@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers]
+  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers, :processed_by_person]
   layout 'user'
 
   def index
@@ -190,6 +190,17 @@ class EventsController < ApplicationController
     else
       flash[:error] = @late_coming.errors.full_messages
       redirect_to :back
+    end
+  end
+
+  def processed_by_person
+    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time)  if !params[:date_from]
+    params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+    @events = Event.processed_by_person(params, 0)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render :xml => @events }
     end
   end
 
