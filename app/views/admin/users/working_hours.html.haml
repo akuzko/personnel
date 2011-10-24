@@ -25,8 +25,8 @@
       %table.table
         - department = ''
         - @users.each do |k, v|
-          - if department != k && v.size > 0
-            - department = k
+          - if department != Department.find_by_id(k.department_id).name && v.size > 0
+            - department = Department.find_by_id(k.department_id).name
             %tr
               %td{:colspan => 2}
                 %h3=  department
@@ -39,7 +39,7 @@
                 = t("activerecord.attributes.admin_event.overtimes", :default => "Overtimes")
           - v.each do |user|
             - n = user.norms.find_by_month_and_year(params[:date].month, params[:date].year)
-            - w = user.work_shifts_count(k)
+            - w = user.work_shifts_count(k.id)
             %tr{:class => cycle("odd", "even")}
               %td
                 = user.full_name
