@@ -136,7 +136,7 @@ class User < ActiveRecord::Base
   def create_internals
     create_profile
     create_contact
-    self.department_id = Department.find_or_create_by_name('General').id
+    self.department_id ||= Department.find_or_create_by_name('General').id
     save
   end
 
