@@ -54,6 +54,12 @@ class SchedulesController < ApplicationController
     @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(params[:shift], params[:line], params[:day])
     @shift = ScheduleShift.find params[:shift]
     @template = ScheduleTemplate.find @shift.schedule_template_id
+    if current_user.can_edit_schedule == 0 || @template.visible != 2
+      render(:update) do |page|
+        page.call 'app.reload'
+      end
+      return
+    end
     @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
     id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
     cell_color_default = (1..5) === @wday ? 'ffffff' : 'FBB999'

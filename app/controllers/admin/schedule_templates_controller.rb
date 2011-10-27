@@ -22,7 +22,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
       user.update_attribute(:can_edit_schedule, params[:id])
       message = Schedule.send_invitation_to_user(user)
       message.deliver
-    end
+    end if params[:users]
     render(:update) do |page|
       page["#overlay"].dialog("close")
     end
