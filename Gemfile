@@ -1,16 +1,16 @@
 source 'http://rubygems.org'
 
-gem 'rails', '>= 3.1'
+gem 'rails'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'mongrel'
-gem 'mysql2', '>= 0.3'
+gem 'mysql2'
 gem 'haml'
 gem 'devise'
 gem 'will_paginate'
-gem 'jquery-rails', '>= 0.2.6'
+gem 'jquery-rails'
 gem 'ruby-debug'
 gem 'sass'
 gem 'prototype-rails'
