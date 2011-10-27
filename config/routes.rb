@@ -103,6 +103,8 @@ Personnel::Application.routes.draw do
     end
     resources :schedule_templates do
       post :set_visibility, :on => :member
+      get :select_users, :on => :member
+      put :update_editable_users, :on => :member
       get :check_day, :on => :member
       get :check_month, :on => :member
       get :default_norms, :on => :member

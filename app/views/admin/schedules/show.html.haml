@@ -18,7 +18,12 @@
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
                 = t("web-app-theme.find", :default => "Show")
             %td
-              = check_box_tag :visible,  params[:visible], params[:visible], {:href => set_visibility_admin_schedule_template_path(@template)}
+              = radio_button_tag :visible,  0, params[:visible] == 0, {:class => 'visible', :action => set_visibility_admin_schedule_template_path(@template)}
+              Hidden
+              = radio_button_tag :visible,  2, params[:visible] == 2,
+                {:class => 'visible',:action => set_visibility_admin_schedule_template_path(@template), :href => select_users_admin_schedule_template_path(@template)}
+              Editable
+              = radio_button_tag :visible,  1, params[:visible] == 1, {:class => 'visible',:action => set_visibility_admin_schedule_template_path(@template)}
               Visible
         %div{:style => 'padding-left:5px'}
           %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}

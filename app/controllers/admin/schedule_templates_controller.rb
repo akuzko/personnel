@@ -3,7 +3,29 @@ class Admin::ScheduleTemplatesController < ApplicationController
     @schedule_template = ScheduleTemplate.find params[:id]
     @schedule_template.visible = params[:visible]
     @schedule_template.save
+    if params[:visible] != 2
+      User.update_all({:can_edit_schedule => 0}, :can_edit_schedule => params[:id])
+    end
     render :nothing => true
+  end
+
+  def select_users
+    @template = ScheduleTemplate.find_by_id params[:id]
+    @users = User.order(:identifier).find_all_by_department_id_and_active @template.department_id, 1
+    render :layout => false
+  end
+
+  def update_editable_users
+    User.update_all({:can_edit_schedule => 0}, :can_edit_schedule => params[:id])
+    params[:users].each do |user_id|
+      user = User.find_by_id(user_id)
+      user.update_attribute(:can_edit_schedule, params[:id])
+      message = Schedule.send_invitation_to_user(user)
+      message.deliver
+    end
+    render(:update) do |page|
+      page["#overlay"].dialog("close")
+    end
   end
 
   def check_day
@@ -16,7 +38,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
     }
     render(:update) do |page|
       id = "#day_#{params[:day]}"
-      page[id].attr('src', '/images/web-app-theme/icons/' + images[(@schedule_template.check_day(params[:day])) . to_s])
+      page[id].attr('src', '/images/web-app-theme/icons/' + images[(@schedule_template.check_day(params[:day])).to_s])
     end
   end
 
@@ -31,7 +53,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
     render(:update) do |page|
       @days_in_month.times do |day|
         id = "#day_#{day+1}"
-        page[id].attr('src', '/images/web-app-theme/icons/' + images[(@schedule_template.check_day(day+1)) . to_s])
+        page[id].attr('src', '/images/web-app-theme/icons/' + images[(@schedule_template.check_day(day+1)).to_s])
       end
     end
   end
@@ -62,7 +84,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
       end
     else
       @users.each do |u|
-        @norm = Norm.set_norms(u, @template,  params[:norm])
+        @norm = Norm.set_norms(u, @template, params[:norm])
       end
       render(:update) do |p|
         p.call 'app.show_users_admin'

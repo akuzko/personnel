@@ -78,13 +78,7 @@
           }
         });
         $("input.visible").click(function() {
-          var href;
-          href = $(this).attr("href");
-          return $.post($(this).attr('action') + '?visible=' + $(this).val(), function() {
-            return $("#overlay .contentWrap").load(href, function() {
-              return $("#overlay").dialog("open");
-            });
-          });
+          return $.post($(this).attr('href') + '?visible=' + $(this).val());
         });
         $("#check_month").click(function() {
           $.get($(this).attr('href'));

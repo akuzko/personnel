@@ -56,8 +56,11 @@ shiftPressed = false
           $("#overlay .contentWrap").load $(this).attr("href"), ->
             $("#overlay").dialog("open")
           no
-      $("#visible").click ->
-        $.post $(this).attr('href')+'?visible='+$(this).attr('checked')
+      $("input.visible").click ->
+        href = $(this).attr("href")
+        $.post $(this).attr('action')+'?visible='+$(this).val(), ->
+          $("#overlay .contentWrap").load href, ->
+            $("#overlay").dialog("open")
       $("#check_month").click ->
         $.get $(this).attr('href')
         no
