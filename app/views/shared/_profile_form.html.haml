@@ -17,6 +17,10 @@
     = f.label :t_shirt_size, t("personnel.profile.t_shirt_size", :default => "T-Shirt Size"), :class => :label
     = f.select :t_shirt_size, Profile.size_selection, :include_blank => true
     %span.description= t("personnel.Required")
+  .group
+    = f.label :level, t("personnel.profile.level", :default => "Level"), :class => :label
+    = f.select :level, Profile.level_selection, :include_blank => true
+
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

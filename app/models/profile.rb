@@ -10,6 +10,12 @@ class Profile < ActiveRecord::Base
     end
   end
 
+  def self.level_selection
+    ['Newbee', 'Padawan', 'Guru', 'Jedi', 'Neutral'].map do |d|
+      [d, d]
+    end
+  end
+
   def has_t_shirt?
     false if user.department_id.nil?
     Department.find(user.department_id).has_t_shirt? if user.department_id
