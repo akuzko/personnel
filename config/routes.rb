@@ -60,7 +60,9 @@ Personnel::Application.routes.draw do
     get :close_old, :on => :collection
     get :check, :on => :collection
   end
-  resource :schedule
+  resource :schedule do
+    post :update_cell, :on => :collection
+  end
   resources :events do
     get :start_shift, :on => :collection
     get :end_shift, :on => :collection

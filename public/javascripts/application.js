@@ -59,6 +59,21 @@
           $("#overlay, #batch_data").dialog("close");
           return $('.modal_dialog').removeClass('selected');
         });
+        $('.schedule_editable td').live('click', function() {
+          var day, line, match, regex, shift_id, text;
+          regex = /cell_(\d+)_(\d+)_(\d+)/;
+          text = $(this).attr('id');
+          match = text.match(regex);
+          shift_id = match[1];
+          line = match[2];
+          day = match[3];
+          $.post("/schedule/update_cell", {
+            shift: shift_id,
+            line: line,
+            day: day
+          });
+          return false;
+        });
         $('.modal_dialog').live('click', function() {
           if (ctrlPressed) {
             $(this).toggleClass('selected');

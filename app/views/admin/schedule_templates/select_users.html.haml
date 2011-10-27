@@ -1,8 +1,10 @@
+%h3 Select users to edit the schedule
 = form_tag update_editable_users_admin_schedule_template_path(@template), :method => 'put', :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do
   - @users.each do |user|
     .group
       = check_box_tag 'users[]', user.id, user.can_edit_schedule == @template.id, :class => 'text_field'
       = user.full_name
+  %br
   .group.navform.wat-cf
     %button.button{:type => "submit"}
       = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Submit")}")
@@ -10,3 +12,4 @@
     %a.button.close{:href => '#'}
       = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
       = t("web-app-theme.cancel", :default => "Cancel")
+%br

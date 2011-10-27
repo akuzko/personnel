@@ -3,7 +3,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
     @schedule_template = ScheduleTemplate.find params[:id]
     @schedule_template.visible = params[:visible]
     @schedule_template.save
-    if params[:visible] != 2
+    if params[:visible] != '2'
       User.update_all({:can_edit_schedule => 0}, :can_edit_schedule => params[:id])
     end
     render :nothing => true

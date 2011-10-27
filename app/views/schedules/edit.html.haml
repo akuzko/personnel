@@ -1,6 +1,7 @@
 .block
   .content
     .inner
+      %h2= "Edit Your Schedule for #{@template.month}.#{@template.year}"
       %div{:style => 'float:left;padding-left:5px'}
         %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
           %tr
@@ -26,7 +27,7 @@
                     = shift.start
                     \-
                     = shift.end
-              %td{:id => "shift_#{shift.id}"}
+              %td.schedule_editable{:id => "shift_#{shift.id}"}
                 = render 'shared/shift_show', :layout => false, :shift => shift
       %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')

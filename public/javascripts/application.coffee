@@ -42,6 +42,16 @@ shiftPressed = false
       $("a.button.close").live 'click', ->
         $("#overlay, #batch_data").dialog("close")
         $('.modal_dialog').removeClass('selected')
+      $('.schedule_editable td').live 'click', ->
+        regex = /cell_(\d+)_(\d+)_(\d+)/
+        text = $(this).attr('id')
+        match =text.match(regex)
+        shift_id = match[1]
+        line = match[2]
+        day = match[3]
+        $.post "/schedule/update_cell",
+          {shift: shift_id, line: line, day: day}
+        no
       $('.modal_dialog').live 'click', ->
         if ctrlPressed
           $(this).toggleClass('selected')
