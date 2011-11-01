@@ -21,10 +21,14 @@
               %th
                 = t("activerecord.attributes.profile.t_shirt_size", :default => t("activerecord.labels.size", :default => "Size"))
               %th
+                = t("activerecord.attributes.admin_event.level", :default => t("activerecord.labels.level", :default => "Level"))
+              %th
                 = t("activerecord.attributes.admin_event.count", :default => t("activerecord.labels.count", :default => "Count"))
           %tr{:class => cycle("odd", "even")}
             %td
               = user.t_shirt_size
+            %td
+              = user.level
             %td
               = user.total
 - content_for :sidebar, render(:partial => 'sidebar')
