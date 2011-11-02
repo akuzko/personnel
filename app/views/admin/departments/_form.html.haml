@@ -1,19 +1,19 @@
 .group
-  = f.label :name, t("activerecord.attributes.department.name", :default => "Name"), :class => :label
+  = f.label :name, t("web-app-theme.name", :default => "Name"), :class => :label
   = f.text_field :name, :class => 'text_field'
 .group
-  = f.label :has_identifier, t("activerecord.attributes.department.has_identifier", :default => "Has identifier"), :class => :label
+  = f.label :has_identifier, t("personnel.department.has-identifier", :default => "Has identifier"), :class => :label
   = f.check_box :has_identifier, :class => 'check_box'
   %span.description check this box if members of the department have unique identifiers/numbers
 .group
-  = f.label :has_t_shirt, t("activerecord.attributes.department.has_t_shirt", :default => "Has T-shirts"), :class => :label
+  = f.label :has_t_shirt, t("personnel.department.has-t-shirt", :default => "Has T-shirts"), :class => :label
   = f.check_box :has_t_shirt, :class => 'check_box'
   %span.description check this box if the department offers T-Shirts
 .group.navform.wat-cf{:id => "check_list"}
-  = f.label :permissions, t("activerecord.attributes.admin.permissions", :default => "Assigned Accounts"), :class => :label
-  = link_to t("web-app-theme.check_all", :default => "Check All"), "#", :id => "check_all"
+  = f.label :permissions, t("personnel.department.assigned-accounts", :default => "Assigned Accounts"), :class => :label
+  = link_to t("web-app-theme.check-all", :default => "Check All"), "#", :id => "check_all"
   |
-  = link_to t("web-app-theme.uncheck_all", :default => "Uncheck All"), "#", :id => "uncheck_all"
+  = link_to t("web-app-theme.uncheck-all", :default => "Uncheck All"), "#", :id => "uncheck_all"
   %br
   %br
   - Permission.in_columns.each do |col|

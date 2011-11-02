@@ -6,7 +6,7 @@
   .content
     %h2.title
       = t("web-app-theme.new", :default => "New")
-      Department
+      = t("personnel.department.title-single", :default => "Department")
     .inner
       = render "shared/form_errors", :object => @department
       = form_for :department, :url => admin_departments_path, :html => { :class => :form } do |f|

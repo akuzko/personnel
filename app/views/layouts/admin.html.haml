@@ -19,13 +19,17 @@
         #main-navigation
           %ul.wat-cf.dropdown
             %li{:class => controller.controller_path == 'admin/admins' ? 'active' : '' }
-              %a{:href => admin_admins_path} Admins
+              %a{:href => admin_admins_path}
+                =t("personnel.admin.title", :default => "Admins")
             %li{:class => controller.controller_path == 'admin/departments' ? 'active' : '' }
-              %a{:href => admin_departments_path} Departments
+              %a{:href => admin_departments_path}
+                =t("personnel.department.title", :default => "Departments")
             %li{:class => controller.controller_path == 'admin/categories' ? 'active' : '' }
-              %a{:href => admin_categories_path} Categories
+              %a{:href => admin_categories_path}
+                =t("personnel.category.title", :default => "Categories")
             %li{:class => (controller.controller_path == 'admin/users'  && controller.action_name != 'working_hours') ? 'active' : '' }
-              %a{:href => admin_users_path} Users
+              %a{:href => admin_users_path}
+                =t("personnel.user.title", :default => "Users")
             %li{:class => controller.controller_path == 'admin/schedule_statuses' ? 'active' : '' }
               %a{:href => admin_schedule_statuses_path} Schedule Statuses
             %li{:class => controller.controller_path == 'admin/schedules' ? 'active' : '' }

@@ -7,7 +7,7 @@
   .content
     %h2.title
       = t("web-app-theme.edit", :default => "Edit")
-      User
+      = t("personnel.user.title-single-whom", :default => "User")
     .inner
       = render "shared/form_errors", :object => @user
       = form_for @user, :url => admin_user_path(@user), :html => { :class => :form } do |f|

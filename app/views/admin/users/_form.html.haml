@@ -1,18 +1,18 @@
 .group
-  = f.label :active, t("activerecord.attributes.user.active", :default => "Active"), :class => :label
+  = f.label :active, t("personnel.user.active", :default => "Active"), :class => :label
   = f.check_box :active, :class => 'check_box'
 .group
-  = f.label :department_id, t("activerecord.attributes.user.department_id", :default => "Department"), :class => :label
+  = f.label :department_id, t("personnel.user.department", :default => "Department"), :class => :label
   = f.select :department_id, Department.selection_by_admin(current_admin.id)
 .group
-  = f.label :identifier, t("activerecord.attributes.user.identifier", :default => "IDentifier"), :class => :label
+  = f.label :identifier, t("personnel.user.identifier", :default => "IDentifier"), :class => :label
   = f.text_field :identifier, :class => 'text_field', :style => "width:80px"
   = f.hidden_field :back_url, :value => @back_url
 .group
-  = f.label :hired_at, t("activerecord.attributes.user.hired", :default => "hired"), :class => :label
+  = f.label :hired_at, t("personnel.user.hired", :default => "Hired"), :class => :label
   = f.text_field :hired_at, :class => 'text_field date_select', :style => "width:160px"
 .group
-  = f.label :fired_at, t("activerecord.attributes.user.fired", :default => "fired"), :class => :label
+  = f.label :fired_at, t("personnel.user.fired", :default => "Fired"), :class => :label
   = f.check_box :fired, :class => 'check_box'
   = f.text_field :fired_at, :class => 'text_field date_select', :style => "width:160px"
 = render 'shared/user_form', :f => f

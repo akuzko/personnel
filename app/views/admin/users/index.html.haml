@@ -2,45 +2,45 @@
   .secondary-navigation
     %ul.wat-cf
       %li.first.active= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path
-      %li= link_to "#{t("web-app-theme.t-shirts", :default => "T-Shirts")}", t_shirts_admin_users_path
+      %li= link_to "#{t("personnel.user.t-shirts", :default => "T-Shirts")}", t_shirts_admin_users_path
       %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_user_path
-      %li{:style => 'float:right'}= link_to "#{t("web-app-theme.new", :default => "Delivery List")}", delivery_admin_users_path
-      %li{:style => 'float:right'}= link_to "#{t("web-app-theme.new", :default => "Print List")}", list_admin_users_path
+      %li{:style => 'float:right'}= link_to "#{t("personnel.user.delivery-list", :default => "Delivery List")}", delivery_admin_users_path
+      %li{:style => 'float:right'}= link_to "#{t("web-app-theme.print", :default => "Print List")}", list_admin_users_path
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All")
-      Users
+      = t("personnel.user.title", :default => "Users")
     .inner
       = form_tag(admin_users_path, :method => :get, :id => 'find_form') do
         %table
           %tr
             %td
-              By ID
+              ID
               = text_field_tag :identifier, params[:identifier], :class => 'text_field', :style => "width:80px"
             %td
               &nbsp;
             %td
-              Full Name
+              = t("personnel.user.full_name", :default => "Full Name")
               = text_field_tag :full_name, params[:full_name], :class => 'text_field'
             %td
               &nbsp;
             %td
-              Department
+              = t("personnel.user.department", :default => "Department")
               = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id), params[:department_id]), { :include_blank => true }
             %td
               &nbsp;
             %td
-              Active Only
+              = t("personnel.user.active-only", :default => "Active Only")
               = check_box_tag :active, 1, params[:active]
             %td
               &nbsp;
             %td
-              Presently Employed
+              = t("personnel.user.presently-employed", :default => "Presently Employed")
               = check_box_tag :employed, 1, params[:employed]
             %td
               &nbsp;
             %td
-              per page
+              = t("web-app-theme.per page", :default => "per page")
               = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
             %td
               &nbsp;
@@ -82,7 +82,7 @@
             %td= user.full_address_admin
             %td= l(user.birthdate) if user.birthdate
             %td.last
-              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'User', :subject_id => user.id)}
+              \#{link_to "#{t("web-app-theme.logs", :default => "Logs")}", admin_logs_path(:subject_type => 'User', :subject_id => user.id)}
               |
               %a{:href => admin_user_path(user), :data => {'load-user' => admin_user_path(user)}}= t("web-app-theme.show", :default => "Show")
               |

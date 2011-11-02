@@ -6,7 +6,7 @@
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All")
-      Departments
+      =t("personnel.department.title", :default => "Departments")
     .inner
       = form_tag(admin_departments_path, :method => :get, :id => 'find_form') do
         %table
@@ -18,11 +18,11 @@
         %tr
           %th.first ID
           %th{:sort => 'name', :class => 'sortable'}
-            = t("activerecord.attributes.admin_department.name", :default => t("activerecord.labels.name", :default => "Name"))
+            = t("web-app-theme.name", :default => "Name")
           %th
-            Admins
+            =t("personnel.admin.title", :default => "Admins")
           %th{:sort => 'created_at', :class => 'sortable'}
-            = t("web-app-theme.created_at", :default => "Created on")
+            = t("web-app-theme.created-at", :default => "Created on")
           %th.last &nbsp;
         - @departments.each do |department|
           %tr{:class => cycle("odd", "even")}
@@ -37,7 +37,7 @@
             %td
               = department.created_at.to_formatted_s(:date_and_time)
             %td.last
-              \#{link_to "#{t("web-app-theme.edit", :default => "Logs")}", admin_logs_path(:subject_type => 'Department', :subject_id => department.id)}
+              \#{link_to "#{t("web-app-theme.logs", :default => "Logs")}", admin_logs_path(:subject_type => 'Department', :subject_id => department.id)}
               |
               = link_to "#{t("web-app-theme.show", :default => "Show")}", admin_department_path(department)
               |

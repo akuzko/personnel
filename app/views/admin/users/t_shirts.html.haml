@@ -2,12 +2,12 @@
   .secondary-navigation
     %ul.wat-cf
       %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", admin_users_path
-      %li.active= link_to "#{t("web-app-theme.t-shirts", :default => "T-Shirts")}", t_shirts_admin_users_path
+      %li.active= link_to "#{t("personnel.user.t-shirts", :default => "T-Shirts")}", t_shirts_admin_users_path
       %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_user_path
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All")
-      T-Shirts
+      = t("personnel.user.t-shirts", :default => "T-Shirts")
     .inner
       %table.table
         - department = ''
@@ -19,11 +19,11 @@
                 %h3= department
             %tr
               %th
-                = t("activerecord.attributes.profile.t_shirt_size", :default => t("activerecord.labels.size", :default => "Size"))
+                = t("personnel.user.t-shirt-size", :default => "Size")
               %th
-                = t("activerecord.attributes.admin_event.level", :default => t("activerecord.labels.level", :default => "Level"))
+                = t("personnel.user.level", :default => "Level")
               %th
-                = t("activerecord.attributes.admin_event.count", :default => t("activerecord.labels.count", :default => "Count"))
+                = t("web-app-theme.count", :default => "Count")
           %tr{:class => cycle("odd", "even")}
             %td
               = user.t_shirt_size
