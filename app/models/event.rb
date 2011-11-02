@@ -9,7 +9,7 @@ class Event < ActiveRecord::Base
   scope :identified, where('identifier IS NOT NULL')
 
   def self.search(params, admin_id)
-    params[:sort_by] ||= :eventtime
+    params[:sort_by] ||= "eventtime DESC"
 
     admin = Admin.find_by_id(admin_id)
     conditions = []

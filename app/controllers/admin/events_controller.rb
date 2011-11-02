@@ -8,6 +8,9 @@ class Admin::EventsController < ApplicationController
   end
 
   def index
+    if !params[:sort_order]
+      params[:date_from_check] = "1"
+    end
     params[:date_from] = (DateTime.current - 2.hour).to_formatted_s(:date_and_time)  if !params[:date_from]
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
