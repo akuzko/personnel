@@ -109,7 +109,7 @@ class EventsController < ApplicationController
   def start_shift
     if !current_user.has_identifier?
       flash[:error] = "You dont have permissions to view this page"
-      redirect_to user_path
+      redirect_to user_path and return
     end
     @shift = Shift.new
     @shift.shiftdate = Date.current + 1.day if DateTime.current.hour == 23
@@ -117,6 +117,29 @@ class EventsController < ApplicationController
 
   def create_shift
     shiftdate = (params[:shift]["shiftdate(1i)"].to_s+"-"+params[:shift]["shiftdate(2i)"].to_s+"-"+params[:shift]["shiftdate(3i)"].to_s).to_date
+    # Validate shift with schedule nad actual time of start
+    @template = ScheduleTemplate.find_by_department_id_and_year_and_month(current_user.department_id, shiftdate.year, shiftdate.month)
+    @schedule_shift = @template.schedule_shifts.where(:number => params[:shift][:number]).first unless @template.nil?
+    if @schedule_shift.nil?
+      flash[:error] = "Wrong shift [number]"
+      redirect_to start_shift_events_path and return
+    end
+    cell = @schedule_shift.schedule_cells.find_by_day_and_user_id(shiftdate.day, current_user.identifier)
+    if cell.nil?
+      flash[:error] = "Wrong shift [day]"
+      redirect_to start_shift_events_path and return
+    end
+    # Allow to start only -2 hours or start or if the shift is not ended
+    start_time = shiftdate + @schedule_shift.start.hours
+    end_time =  shiftdate + @schedule_shift.end.hours
+    if ((start_time.to_datetime - DateTime.current)*24).to_i > 2
+      flash[:error] = "The shift will start #{((start_time.to_datetime - DateTime.current)*24).to_i} hours later"
+      redirect_to start_shift_events_path and return
+    end
+    if DateTime.current > end_time.to_datetime
+      flash[:error] = "The shift is already over"
+      redirect_to start_shift_events_path and return
+    end
     @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(shiftdate, params[:shift][:number], current_user.id)
     if @shift
       if @shift.start_event.nil?
