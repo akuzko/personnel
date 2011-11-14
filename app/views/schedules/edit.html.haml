@@ -1,7 +1,11 @@
 .block
   .content
-    .inner
-      %h2= "Edit Your Schedule for #{@template.month}.#{@template.year}"
+    .inner.form
+      %h2
+        = "Edit Your Schedule for #{@template.month}.#{@template.year}"
+        %br
+        %span.description
+          Left click your mouse button on the cell you'd like to put your number in. To remove the number, left click the mouse button again.
       %div{:style => 'float:left;padding-left:5px'}
         %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
           %tr
