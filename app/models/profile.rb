@@ -20,4 +20,9 @@ class Profile < ActiveRecord::Base
     false if user.department_id.nil?
     Department.find(user.department_id).has_t_shirt? if user.department_id
   end
+
+  def has_levels?
+    false if user.department_id.nil?
+    Department.find(user.department_id).has_levels? if user.department_id
+  end
 end

@@ -17,9 +17,10 @@
     = f.label :t_shirt_size, t("personnel.profile.t_shirt_size", :default => "T-Shirt Size"), :class => :label
     = f.select :t_shirt_size, Profile.size_selection, :include_blank => true
     %span.description= t("personnel.Required")
+- if @user.profile.has_levels?
   .group
     = f.label :level, t("personnel.profile.level", :default => "Level"), :class => :label
-    = f.select :level, Profile.level_selection, :include_blank => true
+    = @user.profile.level
 
 .group.navform.wat-cf
   %button.button{:type => "submit"}
