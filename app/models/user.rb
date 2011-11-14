@@ -133,7 +133,7 @@ class User < ActiveRecord::Base
 
   def self.identifier_selection(current_identifier)
     a = current_identifier.nil? ? [] : [current_identifier]
-    s = order(:identifier).where('identifier IS NOT NULL ').all.map(&:identifier)
+    s = order(:identifier).where('identifier IS NOT NULL ').group(:identifier).all.map(&:identifier)
     ((1..s.last+20).to_a - s + a).sort.each do |d|
       [d, d]
     end
