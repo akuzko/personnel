@@ -7,7 +7,7 @@ class Schedule < ActionMailer::Base
     mail(
       :to => user.email,
       :from => "Zone3000 <valnech@zone3000.net>",
-      :subject => "Create your schedule invitation"
+      :subject => "Create your schedule"
     )
   end
 end
