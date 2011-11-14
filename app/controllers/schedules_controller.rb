@@ -1,5 +1,6 @@
 class SchedulesController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :check_filled_profile
   layout 'user'
 
   def show

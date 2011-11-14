@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :check_filled_profile, :only => [:find]
   layout 'user'
 
   def edit
