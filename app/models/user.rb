@@ -131,6 +131,13 @@ class User < ActiveRecord::Base
     @geometry[style] ||= Paperclip::Geometry.from_file(avatar.path(style))
   end
 
+  def self.identifier_selection(current_identifier)
+    s = order(:identifier).where('identifier IS NOT NULL ').all.map(&:identifier)
+    ((1..s.last+20).to_a - s + [current_identifier]).sort.each do |d|
+      [d, d]
+    end
+  end
+
   private
 
   def create_internals

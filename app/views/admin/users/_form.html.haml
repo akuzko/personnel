@@ -6,7 +6,8 @@
   = f.select :department_id, Department.selection_by_admin(current_admin.id)
 .group
   = f.label :identifier, t("personnel.user.identifier", :default => "IDentifier"), :class => :label
-  = f.text_field :identifier, :class => 'text_field', :style => "width:80px"
+  -#= f.text_field :identifier, :class => 'text_field', :style => "width:80px"
+  = f.select :identifier, User.identifier_selection(f.object.identifier)
   = f.hidden_field :back_url, :value => @back_url
 .group
   = f.label :hired_at, t("personnel.user.hired", :default => "Hired"), :class => :label
