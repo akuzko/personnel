@@ -18,7 +18,7 @@
     = f.select :t_shirt_size, Profile.size_selection, :include_blank => true
     %span.description= t("personnel.Required")
 - if @user.profile.has_levels?
-  - if @admin
+  - if current_admin
     .group
       = f.label :level, t("personnel.profile.level", :default => "Level"), :class => :label
       = f.select :level, Profile.level_selection, :include_blank => true
