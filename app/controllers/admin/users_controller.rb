@@ -137,6 +137,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def edit_data
+    @admin = current_admin
     user = User.find params[:id]
     if params[:data] == 'permissions'
       @department = Department.find user.department_id
