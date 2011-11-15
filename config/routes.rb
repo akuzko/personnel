@@ -43,6 +43,7 @@ Personnel::Application.routes.draw do
   #   end
   devise_for :users
   resource :user do
+      get :delivery, :on => :collection
       get :edit_data, :on => :member
       put :update_data, :on => :member
       get :display_addresses, :on => :member

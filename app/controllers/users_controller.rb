@@ -83,4 +83,40 @@ class UsersController < ApplicationController
       redirect_to edit_user_url(@user)
     end
   end
+
+  def delivery
+    if !params[:date]
+      date = Date.current
+    else
+      date = (params[:date][:year].to_s+"-"+params[:date][:month].to_s+"-"+params[:date][:day].to_s).to_date
+    end
+    params[:date] = date
+
+    #Out 24:00
+    out_ids = []
+    templates = ScheduleTemplate.find_all_by_year_and_month date.year, date.month
+    templates.each do |tpl|
+      tpl.schedule_shifts.where('number < 10').where('end = 24').each do |shift|
+        shift.schedule_cells.each do |cell|
+          out_ids.push cell.user_id if cell.day == date.day && cell.user_id?
+        end
+      end
+    end
+    @users_out = User.with_data.active.where("identifier IN (#{out_ids.map { |d| d }.join(',')})") if !out_ids.empty?
+
+    #In 0:00
+    in_ids = []
+    date = date + 1.day
+    templates = ScheduleTemplate.find_all_by_year_and_month date.year, date.month
+    templates.each do |tpl|
+      tpl.schedule_shifts.where('number < 10').where('start = 0').each do |shift|
+        shift.schedule_cells.each do |cell|
+          in_ids.push cell.user_id if cell.day == date.day && cell.user_id?
+        end
+      end
+    end
+    @users_in = User.with_data.active.where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
+
+    render :layout => 'mobile'
+  end
 end
