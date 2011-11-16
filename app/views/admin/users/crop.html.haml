@@ -34,6 +34,11 @@
   .group.navform.wat-cf{:style =>"padding-left:15px;float:left"}
     %button.button{:type => "submit"}
       = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.crop", :default => "Crop")}")
-      = t("web-app-theme.save", :default => "Crop")
+      = t("web-app-theme.crop", :default => "Crop")
+= form_for @user, :url => clear_avatar_admin_user_path(@user) do |f|
+  .group.navform.wat-cf{:style =>"padding-left:15px;float:left"}
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.delete_avatar", :default => "Delete Avatar")}")
+      = t("web-app-theme.delete_avatar", :default => "Delete Avatar")
 .clear
 %br

@@ -226,6 +226,14 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def clear_avatar
+    @user = User.find params[:id]
+    @user.avatar = nil
+    @user.save
+    flash[:notice] = "Avatar was successfully removed"
+    redirect_to admin_users_url
+  end
+
   def working_hours
     if params[:date]
       params[:date] = Date.parse(params[:date]["year"].to_s+"-"+params[:date]["month"].to_s+"-1")

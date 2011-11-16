@@ -131,6 +131,7 @@ Personnel::Application.routes.draw do
       get :display_section, :on => :member
       get :crop, :on => :member
       put :update_crop, :on => :member
+      put :clear_avatar, :on => :member
       get :working_hours, :on => :collection
       get :t_shirts, :on => :collection
     end
