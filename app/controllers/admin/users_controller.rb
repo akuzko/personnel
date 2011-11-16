@@ -249,6 +249,12 @@ class Admin::UsersController < ApplicationController
         @users[template] = User.includes(:profile).order('profiles.last_name').find_all_by_department_id_and_active(template.department_id, 1)
       end
     end
+    if params[:export]
+      headers['Content-Type'] = "application/vnd.ms-excel"
+      headers['Content-Disposition'] = 'attachment; filename="working_shifts.xls"'
+      headers['Cache-Control'] = ''
+      render 'export_working_hours.html', :layout => false
+    end
   end
 
   def t_shirts
