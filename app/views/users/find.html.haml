@@ -5,8 +5,8 @@
         = t("personnel.user.find_people", :default => "Find People")
 
     %div{:style => "float:right;margin:20px"}
-      = link_to "#{t("personnel.user.delivery-list", :default => "Delivery List")}", delivery_user_path
       = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button"
+      = link_to image_tag("web-app-theme/icons/car.png", :alt => "#{"Delivery List"}") + "#{t("personnel.user.delivery-list", :default => "Delivery List")}", delivery_user_path, :class => "button"
     %div{:style => "margin-top:50px"}
       &nbsp;
     .inner
