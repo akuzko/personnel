@@ -80,7 +80,7 @@ Personnel::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  devise_for :admins
+  devise_for :admins, :controllers => { :registrations => "registrations" }
   namespace :admin do
     root :to => "users#index"
     resources :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions, :logs

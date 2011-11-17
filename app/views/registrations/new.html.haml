@@ -16,12 +16,6 @@
       .group.wat-cf
         .left= f.label :password_confirmation, :class => "label right"
         .right= f.password_field :password_confirmation, :class => "text_field"
-      .group.wat-cf
-        .left= f.label :department_id, :class => "label right"
-        .right= f.select :department_id, Department.all.collect {|d| [ d.name, d.id ] }, :class => "text_field"
-      .group.wat-cf
-        .left= f.label :identifier, :class => "label right"
-        .right= f.select :identifier, User.identifier_selection(nil), :class => "text_field", :include_blank => true
 
       .group.wat-cf
         .right
