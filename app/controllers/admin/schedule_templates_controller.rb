@@ -6,7 +6,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
     if params[:visible] != '2'
       User.update_all({:can_edit_schedule => 0}, :can_edit_schedule => params[:id])
       render(:update) do |page|
-        messages = {"0" => 'The schedule is invisible now', "1" => 'The schedule is visible now'}
+        messages = {"0" => 'Schedule is now hidden.', "1" => 'Schedule is now visible to everyone.'}
         message = "<div class='message notice'><p>#{messages[params[:visible]]}</p></div>"
         page['.flash'].parents(0).show
         page['.flash'].html message
@@ -34,7 +34,7 @@ class Admin::ScheduleTemplatesController < ApplicationController
     end if params[:users]
     render(:update) do |page|
       page["#overlay"].dialog("close")
-      html_message = "<div class='message notice'><p>The schedule is available for editing now for the following users:<br/>#{html_message_users.join('<br/>')}</p></div>"
+      html_message = "<div class='message notice'><p>Schedule can now be changed by the chosen staff members, they have been notified via email.:<br/>#{html_message_users.join('<br/>')}</p></div>"
       page['.flash'].parents(0).show
       page['.flash'].html html_message
     end
