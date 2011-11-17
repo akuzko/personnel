@@ -104,6 +104,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    @department = Department.find @user.department_id
     redirect_to 'index' unless current_admin.manage_department(@user.department_id)
     params[:previous_attributes] = @user.attributes
     @back_url = params[:user][:back_url]
