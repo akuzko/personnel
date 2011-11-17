@@ -4,10 +4,7 @@ class Admin::DepartmentsController < ApplicationController
   layout 'admin'
 
   def check_permissions
-    if !current_admin.super_user?
-      flash[:error] = "You dont have permissions to view this page"
-      redirect_to admin_users_path
-    end
+    redirect_to delivery_admin_users_path unless current_admin.super_user? || !current_admin.departments.empty?
   end
 
   # GET /departments
@@ -15,7 +12,8 @@ class Admin::DepartmentsController < ApplicationController
   def index
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
     params[:per_page] ||= 15
-    @departments = Department.paginate :page => params[:page], :per_page => params[:per_page], :order => "#{params[:sort_by]} #{params[:sort_order]}"
+    #@departments = Department.paginate :page => params[:page], :per_page => params[:per_page], :order => "#{params[:sort_by]} #{params[:sort_order]}"
+    @departments = Department.search(params, current_admin.id)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -37,6 +35,10 @@ class Admin::DepartmentsController < ApplicationController
   # GET /departments/new
   # GET /departments/new.xml
   def new
+    if !current_admin.super_user?
+      flash[:error] = "You dont have permissions to view this page"
+      redirect_to admin_departments_path  and return
+    end
     @department = Department.new
 
     respond_to do |format|
@@ -48,11 +50,16 @@ class Admin::DepartmentsController < ApplicationController
   # GET /departments/1/edit
   def edit
     @department = Department.find(params[:id])
+    redirect_to admin_departments_path unless current_admin.manage_department(@department.id)
   end
 
   # POST /departments
   # POST /departments.xml
   def create
+    if !current_admin.super_user?
+      flash[:error] = "You dont have permissions to view this page"
+      redirect_to admin_departments_path  and return
+    end
     @department = Department.new(params[:department])
 
     respond_to do |format|
@@ -76,6 +83,7 @@ class Admin::DepartmentsController < ApplicationController
   # PUT /departments/1.xml
   def update
     @department = Department.find(params[:id])
+    redirect_to admin_departments_path and return unless current_admin.manage_department(@department.id)
     params[:previous_attributes] = @department.attributes
 
     old_permissions = @department.permissions.map{|d|d.id.to_s}
@@ -114,6 +122,7 @@ class Admin::DepartmentsController < ApplicationController
   # DELETE /departments/1.xml
   def destroy
     @department = Department.find(params[:id])
+    redirect_to admin_departments_path and return unless current_admin.manage_department(@department.id)
     Log.add(current_admin, @department, params)
     @department.destroy
 

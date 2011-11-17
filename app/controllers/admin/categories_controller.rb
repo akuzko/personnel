@@ -38,12 +38,12 @@ class Admin::CategoriesController < ApplicationController
 
   def edit
     @category = Category.find(params[:id])
-    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path unless current_admin.manage_department(@category.department_id)
   end
 
   def create
     @category = Category.new(params[:category])
-    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.department_id)
     respond_to do |format|
       if @category.save
         Log.add(current_admin, @category, params)
@@ -58,7 +58,7 @@ class Admin::CategoriesController < ApplicationController
 
   def update
     @category = Category.find(params[:id])
-    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.department_id)
     params[:previous_attributes] = @category.attributes
     respond_to do |format|
       if @category.update_attributes(params[:category])
@@ -74,7 +74,7 @@ class Admin::CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id])
-    redirect_to 'index' unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.department_id)
     Log.add(current_admin, @category, params)
     @category.destroy
 

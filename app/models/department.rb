@@ -10,6 +10,16 @@ class Department < ActiveRecord::Base
 
   scope :identified, where('has_identifier = 1')
 
+  def self.search(params, admin_id)
+    params[:sort_by] ||= :name
+    admin = Admin.find_by_id(admin_id)
+    conditions = []
+    conditions.push("id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    paginate :per_page => params[:per_page], :page => params[:page],
+             :conditions => conditions.join(' and '),
+             :order => "#{params[:sort_by]} #{params[:sort_order]}"
+  end
+
   def self.selection
     order(:name).all.map do |d|
       [d.name, d.id]
