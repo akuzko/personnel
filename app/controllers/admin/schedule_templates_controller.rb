@@ -5,8 +5,15 @@ class Admin::ScheduleTemplatesController < ApplicationController
     @schedule_template.save
     if params[:visible] != '2'
       User.update_all({:can_edit_schedule => 0}, :can_edit_schedule => params[:id])
+      render(:update) do |page|
+        messages = {"0" => 'The schedule is invisible now', "1" => 'The schedule is visible now'}
+        message = "<div class='message notice'><p>#{messages[params[:visible]]}</p></div>"
+        page['.flash'].parents(0).show
+        page['.flash'].html message
+      end
+    else
+      render :nothing => true
     end
-    render :nothing => true
   end
 
   def select_users
@@ -17,14 +24,19 @@ class Admin::ScheduleTemplatesController < ApplicationController
 
   def update_editable_users
     User.update_all({:can_edit_schedule => 0}, :can_edit_schedule => params[:id])
+    html_message_users = []
     params[:users].each do |user_id|
       user = User.find_by_id(user_id)
       user.update_attribute(:can_edit_schedule, params[:id])
+      html_message_users += [user.name]
       message = Schedule.send_invitation_to_user(user)
       message.deliver
     end if params[:users]
     render(:update) do |page|
       page["#overlay"].dialog("close")
+      html_message = "<div class='message notice'><p>The schedule is available for editing now for the following users:<br/>#{html_message_users.join('<br/>')}</p></div>"
+      page['.flash'].parents(0).show
+      page['.flash'].html html_message
     end
   end
 
