@@ -52,4 +52,4 @@ en:
         inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
     user_registrations:
       user:
-        inactive_signed_up: 'You have signed up successfully. However, we could not sign you in because your account is %{reason}.'
+        inactive_signed_up: 'Thank you for signing up. Please check your email, confirmation email has been sent to you.'
