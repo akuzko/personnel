@@ -41,7 +41,7 @@ Personnel::Application.routes.draw do
   #       get 'recent', :on => :collection
   #     end
   #   end
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => "user_registrations" }
   resource :user do
       get :delivery, :on => :collection
       get :edit_data, :on => :member

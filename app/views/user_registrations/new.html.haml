@@ -1,0 +1,34 @@
+%h1 Zone3000 Staff
+.block#block-login
+  %h2 Sign up
+  .content.login
+    .flash
+      - resource.errors.each do |type, message|
+        %div{ :class => "message error" }
+          %p= "#{type.to_s.capitalize} #{message}"
+    = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :class => "form login" }) do |f|
+      .group.wat-cf
+        .left= f.label :email, :class => "label right"
+        .right= f.email_field :email, :class => "text_field"
+      .group.wat-cf
+        .left= f.label :password, :class => "label right"
+        .right= f.password_field :password, :class => "text_field"
+      .group.wat-cf
+        .left= f.label :password_confirmation, :class => "label right"
+        .right= f.password_field :password_confirmation, :class => "text_field"
+      .group.wat-cf
+        .left= f.label :department_id, :class => "label right"
+        .right
+          = f.select :department_id, Department.all.collect {|d| [ d.name, d.id ] }, {:include_blank => :true}, {:class => "text_field", :onchange => 'app.check_department_for_identifier()'}
+      .group.wat-cf
+        .left= f.label :identifier, :class => "label right"
+        .right= f.select :identifier, User.identifier_selection(nil), :class => "text_field", :include_blank => true
+
+      .group.wat-cf
+        .right
+          %button.button{ :type => "submit" }
+            = image_tag "web-app-theme/icons/key.png"
+            Sign up
+    = render :partial => "devise/shared/links"
+%script{:type => "text/javascript"}
+  app.check_department_for_identifier()
