@@ -5,13 +5,12 @@ class UserAuth < ActionMailer::Base
   def send_user_created(user, admins)
     @user = user
     if !admins.nil?
-      admins.each do |mail|
-        mail(
-          :to => mail,
+      mail(
+          :to => admins.join(","),
           :from => "Zone3000 <valnech@zone3000.net>",
           :subject => "New user signup"
-        )
-      end
+      )
     end
   end
 end
+
