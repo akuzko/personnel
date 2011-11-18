@@ -259,6 +259,17 @@
       false;
       app.show_users_admin();
       return $("#overlay").dialog("close");
+    },
+    check_department_for_identifier: function() {
+      if ($("#user_department_id").val()) {
+        return $.get('/shifts/' + $("#user_department_id").val() + '/check_department_for_identifier', function(data) {
+          if (data === 'false') {
+            return $("#user_identifier").parents("div.group").hide();
+          } else {
+            return $("#user_identifier").parents("div.group").show();
+          }
+        });
+      }
     }
   };
 }).call(this);

@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   scope :active, where('active = 1')
   #scope :identifiers, order('identifier ASC').select('identifier')
 
+  validates_presence_of :department_id
   validates_presence_of :identifier, :if => :has_identifier?
   validates_uniqueness_of :identifier, :scope => :active, :if => :has_identifier?
   validates_confirmation_of :password
@@ -169,7 +170,7 @@ class User < ActiveRecord::Base
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
-    paginate :per_page => 15, :page => params[:page],
+    paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
   end
@@ -190,7 +191,7 @@ class User < ActiveRecord::Base
     end
     conditions.push("fired = 0") unless params[:employed].nil? || params[:employed] == ""
     conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
-    paginate :per_page => params[:per_page], :page => params[:page],
+    paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
   end

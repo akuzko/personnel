@@ -3,7 +3,7 @@
   = f.check_box :active, :class => 'check_box'
 .group
   = f.label :department_id, t("personnel.user.department", :default => "Department"), :class => :label
-  = f.select :department_id, Department.selection_by_admin(current_admin.id)
+  = f.select :department_id, Department.selection_by_admin(current_admin.id), {}, {:onchange => 'app.check_department_for_identifier()'}
 .group
   = f.label :identifier, t("personnel.user.identifier", :default => "IDentifier"), :class => :label
   = f.select :identifier, User.identifier_selection(f.object.identifier), :include_blank => true
@@ -22,3 +22,5 @@
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
     = t("web-app-theme.save", :default => "Save")
   = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}") + t("web-app-theme.cancel", :default => "Cancel"), @back_url, :class => "button"
+%script{:type => "text/javascript"}
+  app.check_department_for_identifier()

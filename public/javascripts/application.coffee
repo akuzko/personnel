@@ -186,4 +186,10 @@ shiftPressed = false
     no
     app.show_users_admin()
     $("#overlay").dialog("close")
-
+  check_department_for_identifier: ->
+    if $("#user_department_id").val()
+      $.get '/shifts/'+$("#user_department_id").val()+'/check_department_for_identifier', (data) ->
+        if data == 'false'
+          $("#user_identifier").parents("div.group").hide()
+        else
+          $("#user_identifier").parents("div.group").show()
