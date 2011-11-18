@@ -1,5 +1,5 @@
 class UserAuth < ActionMailer::Base
-  default :from => "f1n@zone3000.net"
+  default :from => "valnech@zone3000.net"
   layout "mail"
 
   def send_user_created(user, admins)

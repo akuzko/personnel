@@ -150,8 +150,6 @@ class User < ActiveRecord::Base
     # send notification to admin
     department = Department.find(self.department_id)
     admins = department.admins.map(&:email)
-    #ap self.department_id
-    #ap admins
     message = UserAuth.send_user_created(self, admins)
     message.deliver
   end
