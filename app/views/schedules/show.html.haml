@@ -17,7 +17,8 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
                 = t("web-app-theme.find", :default => "Show")
-
+              = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button"
+              = link_to image_tag("web-app-theme/icons/car.png", :alt => "#{"Delivery List"}") + "#{t("personnel.user.delivery-list", :default => "Delivery List")}", delivery_user_path, :class => "button"
         %div{:style => 'float:left;padding-left:5px'}
           %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
             %tr
