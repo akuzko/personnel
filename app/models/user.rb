@@ -146,6 +146,13 @@ class User < ActiveRecord::Base
     create_contact
     self.department_id ||= Department.find_or_create_by_name('General').id
     save
+    # send notification to admin
+    department = Department.find(self.department_id)
+    admins = department.admins.map(&:email)
+    #ap self.department_id
+    #ap admins
+    message = UserAuth.send_user_created(self, admins)
+    message.deliver
   end
 
   def self.search(params)

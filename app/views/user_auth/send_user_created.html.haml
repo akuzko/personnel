@@ -1,0 +1,10 @@
+.block
+  .content
+    %h2.title
+      New User Signup
+    .inner.form
+      %p
+        New user has signed up and indicated the department assigned to you.
+      %p
+        You need to login to Admin Area and activate the account.
+        =link_to t("activate the account"), edit_admin_user_url(@user)
