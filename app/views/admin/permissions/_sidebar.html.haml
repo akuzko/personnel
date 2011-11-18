@@ -1,11 +1,11 @@
 .block.notice
-  %h3 Simple Block
+  %h3 Tips
   .content
-    %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-.block
-  %h3 Links
-  %ul.navigation
-    %li
-      %a{:href => "#"} Link 1
-    %li
-      %a{:href => "#"} Link 2
+    %p The check list will allow you to keep track of all the accounts and systems users have access to.
+    %p You can manage the list of all accounts/access/permissions here. Use Add tab to add a new account/permission. Make sure the name is clear and you can easily understand what it is for.
+    %p
+      Accounts are assigned to departments under
+      =link_to("Departments", admin_departments_url)
+      option and then added/deleted to/from the user on the user’s page under
+      =link_to("Users", admin_users_url)
+      option.

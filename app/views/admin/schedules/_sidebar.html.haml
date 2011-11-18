@@ -2,10 +2,33 @@
   %h3 Usage
   .content
     %p
-      = t("activerecord.attributes.schedule.usage", :default => "Press and hold Control key to select more than one cell")
+      Left click the mouse button on the cell you need to put the number in and select the user and appropriate status from there.
     %p
-      = t("activerecord.attributes.schedule.shift_usage", :default => "Для того чтобы вставить часть расписания в таблицу - зажмите Shift и кликните левой кнопкой мыши по ячейке. Это ячейка, относительно которой будет вставлятся рассписание.")
-
+      Press and hold Control key to select more than one cell, then left click the mouse button.
+    %p
+      To paste a part of a schedule, hold Shift key and left click the mouse button on the cell. The schedule will be pasted relative to this cell.
+.block.notice
+  %h3 Tips
+  .content
+    %p
+      Click on the name of a user to show all the cells with his/her identifier in the schedule.
+      %b Clear Selection
+      button will allow you to clear this selection.
+    %p S – number of working shifts
+    %p N - number of night shifts
+    %p Off – number of days off
+    %p Std – number of standard working shifts and days off
+    %p
+      %b Set Norms
+      button allows you to set the standard number of working shifts and days off. If you need to set different standards for a specific user click on the Std cell next to the corresponding user. Note: this should be done after the norms are set for everyone.
+    %p
+      If schedule is
+      %b Hidden
+      , users do not see it. If you need to allow certain users to edit the schedule, select
+      %b Editable
+      and check the names of users to send invitations to.
+      %b Visible
+      schedule becomes visible to everyone and is not editable by the users.
   %h3 Users
   .content
     %br

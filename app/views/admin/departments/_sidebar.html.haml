@@ -1,0 +1,11 @@
+.block.notice
+  %h3 Tips
+  .content
+    %p Here you сan manage departments assigned to you.
+    %p Users of each department may have identifiers (unique number), t-shirts (they will be asked for their size) and levels (can be changed by admin only, but is visible to the user).
+    %p
+      %b Assigned Accounts
+      option allows you to select different accounts (access) that are applicable for the department. List of such accounts can be changed under
+      = link_to("Check List", admin_permissions_url)
+      option and is managed separately for each user under
+      = link_to("Users section", admin_users_url)

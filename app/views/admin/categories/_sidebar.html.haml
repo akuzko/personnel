@@ -1,11 +1,17 @@
 .block.notice
-  %h3 Simple Block
+  %h3 Tips
   .content
-    %p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-.block
-  %h3 Links
-  %ul.navigation
-    %li
-      %a{:href => "#"} Link 1
-    %li
-      %a{:href => "#"} Link 2
+    %p Categories for time report events can be added/modified/deleted here.
+    %p
+      Each category is assigned to a specific department and will be active and displayed for the users if
+      %b Display
+      check box is checked.
+    %p
+      %b Display Order
+      will show the number the category is displayed in for users.
+    %p
+      If you would like to include the category into
+      =link_to("Reports", processed_by_person_admin_events_url)
+      the box
+      %b Report
+      should be checked.
