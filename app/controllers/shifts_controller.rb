@@ -53,4 +53,8 @@ class ShiftsController < ApplicationController
       end
     end
   end
+
+  def check_department_for_identifier
+    render :text => Department.find(params[:id]).has_identifier
+  end
 end

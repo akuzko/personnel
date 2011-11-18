@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   scope :active, where('active = 1')
   #scope :identifiers, order('identifier ASC').select('identifier')
 
+  validates_presence_of :department_id
   validates_presence_of :identifier, :if => :has_identifier?
   validates_uniqueness_of :identifier, :scope => :active, :if => :has_identifier?
   validates_confirmation_of :password

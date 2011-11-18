@@ -60,6 +60,7 @@ Personnel::Application.routes.draw do
   resources :shifts do
     get :close_old, :on => :collection
     get :check, :on => :collection
+    get :check_department_for_identifier, :on => :member
   end
   resource :schedule do
     post :update_cell, :on => :collection
