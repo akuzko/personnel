@@ -73,6 +73,7 @@ class UsersController < ApplicationController
 
   def find
     @user = User.find current_user.id
+    params[:per_page] ||= 15
     @users = User.with_data.active.search(params)
   end
 

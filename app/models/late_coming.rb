@@ -15,7 +15,7 @@ class LateComing < ActiveRecord::Base
     conditions.push("`shifts`.shiftdate >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
     conditions.push("`shifts`.shiftdate <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
 
-    paginate :per_page => params[:per_page], :page => params[:page],
+    paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => params[:sort_by]
   end

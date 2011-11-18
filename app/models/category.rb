@@ -13,7 +13,7 @@ class Category < ActiveRecord::Base
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
     conditions.push("name LIKE '%#{params[:name]}%'") unless params[:name].nil? || params[:name] == ""
-    paginate :per_page => params[:per_page], :page => params[:page],
+    paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{params[:sort_by]} #{params[:sort_order]}"
   end

@@ -15,7 +15,7 @@ class Department < ActiveRecord::Base
     admin = Admin.find_by_id(admin_id)
     conditions = []
     conditions.push("id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
-    paginate :per_page => params[:per_page], :page => params[:page],
+    paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{params[:sort_by]} #{params[:sort_order]}"
   end

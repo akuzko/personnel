@@ -10,7 +10,7 @@
     %div{:style => "margin-top:50px"}
       &nbsp;
     .inner
-      = form_tag(find_user_path, :method => :get) do
+      = form_tag(find_user_path, :method => :get, :id => 'find_form') do
         %table
           %tr
             %td
@@ -29,13 +29,20 @@
             %td
               &nbsp;
             %td
+              = t("web-app-theme.per page", :default => "per page")
+              = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
       %table.table
         %tr
           %th
-          %th= t("personnel.user.identifier", :default => "IDentifier")
+          %th{:sort => 'identifier', :class => 'sortable'}= t("personnel.user.identifier", :default => "IDentifier")
           %th= t("personnel.user.full_name", :default => "Full Name")
           %th= t("personnel.contact.cell", :default => "Cell")
           %th= t("personnel.address.title", :default => "Address")
