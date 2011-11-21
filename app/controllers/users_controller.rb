@@ -26,6 +26,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def view
+    @user = User.with_data.find(params[:id])
+    @department = Department.find @user.department_id
+
+    #redirect_to 'index' unless current_admin.manage_department(@user.department_id)
+    respond_to do |format|
+      format.html { render :partial => 'show' if request.xhr? }
+      format.xml { render :xml => @user }
+    end
+  end
+
   def show
     @user = User.find current_user.id
     flash[:alert] = "Please upload your picture" if !@user.avatar.exists?

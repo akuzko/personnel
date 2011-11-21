@@ -1,4 +1,5 @@
 = render 'shared/contact_show', :user => @user
-.wat-cf
-  = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
-    edit_data_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_user_path(@user, :data => 'contact')
+- if current_user.id == @user.id
+  .wat-cf
+    = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
+      edit_data_user_path(@user, :data => 'contact'), :class => "button", 'data-edit-contact' => edit_data_user_path(@user, :data => 'contact')

@@ -53,6 +53,9 @@ Personnel::Application.routes.draw do
       get :list, :on => :collection
   end
 
+  resources :users do
+    get :view, :on => :member
+  end
 
   resources :addresses do
     get :make_primary, :on => :member
