@@ -8,8 +8,8 @@ class Admin::ShiftsController < ApplicationController
   end
 
   def index
-    params[:date_from] = Date.current.to_formatted_s(:date_only)  if !params[:date_from]
-    params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
+    params[:date_from] = Date.current.to_formatted_s(:date_only) if !params[:date_from]
+    params[:date_to] = Date.current.to_formatted_s(:date_only) if !params[:date_to]
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
     params[:per_page] ||= 15
     @shifts = Shift.joins('JOIN users ON shifts.user_id = users.id').search(params, current_admin.id)
@@ -97,5 +97,34 @@ class Admin::ShiftsController < ApplicationController
     shift = @shifts.where('start<=? and end>?', (Time.now.hour + 2), Time.now.hour).last
     @selected_number = shift.number unless shift.nil?
     render :layout => false
+  end
+
+  def missed
+    @date = Date.current - 1.day
+    @missed_shifts_departments = {}
+    @templates = ScheduleTemplate.where('year = ?', @date.year).where('month = ?', @date.month).where('visible = 1').all
+    @templates.each do |template|
+      if current_admin.manage_department(template.department_id)
+        missed_shifts = []
+        department = Department.find(template.department_id)
+        admins = department.admins.map(&:email)
+        template.schedule_shifts.each do |shift|
+          if shift.number < 10
+            shift.schedule_cells.each do |cell|
+              if !cell.user_id.nil? && cell.day == @date.day
+                user = User.find_by_identifier_and_active(cell.user_id, 1)
+                count = Shift.find_all_by_user_id_and_number_and_shiftdate(user.id, shift.number, @date).count
+                missed_shifts.push [user.full_name, @date, shift.number, shift.start, shift.end] if count == 0
+              end
+            end
+          end
+        end
+        if !missed_shifts.empty?
+          @missed_shifts_departments[department.name] = {}
+          @missed_shifts_departments[department.name][:shifts] = missed_shifts
+          @missed_shifts_departments[department.name][:admins] = admins
+        end
+      end
+    end
   end
 end

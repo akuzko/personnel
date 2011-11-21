@@ -99,6 +99,7 @@ Personnel::Application.routes.draw do
     end
     resources :shifts do
       get :available_shift_numbers, :on => :collection
+      get :missed, :on => :collection
     end
     resources :events do
       get :processed_total, :on => :collection
