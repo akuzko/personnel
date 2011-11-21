@@ -31,7 +31,7 @@ class Admin < ActiveRecord::Base
   end
 
   def manage_department(department_id)
-    super_user? || departments.map{|d|d.id}.include?(department_id)
+    super_user? || departments.map{|d|d.id}.include?(department_id.to_i)
     #departments.map{|d|d.id}.include?(department_id)
   end
 

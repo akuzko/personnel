@@ -27,7 +27,7 @@
             %li{:class => controller.controller_path == 'admin/categories' ? 'active' : '' }
               %a{:href => admin_categories_path}
                 =t("personnel.category.title", :default => "Categories")
-            %li{:class => (controller.controller_path == 'admin/users'  && controller.action_name != 'working_hours') ? 'active' : '' }
+            %li{:class => (controller.controller_path == 'admin/users'  && controller.action_name != 'working_shifts') ? 'active' : '' }
               %a{:href => admin_users_path}
                 =t("personnel.user.title", :default => "Users")
             %li{:class => controller.controller_path == 'admin/schedule_statuses' ? 'active' : '' }
@@ -40,7 +40,7 @@
               %a{:href => admin_events_path} Events
             %li{:class => controller.controller_path == 'admin/permissions' ? 'active' : '' }
               %a{:href => admin_permissions_path} Check List
-            %li{:class => ((controller.controller_path == 'admin/events' && controller.action_name != 'index') || (controller.controller_path == 'admin/late_comings') || (controller.action_name == 'working_hours')) ? 'active' : '' }
+            %li{:class => ((controller.controller_path == 'admin/events' && controller.action_name != 'index') || (controller.controller_path == 'admin/late_comings') || (controller.action_name == 'working_shifts')) ? 'active' : '' }
               %a{:href => '#'} Reports
               %ul
                 %li
@@ -48,7 +48,7 @@
                 %li
                   %a{:href => admin_late_comings_path} Late Comings
                 %li
-                  %a{:href => working_hours_admin_users_path} Working Shifts
+                  %a{:href => working_shifts_admin_users_path} Working Shifts
                 %li
                   %a{:href => processed_by_day_of_week_admin_events_path} Processed: By Days Of Week
             %li{:class => controller.controller_path == 'admin/logs' ? 'active' : '' }

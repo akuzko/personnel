@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
   validates_confirmation_of :password
   validates_format_of :email,
                       :with => /\A([^@\s]+)@zone3000\.net\Z/i
-
+  validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
   before_validation :clean_unused_identifier
 
   def has_identifier?
