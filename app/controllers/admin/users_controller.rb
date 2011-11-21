@@ -235,7 +235,7 @@ class Admin::UsersController < ApplicationController
     redirect_to admin_users_url
   end
 
-  def working_hours
+  def working_shifts
     if params[:date]
       params[:date] = Date.parse(params[:date]["year"].to_s+"-"+params[:date]["month"].to_s+"-1")
     else
@@ -244,17 +244,17 @@ class Admin::UsersController < ApplicationController
     @users = {}
     ScheduleTemplate.find_all_by_year_and_month(params[:date].year, params[:date].month).each do |template|
       if params[:department_id] && !params[:department_id].empty?
-        redirect_to 'index' unless current_admin.manage_department(params[:department_id])
+        redirect_to working_shifts_admin_users_url and return unless current_admin.manage_department(params[:department_id])
         @users[template] = User.includes(:profile).order('profiles.last_name').find_all_by_department_id_and_active(template.department_id, 1) if params[:department_id].to_i == template.department_id
       else
-        @users[template] = User.includes(:profile).order('profiles.last_name').find_all_by_department_id_and_active(template.department_id, 1)
+        @users[template] = User.includes(:profile).order('profiles.last_name').find_all_by_department_id_and_active(template.department_id, 1) if current_admin.manage_department(template.department_id)
       end
     end
     if params[:export]
       headers['Content-Type'] = "application/vnd.ms-excel"
       headers['Content-Disposition'] = 'attachment; filename="working_shifts.xls"'
       headers['Cache-Control'] = ''
-      render 'export_working_hours.html', :layout => false
+      render 'export_working_shifts.html', :layout => false
     end
   end
 

@@ -133,7 +133,7 @@ Personnel::Application.routes.draw do
       get :crop, :on => :member
       put :update_crop, :on => :member
       put :clear_avatar, :on => :member
-      get :working_hours, :on => :collection
+      get :working_shifts, :on => :collection
       get :t_shirts, :on => :collection
     end
   end
