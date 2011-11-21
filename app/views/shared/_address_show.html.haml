@@ -22,8 +22,9 @@
     = t("personnel.address.nos", :default => "Number of storeys")
     \:
   = addr.nos
-%p
-  %b
-    = t("personnel.address.room", :default => "Apt/Room")
-    \:
-  = addr.room
+- if current_user.id == @user.id
+  %p
+    %b
+      = t("personnel.address.room", :default => "Apt/Room")
+      \:
+    = addr.room

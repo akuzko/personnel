@@ -10,13 +10,6 @@
     = render 'show_profile'
 
 .block.notice
-  %h3
-    Accounts
-    %a{:onclick=> '$("#sidebar_permissions").toggle();', :style => 'float:right;cursor:pointer'} show/hide
-  #sidebar_permissions.content{:style => 'display:none;'}
-    = render 'show_permissions'
-
-.block.notice
   %h3= t("personnel.address.title", :default => 'Address')
   %div#sidebar_address.content{:style => "margin:10px;"}
     = render 'show_addresses'
