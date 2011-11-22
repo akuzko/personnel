@@ -39,10 +39,10 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find current_user.id
-    flash[:alert] = "Please upload your picture" if !@user.avatar.exists?
-    flash[:alert] = "Please update your profile" if @user.profile.first_name.nil?
-    flash[:alert] = "Please add your address" if @user.addresses.empty?
-    flash[:alert] = "Please update your contact information" if @user.contact.cell1.nil?
+    flash[:error] = "Please upload your picture" if !@user.avatar.exists?
+    flash[:error] = "Please update your profile" if @user.profile.first_name.nil?
+    flash[:error] = "Please add your address" if @user.addresses.empty?
+    flash[:error] = "Please update your contact information" if @user.contact.cell1.nil?
   end
 
   def edit_data
