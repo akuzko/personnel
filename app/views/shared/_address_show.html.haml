@@ -22,7 +22,7 @@
     = t("personnel.address.nos", :default => "Number of storeys")
     \:
   = addr.nos
-- if current_user.id == @user.id
+- if current_user.nil? || current_user.id == @user.id
   %p
     %b
       = t("personnel.address.room", :default => "Apt/Room")

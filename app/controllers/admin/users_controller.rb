@@ -89,7 +89,7 @@ class Admin::UsersController < ApplicationController
   def create
     params[:user].delete(:back_url)
     @user = User.new(params[:user])
-    redirect_to 'index' unless current_admin.manage_department(@user.department_id)
+    redirect_to admin_users_url unless current_admin.manage_department(@user.department_id)
     respond_to do |format|
       if @user.save
         Log.add(current_admin, @user, params)

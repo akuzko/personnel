@@ -18,7 +18,7 @@
     = t("personnel.contact.cell3", :default => "Cell 3")
     \:
   = @user.contact.cell3
-- if current_user.id == @user.id
+- if current_user.nil? || current_user.id == @user.id
   %p
     %b
       = t("personnel.contact.home_phone", :default => "Home Phone")

@@ -212,7 +212,7 @@ class User < ActiveRecord::Base
   def self.selection_by_admin(admin_id)
     admin = Admin.find_by_id(admin_id)
     return selection(0) if admin.super_user?
-    departments = admin.departments.map{|d|d.id}
+    departments = admin.departments.map { |d| d.id }
     users = []
     with_data.order('`profiles`.last_name').active.map do |d|
       users.push [d.full_name, d.id] if departments.include?(d.department_id)
@@ -231,10 +231,24 @@ class User < ActiveRecord::Base
     model_query = model_query.joins('JOIN `departments` ON `users`.department_id = `departments`.id')
     if admin_id != 0
       admin = Admin.find_by_id(admin_id)
-      model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+      model_query = model_query.where("`users`.department_id IN (#{admin.departments.map { |d| d.id }.join(',')})") unless admin.super_user?
     end
     model_query = model_query.group('`departments`.name, `profiles`.t_shirt_size, `profiles`.level')
     model_query = model_query.order('`departments`.name', '`profiles`.t_shirt_size')
     model_query.all
   end
+
+  def active_for_authentication?
+    super && !fired
+  end
+
+  def inactive_message
+    if fired
+      :locked
+    else
+      super
+    end
+
+  end
+
 end
