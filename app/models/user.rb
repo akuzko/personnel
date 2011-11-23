@@ -140,6 +140,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def active_for_authentication?
+    super && !fired
+  end
+
+  def inactive_message
+    if fired
+      :locked
+    else
+      super
+    end
+
+  end
+
   private
 
   def create_internals
@@ -236,19 +249,6 @@ class User < ActiveRecord::Base
     model_query = model_query.group('`departments`.name, `profiles`.t_shirt_size, `profiles`.level')
     model_query = model_query.order('`departments`.name', '`profiles`.t_shirt_size')
     model_query.all
-  end
-
-  def active_for_authentication?
-    super && !fired
-  end
-
-  def inactive_message
-    if fired
-      :locked
-    else
-      super
-    end
-
   end
 
 end
