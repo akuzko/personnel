@@ -184,7 +184,7 @@ class User < ActiveRecord::Base
     [:active, :department_id, :identifier].each do |field|
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
-    conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
+    conditions.push("(`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%')") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
@@ -205,7 +205,7 @@ class User < ActiveRecord::Base
       conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
     end
     conditions.push("fired = 0") unless params[:employed].nil? || params[:employed] == ""
-    conditions.push("`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%'") unless params[:full_name].nil? || params[:full_name] == ""
+    conditions.push("(`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%')") unless params[:full_name].nil? || params[:full_name] == ""
     paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
