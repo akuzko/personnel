@@ -140,6 +140,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def experience
+
+  end
+
   def active_for_authentication?
     super && !fired
   end
