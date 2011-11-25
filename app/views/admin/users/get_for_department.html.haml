@@ -1,0 +1,27 @@
+%h1
+  = params['status'] != "false" ? "Set" : "Unset"
+  %b
+    = @permission.name
+  for:
+= link_to t("web-app-theme.check-all", :default => "Check All"), "#", :id => "check_all_users"
+|
+= link_to t("web-app-theme.uncheck-all", :default => "Uncheck All"), "#", :id => "uncheck_all_users"
+%br
+%br
+= form_tag(update_for_department_admin_users_path, :method => "put", :remote => true) do
+  .group.navform.wat-cf{:id => "users_check_list"}
+    - @users.each do |u|
+      = check_box_tag "users[]", "#{u.id}", u.permissions.include?(@permission)
+      = u.name
+      %br
+  = hidden_field :department, :id
+  = hidden_field :permission, :id
+
+  %br
+  .group.navform.wat-cf
+    %button.button.check_users_submit{:type => "submit"}
+      = image_tag("web-app-theme/icons/page_white_get.png", :alt => "#{t("web-app-theme.upload", :default => "Post")}")
+      = t("web-app-theme.save", :default => "Post")
+    %a.button.close{:href => '#'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")
