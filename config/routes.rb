@@ -139,6 +139,8 @@ Personnel::Application.routes.draw do
       put :clear_avatar, :on => :member
       get :working_shifts, :on => :collection
       get :t_shirts, :on => :collection
+      get :get_for_department, :on => :collection
+      put :update_for_department, :on => :collection
     end
   end
 

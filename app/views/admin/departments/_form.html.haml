@@ -24,7 +24,7 @@
     %div{:style => "width:300px;float:left"}
       - col.each do |item|
         %div{:style => "width:300px;float:left"}
-          = check_box_tag "permissions[]", "#{item.id}", @department.permissions.include?(item)
+          = check_box_tag "permissions[]", "#{item.id}", @department.permissions.include?(item), :department => @department.id
           = item.name
 
 .group.navform.wat-cf
@@ -32,3 +32,8 @@
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
     = t("web-app-theme.save", :default => "Save")
   = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}") + t("web-app-theme.cancel", :default => "Cancel"), admin_departments_path, :class => "button"
+
+  = hidden_field :department, :id
+
+%div.modal#overlay
+  %div.contentWrap

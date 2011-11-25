@@ -265,4 +265,25 @@ class Admin::UsersController < ApplicationController
     @users = User.t_shirts(current_admin.id)
   end
 
+  def get_for_department
+    @department = Department.find_by_id params['did']
+    @users = User.find_all_by_department_id @department.id
+    @permission = Permission.find_by_id params['pid']
+    render 'get_for_department.html', :layout => false
+  end
+
+  def update_for_department
+    DepartmentPermission.find_or_create_by_department_id_and_permission_id(params["department"]["id"].to_i, params["permission"]["id"].to_i)
+    if !params["users"].nil?
+      params["users"].each do |id|
+        UserPermission.find_or_create_by_user_id_and_permission_id(id, params["permission"]["id"].to_i)
+      end
+    end
+    render(:update) do |page|
+      message = "<div class='message notice'><p>Account updated successfuly</p></div>"
+      page['.flash'].parents(0).show
+      page['.flash'].html message
+    end
+  end
+
 end

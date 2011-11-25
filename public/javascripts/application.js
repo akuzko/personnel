@@ -55,6 +55,33 @@
           });
           return false;
         });
+        $("a.#check_all_users").live('click', function() {
+          $("#users_check_list :checkbox").each(function() {
+            return $(this).attr("checked", "checked");
+          });
+          return false;
+        });
+        $("a.#uncheck_all_users").live('click', function() {
+          $("#users_check_list :checkbox").each(function() {
+            return $(this).attr("checked", "");
+          });
+          return false;
+        });
+        $("#permissions_").live('click', function() {
+          if ($(this).attr("checked") === true) {
+            return $("#overlay .contentWrap").load("/admin/users/get_for_department?did=" + $('#department_id').val() + "&pid=" + $(this).val() + "&status=" + $(this).attr("checked"), function() {
+              $("#overlay").dialog({
+                minWidth: 450,
+                minHeight: 600
+              });
+              return $("#overlay").dialog("open");
+            });
+          }
+        });
+        $(".button.check_users_submit").live('click', function() {
+          $("#overlay, #batch_data").dialog("close");
+          return $('.modal_dialog').removeClass('selected');
+        });
         $("a.button.close").live('click', function() {
           $("#overlay, #batch_data").dialog("close");
           return $('.modal_dialog').removeClass('selected');

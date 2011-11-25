@@ -39,6 +39,25 @@ shiftPressed = false
         $("#check_list :checkbox").each ->
           $(this).attr("checked", "")
         no
+
+      $("a.#check_all_users").live 'click', ->
+        $("#users_check_list :checkbox").each ->
+          $(this).attr("checked", "checked")
+        no
+      $("a.#uncheck_all_users").live 'click', ->
+        $("#users_check_list :checkbox").each ->
+          $(this).attr("checked", "")
+        no
+
+      $("#permissions_").live 'click', ->
+        if $(this).attr("checked") == true
+          $("#overlay .contentWrap").load "/admin/users/get_for_department?did="+$('#department_id').val()+"&pid="+$(this).val()+"&status="+$(this).attr("checked"), ->
+            $("#overlay").dialog({ minWidth: 450, minHeight: 600 })
+            $("#overlay").dialog("open")
+      $(".button.check_users_submit").live 'click', ->
+        $("#overlay, #batch_data").dialog("close")
+        $('.modal_dialog').removeClass('selected')
+
       $("a.button.close").live 'click', ->
         $("#overlay, #batch_data").dialog("close")
         $('.modal_dialog').removeClass('selected')
