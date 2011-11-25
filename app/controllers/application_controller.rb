@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   def check_filled_profile
     @user = User.find current_user.id
-    if !@user.avatar.exists? || @user.profile.first_name.nil? || @user.addresses.empty? || @user.contact.cell1.nil?
+    if @user.profile.first_name.nil? || @user.addresses.empty? || @user.contact.cell1.nil? # || !@user.avatar.exists?
       redirect_to "/user"
     end
   end
