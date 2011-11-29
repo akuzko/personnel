@@ -60,7 +60,6 @@
           %th= t("personnel.contact.home_phone", :default => "Home Phone")
           %th= t("personnel.user.department", :default => "Department")
           %th= t("personnel.address.title", :default => "Address")
-          %th= t("personnel.profile.birthdate", :default => "BirthDate")
           %th.last &nbsp;
         - @users.each do |user|
           %tr{:class => cycle("odd", "even")}
@@ -80,7 +79,6 @@
             %td= user.home_phone
             %td= user.department_name if user.department_id
             %td= user.full_address_admin
-            %td= l(user.birthdate) if user.birthdate
             %td.last
               \#{link_to "#{t("web-app-theme.logs", :default => "Logs")}", admin_logs_path(:subject_type => 'User', :subject_id => user.id)}
               |
