@@ -119,6 +119,7 @@ Personnel::Application.routes.draw do
       get :user_norms, :on => :member
       post :update_default_norms, :on => :member
       post :update_user_norms, :on => :member
+      get :check_shift_interval, :on => :member
     end
 
     resources :addresses do

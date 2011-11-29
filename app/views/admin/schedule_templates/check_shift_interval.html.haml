@@ -1,0 +1,11 @@
+%h3
+  = "Users with too short interval (less than #{@min_hours})"
+- @users.each do |user|
+  .group
+    = user
+%br
+.group.navform.wat-cf
+  %a.button.close{:href => '#'}
+    = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.close", :default => "Close")}")
+    = t("web-app-theme.close", :default => "Close")
+%br

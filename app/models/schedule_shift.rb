@@ -13,4 +13,5 @@ class ScheduleShift < ActiveRecord::Base
       self.end = 8
     end
   end
+
 end

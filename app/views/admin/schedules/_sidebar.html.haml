@@ -20,6 +20,10 @@
             = status.name
           %td{:style => "background-color:##{status.color};width:100%"}
             &nbsp;
+    %p
+      = link_to image_tag("web-app-theme/icons/bullet_go.png", :alt => "#{t("web-app-theme.check_interval", :default=> "Check shift interval")}") + " " + t("web-app-theme.check_interval", :default=> "Check shift interval"),
+        check_shift_interval_admin_schedule_template_path(@template), :id => 'check_shift_interval', :class => "button modal_dialog"
+    %div{:style => 'clear:both;'}
 .block.notice
   %h3 Usage
   .content

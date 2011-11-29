@@ -134,4 +134,30 @@ class Admin::ScheduleTemplatesController < ApplicationController
       end
     end
   end
+
+  def check_shift_interval
+    @min_hours = 8
+    template = ScheduleTemplate.find_by_id params[:id]
+    shifts = template.schedule_shifts.map(&:id)
+    users = User.order(:identifier).find_all_by_department_id_and_active template.department_id, 1
+    prev = -24
+	  prevday = 0
+    @users = []
+    users.each do |user|
+      cells = ScheduleCell.where('schedule_shift_id IN ('+shifts.join(", ")+')').where(:user_id => user.identifier).order(:day).order(:schedule_shift_id)
+      cells.each do |cell|
+        if cell.schedule_shift.number == 10
+          prev = -24
+        else
+          if prevday < cell.day && cell.schedule_shift.start - prev < @min_hours
+            # add to the list
+            @users.push ["User #{cell.user_id} day #{cell.day} interval #{cell.schedule_shift.start - prev}"]
+          end
+          prev = cell.schedule_shift.end - 24
+        end
+        prevday = cell.day
+      end
+    end
+    render :layout => false
+  end
 end
