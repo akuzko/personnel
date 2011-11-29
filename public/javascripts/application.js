@@ -37,6 +37,11 @@
           resizable: false,
           modal: true
         });
+        $('#overlay').live('keyup', function(e) {
+          if (e.keyCode === 13) {
+            return $(':button:contains("Save")').click();
+          }
+        });
         $("#batch_data").dialog({
           autoOpen: false,
           resizable: false,
