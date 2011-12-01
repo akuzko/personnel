@@ -16,6 +16,7 @@ class UsersController < ApplicationController
     end
     respond_to do |format|
       if @user.update_attributes(params[:user])
+        sign_in(@user, :bypass => true)
         Log.add(current_user, @user, params)
         format.html { redirect_to(@user, :notice => t('personnel.user.User was successfully updated', :default => 'User was successfully updated')) }
         format.xml  { head :ok }
@@ -55,6 +56,7 @@ class UsersController < ApplicationController
     data = user.send(params[:data])
     params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
+      user.sync_with_forum
       Log.add(current_user, data, params)
       render(:update){ |p| p.call 'app.reload_section', params[:data]}
     else

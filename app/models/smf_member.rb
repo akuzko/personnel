@@ -1,0 +1,3 @@
+class SmfMember < Forum
+
+end

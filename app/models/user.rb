@@ -30,8 +30,10 @@ class User < ActiveRecord::Base
   }
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   after_update :reprocess_avatar, :if => :cropping?
+  after_update :sync_with_forum
 
   after_create :create_internals
+  after_create :sync_with_forum
 
   delegate :birthdate, :to => :profile, :allow_nil => true
   delegate :cell1, :cell2, :cell3, :to => :contact, :allow_nil => true
@@ -156,6 +158,19 @@ class User < ActiveRecord::Base
       super
     end
 
+  end
+
+  def sync_with_forum
+    return if email == 'admin@zone3000.net'
+    forum_member = SmfMember.find_or_create_by_member_name(email.gsub(/@zone3000.net/, ''))
+    forum_member.real_name = full_name
+    forum_member.email_address = email
+    forum_member.birthdate = birthdate
+    forum_member.avatar = 'http://staff.zone3000.net'+avatar.url(:thumb) if avatar?
+    forum_member.date_registered = hired_at.to_time.to_i if hired_at?
+    forum_member.passwd = Digest::SHA1.hexdigest(forum_member.member_name.downcase+password) unless password.nil?
+    forum_member.password_salt = 'xxxx' unless password.nil?
+    forum_member.save
   end
 
   private

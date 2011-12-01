@@ -152,6 +152,7 @@ class Admin::UsersController < ApplicationController
     data = user.send(params[:data])
     params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
+      user.sync_with_forum
       Log.add(current_admin, data, params)
       render(:update) { |p| p.call 'app.reload_section_admin', params[:id], params[:data] }
     else
