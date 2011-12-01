@@ -41,7 +41,7 @@ class Admin::UsersController < ApplicationController
         end
       end
     end
-    @users_out = User.with_data.active.where("identifier IN (#{out_ids.map { |d| d }.join(',')})") if !out_ids.empty?
+    @users_out = User.with_data.active.order(:identifier).where("identifier IN (#{out_ids.map { |d| d }.join(',')})") if !out_ids.empty?
 
     #In 0:00
     in_ids = []
@@ -54,7 +54,7 @@ class Admin::UsersController < ApplicationController
         end
       end
     end
-    @users_in = User.with_data.active.where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
+    @users_in = User.with_data.active.order(:identifier).where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
 
     render :layout => 'mobile'
   end
