@@ -8,11 +8,11 @@
   %h3= t("personnel.profile.title", :default => 'Profile')
   #sidebar_profile.content
     = render 'show_profile'
-
-.block.notice
-  %h3= t("personnel.address.title", :default => 'Address')
-  %div#sidebar_address.content{:style => "margin:10px;"}
-    = render 'show_addresses'
+-if @user.department.show_address?
+  .block.notice
+    %h3= t("personnel.address.title", :default => 'Address')
+    %div#sidebar_address.content{:style => "margin:10px;"}
+      = render 'show_addresses'
 
 .block.notice
   %h3= t("personnel.contact.title", :default => 'Contacts')

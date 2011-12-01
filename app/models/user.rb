@@ -66,6 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def full_address
+    return if !department.show_address?
     @address = addresses.order('addresses.primary DESC').first
     return '' if @address.nil?
     attributes = %w(street build porch nos)

@@ -13,6 +13,10 @@
   = f.label :has_levels, t("personnel.department.has-levels", :default => "Has Levels"), :class => :label
   = f.check_box :has_levels, :class => 'check_box'
   %span.description check this box if the department has levels
+.group
+  = f.label :show_address, t("personnel.department.show-address", :default => "Show Address"), :class => :label
+  = f.check_box :show_address, :class => 'check_box'
+  %span.description check this box if the department allows to show member's address
 .group.navform.wat-cf{:id => "check_list"}
   = f.label :permissions, t("personnel.department.assigned-accounts", :default => "Assigned Accounts"), :class => :label
   = link_to t("web-app-theme.check-all", :default => "Check All"), "#", :id => "check_all"
