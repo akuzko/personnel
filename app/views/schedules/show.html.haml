@@ -44,7 +44,7 @@
                       = shift.start
                       \-
                       = shift.end
-                %td{:id => "shift_#{shift.id}"}
+                %td.schedule_excludable{:id => "shift_#{shift.id}"}
                   = render 'shared/shift_show', :layout => false, :shift => shift
         %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')

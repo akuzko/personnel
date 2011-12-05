@@ -93,4 +93,63 @@ class SchedulesController < ApplicationController
     end
   end
 
+  def toggle_exclude
+    @cell = ScheduleCell.find_by_schedule_shift_id_and_line_and_day(params[:shift], params[:line], params[:day])
+    if @cell.nil?
+      render(:update) do |page|
+        message = "<div class='message error'><p>The cell is empty!</p></div>"
+        page['.flash'].parents(0).show
+        page['.flash'].html message
+      end
+      return
+    end
+    @shift = ScheduleShift.find params[:shift]
+    @template = ScheduleTemplate.find @shift.schedule_template_id
+    @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
+    id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
+    if @cell.user_id == current_user.identifier && @cell.update_attribute(:exclude, !@cell.exclude)
+      render(:update) do |page|
+        if @cell.exclude
+          page[id].css('text-decoration', 'line-through')
+        else
+          page[id].css('text-decoration', 'none')
+        end
+        message = "<div class='message notice'><p>Delivery status is changed</p></div>"
+        page['.flash'].parents(0).show
+        page['.flash'].html message
+      end
+    else
+      render(:update) do |page|
+        message = "<div class='message error'><p>This cell is not owned by you!</p></div>"
+        page['.flash'].parents(0).show
+        page['.flash'].html message
+      end
+    end
+    #  @cell.destroy
+    #  render(:update) do |page|
+    #    page[id].css('background-color', '#'+cell_color_default)
+    #    page[id].css('color', '#000000')
+    #    page[id].css('font-weight', '')
+    #    page[id].html ''
+    #  end
+    #else
+    #  if (@cell.user_id.nil? || @cell.user_id == '')
+    #    if @cell.update_attribute(:user_id, current_user.identifier)
+    #      render(:update) do |page|
+    #        page[id].css('background-color', '#'+cell_color_default)
+    #        page[id].css('color', '#000000')
+    #        page[id].css('font-weight', '')
+    #        page[id].html @cell.user_id
+    #      end
+    #    end
+    #  else
+    #    render(:update) do |page|
+    #      page[id].html @cell.user_id
+    #      #page.call 'alert("Error! The cell is already taken")'
+    #      page << 'alert("Error! The cell is already taken");'
+    #    end
+    #  end
+    #end
+  end
+
 end

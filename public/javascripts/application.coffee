@@ -74,6 +74,16 @@ shiftPressed = false
         $.post "/schedule/update_cell",
           {shift: shift_id, line: line, day: day}
         no
+      $('.schedule_excludable td').live 'click', ->
+        regex = /cell_(\d+)_(\d+)_(\d+)/
+        text = $(this).attr('id')
+        match =text.match(regex)
+        shift_id = match[1]
+        line = match[2]
+        day = match[3]
+        $.post "/schedule/toggle_exclude",
+          {shift: shift_id, line: line, day: day}
+        no
       $('.modal_dialog').live 'click', ->
         if ctrlPressed
           $(this).toggleClass('selected')

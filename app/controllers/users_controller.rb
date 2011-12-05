@@ -112,7 +112,7 @@ class UsersController < ApplicationController
     templates.each do |tpl|
       tpl.schedule_shifts.where('number < 10').where('end = 24').each do |shift|
         shift.schedule_cells.each do |cell|
-          out_ids.push cell.user_id if cell.day == date.day && cell.user_id?
+          out_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude
         end
       end
     end
@@ -125,7 +125,7 @@ class UsersController < ApplicationController
     templates.each do |tpl|
       tpl.schedule_shifts.where('number < 10').where('start = 0').each do |shift|
         shift.schedule_cells.each do |cell|
-          in_ids.push cell.user_id if cell.day == date.day && cell.user_id?
+          in_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude
         end
       end
     end
