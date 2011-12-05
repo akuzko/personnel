@@ -116,6 +116,7 @@ class UsersController < ApplicationController
         end
       end
     end
+    @users_out = []
     @users_out = User.with_data.active.order(:identifier).where("identifier IN (#{out_ids.map { |d| d }.join(',')})") if !out_ids.empty?
 
     #In 0:00
@@ -129,8 +130,15 @@ class UsersController < ApplicationController
         end
       end
     end
+    @users_in = []
     @users_in = User.with_data.active.order(:identifier).where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
 
-    render :layout => 'mobile'
+    if params['detailed'] == '1'
+      render 'delivery_detailed.html', :layout => 'mobile'
+    else
+      @users_out = @users_out.map(&:identifier).in_groups_of(3)
+      @users_in = @users_in.map(&:identifier).in_groups_of(3)
+      render 'delivery.html', :layout => 'mobile'
+    end
   end
 end

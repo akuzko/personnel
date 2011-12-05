@@ -1,23 +1,17 @@
 = form_tag(delivery_user_path, :method => :get) do
-  %table{:align => 'center', :width => 240}
+  %table{:align => 'center', :width => 120, :style => 'font-size: 9px;text-align: center;'}
     %tr
-      %td
-        = select_date params[:date], :start_year => 2010, :use_month_numbers => true
-      %td
+      %td{:colspan => 3}
+        = select_date params[:date], :start_year => 2010, :use_month_numbers => true, :discard_year => true, :order => [:day, :month]
         %button.button{:type => "submit"}
-          = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
-          = t("web-app-theme.find", :default => "Show")
+          = t("web-app-theme.ok", :default => "OK")
     %tr
-      %td{:colspan => 2}
-        %a{:href=>'#', :onclick => 'ShowIn()'} in 0
-        %a{:href=>'#', :onclick => 'ShowOut()'} out 0
+      %td{:colspan => 3}
+        Привезти в 00:00
+        = render 'shared/delivery', :users => @users_in
     %tr
-      %td{:colspan => 2}
-        %div#in
-          %b Привезти в 00:00
-          = render 'shared/delivery', :users => @users_in
-    %tr
-      %td{:colspan => 2}
-        %div#out{:style => 'display:none'}
-          %b Отвезти в 00:00
-          = render 'shared/delivery', :users => @users_out
+      %td{:colspan => 3}
+        Отвезти в 00:00
+        = render 'shared/delivery', :users => @users_out
+%center
+  = link_to "С адресами", delivery_user_path({:detailed => '1'})

@@ -1,23 +1,6 @@
-%table{:border => 1, :align => 'center', :width => 230}
-  %tr
-    %th
-      ID
-    %th
-      Имя
-    %th
-      Адрес, тел
-  - if !users.nil?
-    - users.each do |user|
-      %tr
-        %td.mobile{:rowspan => 2}
-          = user.identifier
-        %td.mobile{:rowspan => 2}
-          = user.profile.first_name
-        %td.mobile
-          - user.addresses.each do |address|
-            = "#{address.street},#{address.build} #{address.porch}/#{address.nos} кв.#{address.room}"
-      %tr
-        %td.mobile
-          = user.contact.cell1
-          = ", "+user.contact.cell2 if user.contact.cell2?
-          = ", "+user.contact.cell3 if user.contact.cell3?
+%table{:border => 1, :align => 'center', :width => 110}
+  - users.each do |l|
+    %tr
+      - l.each do |item|
+        %td
+          = item
