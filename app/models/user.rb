@@ -163,6 +163,7 @@ class User < ActiveRecord::Base
   def sync_with_forum
     return if email == 'admin@zone3000.net'
     forum_member = SmfMember.find_or_create_by_member_name(email.gsub(/@zone3000.net/, ''))
+    forum_member.id_group = SmfMembergroup.find_or_create_by_group_name(department.name).id_group if department
     forum_member.real_name = full_name
     forum_member.email_address = email
     forum_member.birthdate = birthdate
