@@ -27,7 +27,7 @@
 		-moz-box-shadow: 0 0 50px #ccc;
 		-webkit-box-shadow: 0 0 50px #ccc;
 	}
-.modal_dialog, th.sortable, a#clear_selection, tr.user_select, .schedule_editable td{
+.modal_dialog, th.sortable, a#clear_selection, tr.user_select, .schedule_editable td, .schedule_excludable td{
     cursor: pointer
 }
 tr.user_select:hover, a#clear_selection:hover, th.sortable:hover{

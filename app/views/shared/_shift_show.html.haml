@@ -9,6 +9,7 @@
       - cell_color = (cell.class == NilClass || !cell.additional_attributes) ? cell_color_default : ScheduleStatus.find_by_id(cell.additional_attributes).color
       - cell_font_weight = (cell.class != NilClass && (cell.is_modified? || cell.responsible?)) ? 'font-weight:bold;' : ''
       - cell_font_color = (cell.class != NilClass && cell.responsible?) ? 'color:#' + @shift_leader_color + ';' : '';
-        %td.cells{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color, :rel => "#overlay"}
+      - cell_excluded = (cell.class != NilClass && cell.exclude) ? 'text-decoration:line-through;' : '';
+        %td.cells{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color+cell_excluded, :rel => "#overlay"}
           - identifier = (cell.class == NilClass || !cell.user_id?) ? ' ' : cell.user_id
           = identifier

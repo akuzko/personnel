@@ -67,6 +67,7 @@ Personnel::Application.routes.draw do
   end
   resource :schedule do
     post :update_cell, :on => :collection
+    post :toggle_exclude, :on => :collection
   end
   resources :events do
     get :start_shift, :on => :collection

@@ -1,0 +1,26 @@
+= form_tag(delivery_admin_users_path, :method => :get) do
+  = hidden_field_tag 'detailed', '1'
+  %table{:align => 'center', :width => 240}
+    %tr
+      %td
+        = select_date params[:date], :start_year => 2010, :use_month_numbers => true
+      %td
+        %button.button{:type => "submit"}
+          = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
+          = t("web-app-theme.find", :default => "Show")
+    %tr
+      %td{:colspan => 2}
+        %a{:href=>'#', :onclick => 'ShowIn()'} in 0
+        %a{:href=>'#', :onclick => 'ShowOut()'} out 0
+    %tr
+      %td{:colspan => 2}
+        %div#in
+          %b Привезти в 00:00
+          = render 'shared/delivery_detailed', :users => @users_in
+    %tr
+      %td{:colspan => 2}
+        %div#out{:style => 'display:none'}
+          %b Отвезти в 00:00
+          = render 'shared/delivery_detailed', :users => @users_out
+%center
+  = link_to "Простой", delivery_admin_users_path
