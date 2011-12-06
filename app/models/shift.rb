@@ -5,7 +5,7 @@ class Shift < ActiveRecord::Base
   delegate :full_name, :to => :user, :prefix => true
 
   def self.search(params, admin_id)
-    params[:sort_by] ||= :shiftdate
+    params[:sort_by] ||= "shiftdate DESC"
 
     admin = Admin.find_by_id(admin_id)
     conditions = []
