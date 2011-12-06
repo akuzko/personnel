@@ -42,7 +42,7 @@ td.user_selected{
   background-color: #ffffcc;
 }
 td.modal_dialog.selected{
-    background-color:#FAFAFA !important;
+    background-color: #ccffcc !important;
 }
 ul.dropdown,
 ul.dropdown li,
