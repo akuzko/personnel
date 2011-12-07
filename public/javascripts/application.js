@@ -38,7 +38,7 @@
           modal: true
         });
         $('#overlay').live('keyup', function(e) {
-          if (e.keyCode === 13) {
+          if (e.keyCode === 13 && e.target.type !== 'text') {
             return $(':button:contains("Save")').click();
           }
         });
