@@ -103,9 +103,16 @@ class SchedulesController < ApplicationController
       end
       return
     end
+    if @cell.date < Date.current
+      render(:update) do |page|
+        message = "<div class='message error'><p>The cell is in past!</p></div>"
+        page['.flash'].parents(0).show
+        page['.flash'].html message
+      end
+      return
+    end
     @shift = ScheduleShift.find params[:shift]
     @template = ScheduleTemplate.find @shift.schedule_template_id
-    @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
     id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
     if @cell.user_id == current_user.identifier && @cell.update_attribute(:exclude, !@cell.exclude)
       render(:update) do |page|
@@ -125,31 +132,6 @@ class SchedulesController < ApplicationController
         page['.flash'].html message
       end
     end
-    #  @cell.destroy
-    #  render(:update) do |page|
-    #    page[id].css('background-color', '#'+cell_color_default)
-    #    page[id].css('color', '#000000')
-    #    page[id].css('font-weight', '')
-    #    page[id].html ''
-    #  end
-    #else
-    #  if (@cell.user_id.nil? || @cell.user_id == '')
-    #    if @cell.update_attribute(:user_id, current_user.identifier)
-    #      render(:update) do |page|
-    #        page[id].css('background-color', '#'+cell_color_default)
-    #        page[id].css('color', '#000000')
-    #        page[id].css('font-weight', '')
-    #        page[id].html @cell.user_id
-    #      end
-    #    end
-    #  else
-    #    render(:update) do |page|
-    #      page[id].html @cell.user_id
-    #      #page.call 'alert("Error! The cell is already taken")'
-    #      page << 'alert("Error! The cell is already taken");'
-    #    end
-    #  end
-    #end
   end
 
 end

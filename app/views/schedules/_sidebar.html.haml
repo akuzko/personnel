@@ -1,4 +1,4 @@
-%div.block.notice
+.block.notice
   = render 'shared/template_users_show', :layout => false, :template => @template, :users => @users, :admin => false
   %div{:style => 'clear:both;'}
   %br
@@ -15,3 +15,16 @@
           = status.name
         %td{:style => "background-color:##{status.color};width:100%"}
           &nbsp;
+.block.notice
+  %h3 Tips
+  .content
+    %p
+      If you would like to
+      %b exclude
+      yourself from the delivery list, left click on the corresponding cell. Your number will become strikethrough. To
+      %b undo
+      left click on the cell again.
+    %p
+      The changes should be made before 12 pm for the current day.
+    %div{:style => "clear:both"}
+.block
