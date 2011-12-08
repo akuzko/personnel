@@ -4,20 +4,16 @@
       = form_tag(admin_schedule_path, :method => :get) do
         %table#schedule_template{:val => @template.id}
           %tr
-            %td
+            %td{:style => "width:100px;"}
               Department
               = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id])
-            %td
-              &nbsp;
-            %td
+            %td{:style => "width:50px;"}
               = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
-            %td
-              &nbsp;
-            %td
+            %td{:style => "width:60px;"}
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
                 = t("web-app-theme.find", :default => "Show")
-            %td
+            %td{:style => "width:270px;"}
               = radio_button_tag :visible,  0, params[:visible] == 0, {:class => 'visible', :action => set_visibility_admin_schedule_template_path(@template)}
               Hidden
               = radio_button_tag :visible,  2, params[:visible] == 2,
@@ -32,10 +28,10 @@
                 = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
                   new_admin_schedule_shift_path(:template => @template), :class => "button modal_dialog", :style => "float:right;"
               %td
-                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}
+                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;margin-left:1px;'}
                   %tr
                   - @days_in_month.times do |day|
-                    %td{:style => 'background-color:#eeeeee'}
+                    %td{:style => 'background-color:#eeeeee;width:24px'}
                       = day + 1
             - @template.schedule_shifts.order(:number).each do |shift|
               %tr{:id => "#{shift.id}"}
@@ -60,10 +56,10 @@
                 = link_to image_tag("web-app-theme/icons/calendar.png", :alt => "#{t("web-app-theme.check", :default=> "Check")}") + " " + t("web-app-theme.check", :default=> "Check"),
                   check_month_admin_schedule_template_path(@template), :id => 'check_month', :class => "button", :style => "float:right;"
               %td
-                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}
+                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;margin-left:1px;'}
                   %tr
                   - @days_in_month.times do |day|
-                    %td{:style => 'background-color:#eeeeee'}
+                    %td{:style => 'background-color:#eeeeee;width:24px'}
                       %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
         %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')
