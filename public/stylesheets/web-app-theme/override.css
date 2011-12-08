@@ -65,7 +65,7 @@ td.user_selected{
   border: 1px solid #ffff88;
   background-color: #ffffcc;
 }
-td.modal_dialog.selected{
+td.modal_dialog.ui-selected{
     background-color: #ccffcc !important;
 }
 ul.dropdown,

@@ -85,11 +85,11 @@
         });
         $(".button.check_users_submit").live('click', function() {
           $("#overlay, #batch_data").dialog("close");
-          return $('.modal_dialog').removeClass('selected');
+          return $('.modal_dialog').removeClass('ui-selected');
         });
         $("a.button.close").live('click', function() {
           $("#overlay, #batch_data").dialog("close");
-          return $('.modal_dialog').removeClass('selected');
+          return $('.modal_dialog').removeClass('ui-selected');
         });
         $('.schedule_editable td').live('click', function() {
           var day, line, match, regex, shift_id, text;
@@ -143,16 +143,16 @@
         });
         $('.modal_dialog').live('click', function() {
           if (ctrlPressed) {
-            $(this).toggleClass('selected');
+            $(this).toggleClass('ui-selected');
             return false;
           } else if (shiftPressed) {
-            $(this).addClass('selected');
+            $(this).addClass('ui-selected');
             $("#batch_data .contentWrap").load($(this).attr("batch"), function() {
               return $("#batch_data").dialog("open");
             });
             return false;
           } else {
-            $(this).addClass('selected');
+            $(this).addClass('ui-selected');
             $("#overlay .contentWrap").load($(this).attr("href"), function() {
               return $("#overlay").dialog("open");
             });
@@ -304,7 +304,7 @@
     mass_update: function(responsible, additional_attributes, user_id, is_modified) {
       var regex;
       regex = /cell_(\d+)_(\d+)_(\d+)/;
-      $("li.cells.selectable.ui-selected").each(function() {
+      $(".ui-selected").each(function() {
         var day, line, match, shift_id, text;
         text = $(this).attr('id');
         match = text.match(regex);
@@ -324,7 +324,7 @@
         });
       });
       false;
-      $("li.cells.selectable.ui-selected").removeClass('ui-selected');
+      $(".ui-selected").removeClass('ui-selected');
       app.show_users_admin();
       return $("#overlay").dialog("close");
     },

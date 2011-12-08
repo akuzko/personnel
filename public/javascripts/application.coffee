@@ -59,11 +59,11 @@ shiftPressed = false
             $("#overlay").dialog("open")
       $(".button.check_users_submit").live 'click', ->
         $("#overlay, #batch_data").dialog("close")
-        $('.modal_dialog').removeClass('selected')
+        $('.modal_dialog').removeClass('ui-selected')
 
       $("a.button.close").live 'click', ->
         $("#overlay, #batch_data").dialog("close")
-        $('.modal_dialog').removeClass('selected')
+        $('.modal_dialog').removeClass('ui-selected')
 
       $('.schedule_editable td').live 'click', ->
         regex = /cell_(\d+)_(\d+)_(\d+)/
@@ -106,15 +106,15 @@ shiftPressed = false
 
       $('.modal_dialog').live 'click', ->
         if ctrlPressed
-          $(this).toggleClass('selected')
+          $(this).toggleClass('ui-selected')
           no
         else if shiftPressed
-          $(this).addClass('selected')
+          $(this).addClass('ui-selected')
           $("#batch_data .contentWrap").load $(this).attr("batch"), ->
             $("#batch_data").dialog("open")
           no
         else
-          $(this).addClass('selected')
+          $(this).addClass('ui-selected')
           $("#overlay .contentWrap").load $(this).attr("href"), ->
             $("#overlay").dialog("open")
           no
@@ -229,7 +229,7 @@ shiftPressed = false
         $("#new_shift .navform").show()
   mass_update: (responsible, additional_attributes, user_id, is_modified) ->
     regex = /cell_(\d+)_(\d+)_(\d+)/
-    $("li.cells.selectable.ui-selected").each ->
+    $(".ui-selected").each ->
       text = $(this).attr('id')
       match = text.match(regex)
       shift_id = match[1]
@@ -244,7 +244,7 @@ shiftPressed = false
         }, ->
           app.check_day shift_id, day
     no
-    $("li.cells.selectable.ui-selected").removeClass('ui-selected')
+    $(".ui-selected").removeClass('ui-selected')
     app.show_users_admin()
     $("#overlay").dialog("close")
   check_department_for_identifier: ->

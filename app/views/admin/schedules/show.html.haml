@@ -7,7 +7,7 @@
             %td{:style => "width:100px;"}
               Department
               = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id])
-            %td{:style => "width:50px;"}
+            %td{:style => "width:60px;"}
               = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
             %td{:style => "width:60px;"}
               %button.button{:type => "submit"}
