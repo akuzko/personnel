@@ -6,13 +6,37 @@
   width: 400px; }
 .cell-table td{
     height: 23px;
-    width: 23px !important;
     min-width: 23px;
     min-height: 23px;
     max-height: 23px;
-    max-width: 23px;
     text-align: center;
 }
+/* schedule new style */
+.selectable{
+    list-style-type: none;
+}
+.selectable .ui-selecting { background: #FECA40 !important}
+.selectable .ui-selected { background: #F39814 !important; color: #fff !important}
+.selectable { list-style-type: none; margin: 0; padding: 0 !important}
+.selectable li{
+    float: left;
+    height: 24px;
+    padding: 0.5px;
+    text-align: center;
+    width: 24px;
+}
+.cells {
+    float: left;
+    height: 23px;
+    margin: 0.5px;
+    padding: 0.5px;
+    text-align: center;
+    width: 23px;
+}
+#schedule_template {
+    width:878px;
+}
+
 /* default close button positioned on upper right corner */
 .modal {
 		background-color:#fff;
@@ -27,7 +51,7 @@
 		-moz-box-shadow: 0 0 50px #ccc;
 		-webkit-box-shadow: 0 0 50px #ccc;
 	}
-.modal_dialog, th.sortable, a#clear_selection, tr.user_select, .schedule_editable td, .schedule_excludable td{
+.modal_dialog, th.sortable, a#clear_selection, tr.user_select, .schedule_editable td, .schedule_excludable td, .selectable{
     cursor: pointer
 }
 tr.user_select:hover, a#clear_selection:hover, th.sortable:hover{

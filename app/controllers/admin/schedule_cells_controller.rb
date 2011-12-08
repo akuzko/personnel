@@ -7,10 +7,7 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def new
-    @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(params[:shift], params[:line], params[:day])
-    @shift = ScheduleShift.find params[:shift]
-    @template = ScheduleTemplate.find @shift.schedule_template_id
-    @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
+    @template = ScheduleTemplate.find params[:template_id]
     render :layout => false
   end
 
@@ -61,7 +58,11 @@ class Admin::ScheduleCellsController < ApplicationController
 
   def mass_update
     render(:update) do |page|
-      page.call 'app.mass_update', params[:schedule_cell][:responsible], params[:schedule_cell][:additional_attributes], params[:schedule_cell][:user_id], params[:schedule_cell][:is_modified]
+      page.call 'app.mass_update',
+                params[:responsible],
+                params[:additional_attributes],
+                params[:user_id],
+                params[:is_modified]
       page["#overlay"].dialog("close")
     end
   end

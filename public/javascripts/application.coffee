@@ -64,6 +64,7 @@ shiftPressed = false
       $("a.button.close").live 'click', ->
         $("#overlay, #batch_data").dialog("close")
         $('.modal_dialog').removeClass('selected')
+
       $('.schedule_editable td').live 'click', ->
         regex = /cell_(\d+)_(\d+)_(\d+)/
         text = $(this).attr('id')
@@ -74,6 +75,7 @@ shiftPressed = false
         $.post "/schedule/update_cell",
           {shift: shift_id, line: line, day: day}
         no
+
       $('.schedule_excludable td').live 'click', ->
         regex = /cell_(\d+)_(\d+)_(\d+)/
         text = $(this).attr('id')
@@ -84,6 +86,24 @@ shiftPressed = false
         $.post "/schedule/toggle_exclude",
           {shift: shift_id, line: line, day: day}
         no
+
+      $("#selectable").selectable({
+        filter: 'li.cells.selectable',
+        cancel: ':li,shift-options'
+      })
+      $("#edit_cells").live 'click', ->
+        $("#overlay .contentWrap").load $(this).attr("href"), ->
+          $("#overlay").dialog("open")
+        no
+
+      $('#edit_cells').live 'click', ->
+        $("#overlay .contentWrap").load $(this).attr("href"), ->
+          $("#overlay").dialog("open")
+        no
+        $("#batch_data .contentWrap").load $(this).attr("batch"), ->
+          $("#batch_data").dialog("open")
+        no
+
       $('.modal_dialog').live 'click', ->
         if ctrlPressed
           $(this).toggleClass('selected')
@@ -98,14 +118,17 @@ shiftPressed = false
           $("#overlay .contentWrap").load $(this).attr("href"), ->
             $("#overlay").dialog("open")
           no
+
       $("input.visible").click ->
         href = $(this).attr("href")
         $.post $(this).attr('action')+'?visible='+$(this).val(), ->
           $("#overlay .contentWrap").load href, ->
             $("#overlay").dialog("open")
+
       $("#check_month").click ->
         $.get $(this).attr('href')
         no
+
       $("th.sortable").click ->
         if $("#sort_by").val() == $(this).attr('sort')
           if $("#sort_order").val() == 'ASC'
@@ -116,24 +139,30 @@ shiftPressed = false
           $("#sort_order").val('ASC')
         $("#sort_by").val($(this).attr('sort'))
         $("#find_form").submit()
+
       $(".user_select").live 'click', ->
         id = $(this).attr('id')
         $("td.cells.user_selected").removeClass('user_selected')
         $("td.cells").each ->
           if $.trim($(this).html())==id
             $(this).addClass('user_selected')
+
       $("#clear_selection").live 'click', ->
         $("td.cells.user_selected").removeClass('user_selected')
+
       $("[name*='shiftdate']").change ->
         app.reload_shift_numbers()
+
       $(".datetime_select").datetimepicker
         dateFormat: 'yy-mm-dd'
         changeMonth: true
         changeYear: true
+
       $(".date_select").datepicker
         dateFormat: 'yy-mm-dd'
         changeMonth: true
         changeYear: true
+
       $(window).keydown (evt) ->
         if (evt.which == 17)
           ctrlPressed = true
@@ -145,7 +174,6 @@ shiftPressed = false
           ctrlPressed = false
         if (evt.which == 16)
           shiftPressed = false
-
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->
@@ -201,9 +229,9 @@ shiftPressed = false
         $("#new_shift .navform").show()
   mass_update: (responsible, additional_attributes, user_id, is_modified) ->
     regex = /cell_(\d+)_(\d+)_(\d+)/
-    $("td.modal_dialog.selected").each ->
+    $("li.cells.selectable.ui-selected").each ->
       text = $(this).attr('id')
-      match =text.match(regex)
+      match = text.match(regex)
       shift_id = match[1]
       line = match[2]
       day = match[3]
@@ -216,6 +244,7 @@ shiftPressed = false
         }, ->
           app.check_day shift_id, day
     no
+    $("li.cells.selectable.ui-selected").removeClass('ui-selected')
     app.show_users_admin()
     $("#overlay").dialog("close")
   check_department_for_identifier: ->

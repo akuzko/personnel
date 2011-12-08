@@ -121,6 +121,26 @@
           });
           return false;
         });
+        $("#selectable").selectable({
+          filter: 'li.cells.selectable',
+          cancel: ':li,shift-options'
+        });
+        $("#edit_cells").live('click', function() {
+          $("#overlay .contentWrap").load($(this).attr("href"), function() {
+            return $("#overlay").dialog("open");
+          });
+          return false;
+        });
+        $('#edit_cells').live('click', function() {
+          $("#overlay .contentWrap").load($(this).attr("href"), function() {
+            return $("#overlay").dialog("open");
+          });
+          false;
+          $("#batch_data .contentWrap").load($(this).attr("batch"), function() {
+            return $("#batch_data").dialog("open");
+          });
+          return false;
+        });
         $('.modal_dialog').live('click', function() {
           if (ctrlPressed) {
             $(this).toggleClass('selected');
@@ -284,7 +304,7 @@
     mass_update: function(responsible, additional_attributes, user_id, is_modified) {
       var regex;
       regex = /cell_(\d+)_(\d+)_(\d+)/;
-      $("td.modal_dialog.selected").each(function() {
+      $("li.cells.selectable.ui-selected").each(function() {
         var day, line, match, shift_id, text;
         text = $(this).attr('id');
         match = text.match(regex);
@@ -304,6 +324,7 @@
         });
       });
       false;
+      $("li.cells.selectable.ui-selected").removeClass('ui-selected');
       app.show_users_admin();
       return $("#overlay").dialog("close");
     },
