@@ -22,7 +22,7 @@
               = radio_button_tag :visible,  1, params[:visible] == 1, {:class => 'visible',:action => set_visibility_admin_schedule_template_path(@template)}
               Visible
         %div{:style => 'padding-left:5px'}
-          %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center', :id => 'schedule_table'}
+          %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center;width:895px;', :id => 'schedule_table'}
             %tr
               %td{:style => 'background-color:#ffffff'}
                 = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
@@ -31,7 +31,7 @@
                 %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;margin-left:1px;'}
                   %tr
                   - @days_in_month.times do |day|
-                    %td{:style => 'background-color:#eeeeee;width:24px'}
+                    %td{:style => 'background-color:#eeeeee;', :class => "cells"}
                       = day + 1
             - @template.schedule_shifts.order(:number).each do |shift|
               %tr{:id => "#{shift.id}"}
@@ -59,7 +59,7 @@
                 %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;margin-left:1px;'}
                   %tr
                   - @days_in_month.times do |day|
-                    %td{:style => 'background-color:#eeeeee;width:24px'}
+                    %td{:style => 'background-color:#eeeeee', :class => "cells"}
                       %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
         %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')

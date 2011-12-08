@@ -14,9 +14,9 @@
         %td.mobile{:rowspan => 2}
           = user.profile.first_name
         %td.mobile
-          - user.addresses.order("`primary` DESC").each do |address|
-            = "#{address.street},#{address.build} #{address.porch}/#{address.nos} кв.#{address.room}"
-            %br
+          - address = user.addresses.order("`primary` DESC").first
+          = "#{address.street},#{address.build} #{address.porch}/#{address.nos}"
+          %br
       %tr
         %td.mobile
           = user.contact.cell1

@@ -27,11 +27,11 @@
 }
 .cells {
     float: left;
-    height: 23px;
+    height: 24px;
     margin: 0.5px;
     padding: 0.5px;
     text-align: center;
-    width: 23px;
+    width: 24px;
 }
 #schedule_template {
     width:878px;
