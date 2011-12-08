@@ -142,13 +142,13 @@ shiftPressed = false
 
       $(".user_select").live 'click', ->
         id = $(this).attr('id')
-        $("td.cells.user_selected").removeClass('user_selected')
-        $("td.cells").each ->
+        $(".cells.user_selected").removeClass('user_selected')
+        $(".cells").each ->
           if $.trim($(this).html())==id
             $(this).addClass('user_selected')
 
       $("#clear_selection").live 'click', ->
-        $("td.cells.user_selected").removeClass('user_selected')
+        $(".cells.user_selected").removeClass('user_selected')
 
       $("[name*='shiftdate']").change ->
         app.reload_shift_numbers()

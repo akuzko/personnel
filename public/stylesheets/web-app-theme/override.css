@@ -57,7 +57,7 @@
 tr.user_select:hover, a#clear_selection:hover, th.sortable:hover{
     text-decoration: underline
 }
-td.user_selected{
+.user_selected{
     background-color: red !important;
     opacity:0.8;
 }

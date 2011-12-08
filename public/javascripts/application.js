@@ -188,15 +188,15 @@
         $(".user_select").live('click', function() {
           var id;
           id = $(this).attr('id');
-          $("td.cells.user_selected").removeClass('user_selected');
-          return $("td.cells").each(function() {
+          $(".cells.user_selected").removeClass('user_selected');
+          return $(".cells").each(function() {
             if ($.trim($(this).html()) === id) {
               return $(this).addClass('user_selected');
             }
           });
         });
         $("#clear_selection").live('click', function() {
-          return $("td.cells.user_selected").removeClass('user_selected');
+          return $(".cells.user_selected").removeClass('user_selected');
         });
         $("[name*='shiftdate']").change(function() {
           return app.reload_shift_numbers();

@@ -28,7 +28,7 @@
                 %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb'}
                   %tr
                   - @days_in_month.times do |day|
-                    %td{:style => 'background-color:#eeeeee'}
+                    %td{:style => 'background-color:#eeeeee', :class => "cells"}
                       = day + 1
             - @template.schedule_shifts.order(:number).each do |shift|
               %tr
