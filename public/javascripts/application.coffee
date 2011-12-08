@@ -89,7 +89,7 @@ shiftPressed = false
 
       $("#selectable").selectable({
         filter: 'li.cells.selectable',
-        cancel: ':li,shift-options'
+        cancel: 'li.shift-options'
       })
       $("#edit_cells").live 'click', ->
         $("#overlay .contentWrap").load $(this).attr("href"), ->
