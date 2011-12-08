@@ -27,7 +27,7 @@ shiftPressed = false
         resizable: false
         modal: true
       $('#overlay').live 'keyup', (e) ->
-        if e.keyCode == 13
+        if e.keyCode == 13 && e.target.type != 'text'
           $(':button:contains("Save")').click()
       $("#batch_data").dialog
         autoOpen: false

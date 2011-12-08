@@ -36,6 +36,8 @@ class Admin::ShiftsController < ApplicationController
 
   def create
     @shift = Shift.new(params[:shift])
+    @shift.start_event = Event.login(@shift.user_id, Time.zone.parse("#{@shift.shiftdate} #{@shift.schedule_shift.start}:00").utc, request.remote_ip)
+    @shift.end_event = Event.logout(@shift.user_id, Time.zone.parse("#{@shift.shiftdate} #{@shift.schedule_shift.end}:00").utc, request.remote_ip)
     if @shift.save
       render(:update) do |page|
         page["#overlay"].dialog("close")
