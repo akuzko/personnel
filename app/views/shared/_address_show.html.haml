@@ -11,7 +11,7 @@
   %b
     = t("personnel.address.build", :default => "Building #")
     \:
-  = addr[:build]
+  = addr[:build].mb_chars.upcase.to_s
 %p
   %b
     = t("personnel.address.porch", :default => "Porch")

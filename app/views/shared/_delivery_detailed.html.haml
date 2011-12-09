@@ -15,7 +15,7 @@
           = user.profile.first_name
         %td.mobile
           - address = user.addresses.order("`primary` DESC").first
-          = "#{address.street},#{address.build} #{address.porch}/#{address.nos}"
+          = "#{address.street},#{address.build.mb_chars.upcase.to_s} #{address.porch}/#{address.nos}"
           %br
       %tr
         %td.mobile

@@ -21,5 +21,5 @@
           %td{:style=>"border: 1px solid black"}= item.full_name
           %td{:style=>"border: 1px solid black"}
             - item.addresses.order("`primary` DESC").each do |addr|
-              = addr.street.mb_chars.capitalize.to_s + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
+              = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
               %br
