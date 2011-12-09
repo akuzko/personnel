@@ -87,7 +87,12 @@ class UsersController < ApplicationController
   def find
     @user = User.find current_user.id
     params[:per_page] ||= 15
-    @users = User.with_data.active.search(params)
+    if (!params[:identifier].nil? && !params[:identifier].empty?) ||
+        (!params[:full_name].nil? && !params[:full_name].empty? && params[:full_name].length >= 3)
+      @users = User.with_data.active.search(params)
+    else
+      flash[:error] = "Please input either a Name/Last Name or an Identifier to see the results"
+    end
   end
 
   def crop
