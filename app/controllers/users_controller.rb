@@ -86,6 +86,7 @@ class UsersController < ApplicationController
 
   def find
     @user = User.find current_user.id
+    params[:sort_by] ||= "identifier"
     params[:per_page] ||= 15
     if (!params[:identifier].nil? && !params[:identifier].empty?) ||
         (!params[:full_name].nil? && !params[:full_name].empty? && params[:full_name].length >= 3)
