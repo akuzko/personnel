@@ -39,6 +39,7 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
+    - if @users
       %table.table
         %tr
           %th

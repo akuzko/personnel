@@ -122,10 +122,10 @@
           return false;
         });
         $("#selectable").selectable({
-          filter: 'li.cells.selectable',
-          cancel: 'li.shift-options'
+          filter: 'li.cell',
+          cancel: 'li.left_part.first'
         });
-        $("#edit_cells").live('click', function() {
+        $("#edit_selected").live('click', function() {
           $("#overlay .contentWrap").load($(this).attr("href"), function() {
             return $("#overlay").dialog("open");
           });
@@ -188,15 +188,15 @@
         $(".user_select").live('click', function() {
           var id;
           id = $(this).attr('id');
-          $(".cells.user_selected").removeClass('user_selected');
-          return $(".cells").each(function() {
+          $("li.cell.user_selected").removeClass('user_selected');
+          return $("li.cell").each(function() {
             if ($.trim($(this).html()) === id) {
               return $(this).addClass('user_selected');
             }
           });
         });
         $("#clear_selection").live('click', function() {
-          return $(".cells.user_selected").removeClass('user_selected');
+          return $("li.cell.user_selected").removeClass('user_selected');
         });
         $("[name*='shiftdate']").change(function() {
           return app.reload_shift_numbers();
@@ -276,7 +276,7 @@
       return false;
     },
     show_users_admin: function() {
-      $("#template_users").load('/admin/schedule/show_users/?id=' + $("#schedule_template").attr('val'));
+      $("#template_users").load('/admin/schedule/show_users/?id=' + $("table.schedule_table.settings").attr('val'));
       return $("#overlay").dialog("close");
     },
     reload_shift_numbers: function() {

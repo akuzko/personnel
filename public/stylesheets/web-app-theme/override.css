@@ -1,4 +1,56 @@
 /* Override here any style defined by web-app-theme */
+.schedule_table{
+    width: 856px;
+    background-color: #002134;
+    text-align:center;
+    border-collapse: collapse;
+    padding: 0;
+}
+.schedule_table.settings{
+    height: 50px;
+    color: white;
+    margin-top: 10px;
+}
+.schedule_settings_table td {
+    text-align: left;
+}
+.schedule_table ul li.header_part{
+    background:#ccc;
+}
+.schedule_table.footer{
+    height: 30px;
+}
+.schedule_table ul li.left_part.first{
+    color: white;
+    border-top: 1px solid #fff;
+    text-align: left;
+}
+.schedule_table ul li.left_part{
+    background-color: #002134;
+    width: 111px;
+    margin: 0;
+    padding-left: 1px;
+}
+.schedule_table .main_part{
+    width:778px;
+}
+.schedule_table ul{
+    list-style-type: none;
+}
+.schedule_table li {
+    float: left;
+    height: 23px;
+    width: 23px;
+    text-align: center;
+    margin: 1px 1px 0 0;
+}
+.schedule_table li.cell {
+    cursor: pointer;
+}
+#selectable .ui-selecting { background: #99ff99 !important}
+#selectable .ui-selected { background: #33ff66 !important; color: #000 !important}
+#selectable { list-style-type: none; margin: 0; padding: 0 !important}
+
 .flash-fade {
   top: 25px;
   right: 25px;
@@ -11,32 +63,6 @@
     max-height: 23px;
     text-align: center;
 }
-/* schedule new style */
-.selectable{
-    list-style-type: none;
-}
-.selectable .ui-selecting { background: #FECA40 !important}
-.selectable .ui-selected { background: #F39814 !important; color: #fff !important}
-.selectable { list-style-type: none; margin: 0; padding: 0 !important}
-.selectable li{
-    float: left;
-    height: 24px;
-    padding: 0.5px;
-    text-align: center;
-    width: 24px;
-}
-.cells {
-    float: left;
-    height: 24px;
-    margin: 0.5px;
-    padding: 0.5px;
-    text-align: center;
-    width: 24px;
-}
-#schedule_template {
-    width:878px;
-}
-
 /* default close button positioned on upper right corner */
 .modal {
 		background-color:#fff;

@@ -3,16 +3,16 @@
 = form_tag (mass_update_admin_schedule_cells_path, :method => :put, :remote => true, :class => 'form', 'data-type' => 'script') do
   .group
     = label :user_id, t("activerecord.attributes.schedule_cell.user_id", :default => "User"), :class => :label
-    = select_tag "user_id", options_for_select(User.selection(@template.department_id)), { :include_blank => true }
+    = select_tag "user_id", options_for_select(User.selection(@template.department_id), @cell.user_id), { :include_blank => true }
   .group
     = label :additional_attributes, t("activerecord.attributes.schedule_cell.additional_attributes", :default => "Attr"), :class => :label
-    = select_tag "additional_attributes", options_for_select(ScheduleStatus.selection), { :include_blank => true }
+    = select_tag "additional_attributes", options_for_select(ScheduleStatus.selection, @cell.additional_attributes), { :include_blank => true }
   .group
     = label :responsible, t("activerecord.attributes.schedule_cell.shift_leader", :default => "Shift Leader"), :class => :label
-    = check_box_tag "responsible"
+    = check_box_tag "responsible", 1, @cell.responsible && @cell.responsible != 0 ? true : false
   .group
     = label :is_modified, t("activerecord.attributes.schedule_cell.is_modified", :default => "Modified"), :class => :label
-    = check_box_tag "is_modified"
+    = check_box_tag "is_modified", 1, @cell.is_modified && @cell.is_modified != 0 ? true : false
   .group.navform.wat-cf
     %button.button{:type => "submit"}
       = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")

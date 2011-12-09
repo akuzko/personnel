@@ -86,15 +86,17 @@ shiftPressed = false
         $.post "/schedule/toggle_exclude",
           {shift: shift_id, line: line, day: day}
         no
-
+#=====================================================
       $("#selectable").selectable({
-        filter: 'li.cells.selectable',
-        cancel: 'li.shift-options'
+        filter: 'li.cell',
+        cancel: 'li.left_part.first'
       })
-      $("#edit_cells").live 'click', ->
+
+      $("#edit_selected").live 'click', ->
         $("#overlay .contentWrap").load $(this).attr("href"), ->
           $("#overlay").dialog("open")
         no
+#=====================================================
 
       $('#edit_cells').live 'click', ->
         $("#overlay .contentWrap").load $(this).attr("href"), ->
@@ -142,13 +144,13 @@ shiftPressed = false
 
       $(".user_select").live 'click', ->
         id = $(this).attr('id')
-        $(".cells.user_selected").removeClass('user_selected')
-        $(".cells").each ->
+        $("li.cell.user_selected").removeClass('user_selected')
+        $("li.cell").each ->
           if $.trim($(this).html())==id
             $(this).addClass('user_selected')
 
       $("#clear_selection").live 'click', ->
-        $(".cells.user_selected").removeClass('user_selected')
+        $("li.cell.user_selected").removeClass('user_selected')
 
       $("[name*='shiftdate']").change ->
         app.reload_shift_numbers()
@@ -211,7 +213,7 @@ shiftPressed = false
     $.get '/admin/schedule_templates/'+template+'/check_month/'
     no
   show_users_admin: ->
-    $("#template_users").load '/admin/schedule/show_users/?id='+$("#schedule_template").attr('val')
+    $("#template_users").load '/admin/schedule/show_users/?id='+$("table.schedule_table.settings").attr('val')
     $("#overlay").dialog("close")
   reload_shift_numbers: ->
     dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()

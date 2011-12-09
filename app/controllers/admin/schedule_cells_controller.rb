@@ -7,6 +7,15 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def new
+    @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(params[:shift], params[:line], params[:day])
+    @shift = ScheduleShift.find params[:shift]
+    @template = ScheduleTemplate.find @shift.schedule_template_id
+    @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
+    render :layout => false
+  end
+
+  def change
+    @cell = ""
     @template = ScheduleTemplate.find params[:template_id]
     render :layout => false
   end
