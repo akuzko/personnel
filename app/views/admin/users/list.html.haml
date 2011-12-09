@@ -20,6 +20,6 @@
             = item.cell1
           %td{:style=>"border: 1px solid black"}= item.full_name
           %td{:style=>"border: 1px solid black"}
-            - item.addresses.each do |addr|
+            - item.addresses.order("`primary` DESC").each do |addr|
               = addr.street + " " + addr.build + ", " + addr.porch.to_s + "/" + addr.nos.to_s
               %br
