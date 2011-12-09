@@ -1,0 +1,98 @@
+- current_shift = nil
+.block
+  .content
+    .inner
+      = form_tag(admin_schedule_path, :method => :get) do
+        %table.schedule_table.settings{:val => @template.id}
+          %tr
+            %td{:style => "width:112px"}
+              %ul
+                %li.left_part
+                  = link_to image_tag("web-app-theme/icons/calendar.png", :alt => "#{t("web-app-theme.check", :default=> "Check")}"),
+                    check_month_admin_schedule_template_path(@template), :id => 'check_month', :class => "button", :title => "Check", :style => "float:right;"
+                  = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}"),
+                    new_admin_schedule_shift_path(:template => @template), :class => "button modal_dialog", :title => "Add", :style => "float:right;"
+            %td
+              Department:
+              = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id])
+            %td
+              = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
+                = t("web-app-theme.find", :default => "Show")
+            %td
+              = radio_button_tag :visible,  0, params[:visible] == 0, {:class => 'visible', :action => set_visibility_admin_schedule_template_path(@template)}
+              Hidden
+              = radio_button_tag :visible,  2, params[:visible] == 2,
+                {:class => 'visible',:action => set_visibility_admin_schedule_template_path(@template), :href => select_users_admin_schedule_template_path(@template)}
+              Editable
+              = radio_button_tag :visible,  1, params[:visible] == 1, {:class => 'visible',:action => set_visibility_admin_schedule_template_path(@template)}
+              Visible
+            %td
+              %button.button{:class => "button", :id => "edit_selected", :href => change_admin_schedule_cells_path(:template_id => @template.id)}
+                = image_tag("web-app-theme/icons/pencil.png", :alt => "#{t("web-app-theme.find", :default => "Edit Selected")}")
+                = t("web-app-theme.edit", :default => "Edit Selected")
+      %table.schedule_table
+        %tr
+          %td
+            %ul
+              %li.left_part
+              - @days_in_month.times do |day|
+                %li.header_part
+                  = day + 1
+      %table.schedule_table
+        %tr
+          %td
+            %ul{:id => "selectable"}
+              - @template.schedule_shifts.order(:number).each do |shift|
+                - shift.lines.times do |line|
+                  - if current_shift.nil? || current_shift != shift.id
+                    %li.left_part.first
+                      %b
+                        - if shift.number == 10
+                          DayOff
+                        - else
+                          \#
+                          = shift.number
+                          \(
+                          = shift.start
+                          \-
+                          = shift.end
+                          \)
+                        = link_to image_tag("web-app-theme/icons/calendar_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}"), edit_admin_schedule_shift_path(shift), :id =>"shit_#{shift.id}_edit", :class => "modal_dialog"
+                        = link_to image_tag("web-app-theme/icons/delete.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}"), admin_schedule_shift_path(shift), :method => :delete, :remote => true, :confirm => 'Delete the Shift#'+shift.number.to_s+'?' unless shift.number == 10
+                  - else
+                    %li.left_part
+                  - @days_in_month.times do |day|
+                    - cell = shift.schedule_cells.find_by_line_and_day(line+1, day+1)
+                    - cell_wday = Date.parse("#{@template.year}-#{@template.month}-#{day+1}").wday
+                    - cell_color_default = (1..5) === cell_wday  ? 'ffffff' : 'FBB999'
+                    - cell_color_default = shift.number == 10  ? 'eeeeee' : cell_color_default
+                    - cell_color = (cell.class == NilClass || !cell.additional_attributes) ? cell_color_default : ScheduleStatus.find_by_id(cell.additional_attributes).color
+                    - cell_font_weight = (cell.class != NilClass && (cell.is_modified? || cell.responsible?)) ? 'font-weight:bold;' : ''
+                    - cell_font_color = (cell.class != NilClass && cell.responsible?) ? 'color:#' + @shift_leader_color + ';' : '';
+                    - cell_excluded = (cell.class != NilClass && cell.exclude) ? 'text-decoration:line-through;' : '';
+                    - cell_border = (current_shift.nil? || current_shift != shift.id) ? 'border-top: 2px solid #002134;' : '';
+                    %li.cell{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color+cell_excluded+cell_border}
+                      - identifier = (cell.class == NilClass || !cell.user_id?) ? ' ' : cell.user_id
+                      = identifier
+                  - current_shift = shift.id
+      %table.schedule_table.footer
+        %tr
+          %td
+            %ul
+              %li.left_part
+              - @days_in_month.times do |day|
+                %li.header_part
+                  %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
+      %div{:style => 'clear:both'}
+- content_for :sidebar, render(:partial => 'sidebar')
+%div.modal#overlay
+  %div.contentWrap
+%div.modal#batch_data
+  %div.contentWrap
+%script{:type => "text/javascript"}
+  app.check_month(
+  =@template.id
+  )
