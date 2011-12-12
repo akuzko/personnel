@@ -65,7 +65,7 @@ shiftPressed = false
         $("#overlay, #batch_data").dialog("close")
         $('.modal_dialog').removeClass('ui-selected')
 
-      $('.schedule_editable td').live 'click', ->
+      $('.schedule_editable li.cell').live 'click', ->
         regex = /cell_(\d+)_(\d+)_(\d+)/
         text = $(this).attr('id')
         match =text.match(regex)
@@ -76,7 +76,7 @@ shiftPressed = false
           {shift: shift_id, line: line, day: day}
         no
 
-      $('.schedule_excludable td').live 'click', ->
+      $('.schedule_excludable li.cell').live 'click', ->
         regex = /cell_(\d+)_(\d+)_(\d+)/
         text = $(this).attr('id')
         match =text.match(regex)

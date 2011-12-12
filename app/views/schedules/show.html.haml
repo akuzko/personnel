@@ -1,50 +1,64 @@
+- current_shift = nil
 .block
   .content
     .inner
       = form_tag(schedule_path, :method => :get) do
-        %table
+        %table.schedule_table.settings{:val => @template.id}
           %tr
+            %td{:style => "width:112px"}
             %td
-              = t("personnel.user.department", :default => "Department")
-              = select_tag :department_id, options_for_select(Department.identified.selection, params[:department_id])
-            %td
-              &nbsp;
+              Department:
+              = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id])
             %td
               = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
-            %td
-              &nbsp;
             %td
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
                 = t("web-app-theme.find", :default => "Show")
-              = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button"
-              = link_to image_tag("web-app-theme/icons/car.png", :alt => "#{"Delivery List"}") + "#{t("personnel.user.delivery-list", :default => "Delivery List")}", delivery_user_path, :class => "button"
-        %div{:style => 'float:left;padding-left:5px'}
-          %table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;text-align:center'}
-            %tr
-              %td{:style => 'background-color:#ffffff'}
-                &nbsp;
-              %td
-                %table.cell-table{:cellpadding => 1, :cellspacing => 1, :style => 'background-color:#bbbbbb;'}
-                  %tr
+              = link_to image_tag("web-app-theme/icons/printer.png", :alt => "#{t("web-app-theme.list", :default => "Print List")}") + t("web-app-theme.list", :default => "Print List"), list_user_path, :class => "button", :target => "blank"
+              = link_to image_tag("web-app-theme/icons/car.png", :alt => "#{"Delivery List"}") + "#{t("personnel.user.delivery-list", :default => "Delivery List")}", delivery_user_path, :class => "button", :target => "blank"
+      %table.schedule_table
+        %tr
+          %td
+            %ul
+              %li.left_part
+              - @days_in_month.times do |day|
+                %li.header_part
+                  = day + 1
+      %table.schedule_table
+        %tr
+          %td
+            %ul.schedule_excludable
+              - @template.schedule_shifts.order(:number).each do |shift|
+                - shift.lines.times do |line|
+                  - if current_shift.nil? || current_shift != shift.id
+                    %li.left_part.first
+                      %b
+                        - if shift.number == 10
+                          DayOff
+                        - else
+                          \#
+                          = shift.number
+                          \(
+                          = shift.start
+                          \-
+                          = shift.end
+                          \)
+                  - else
+                    %li.left_part
                   - @days_in_month.times do |day|
-                    %td{:style => 'background-color:#eeeeee', :class => "cells"}
-                      = day + 1
-            - @template.schedule_shifts.order(:number).each do |shift|
-              %tr
-                %td{:style => 'background-color:#eeeeee'}
-                  %b
-                    - if shift.number == 10
-                      = t("personnel.schedule.dayoff", :default => "DayOff")
-
-                    - else
-                      = t("personnel.schedule.shift", :default => "Shift") #
-                      = shift.number
-                      %br
-                      = shift.start
-                      \-
-                      = shift.end
-                %td.schedule_excludable{:id => "shift_#{shift.id}"}
-                  = render 'shared/shift_show', :layout => false, :shift => shift
-        %div{:style => 'clear:both'}
+                    - cell_wday = Date.parse("#{@template.year}-#{@template.month}-#{day+1}").wday
+                    - cell_color_default = (1..5) === cell_wday  ? 'ffffff' : 'FBB999'
+                    - cell_color_default = shift.number == 10  ? 'eeeeee' : cell_color_default
+                    - cell = shift.schedule_cells.find_by_line_and_day(line+1, day+1)
+                    - cell_color = (cell.class == NilClass || !cell.additional_attributes) ? cell_color_default : ScheduleStatus.find_by_id(cell.additional_attributes).color
+                    - cell_font_weight = (cell.class != NilClass && (cell.is_modified? || cell.responsible?)) ? 'font-weight:bold;' : ''
+                    - cell_font_color = (cell.class != NilClass && cell.responsible?) ? 'color:#' + @shift_leader_color + ';' : '';
+                    - cell_excluded = (cell.class != NilClass && cell.exclude) ? 'text-decoration:line-through;' : '';
+                    - cell_border = (current_shift.nil? || current_shift != shift.id) ? 'border-top: 2px solid #002134;' : '';
+                    %li.cell{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color+cell_excluded+cell_border}
+                      - identifier = (cell.class == NilClass || !cell.user_id?) ? ' ' : cell.user_id
+                      = identifier
+                  - current_shift = shift.id
+      %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')

@@ -91,7 +91,7 @@
           $("#overlay, #batch_data").dialog("close");
           return $('.modal_dialog').removeClass('ui-selected');
         });
-        $('.schedule_editable td').live('click', function() {
+        $('.schedule_editable li.cell').live('click', function() {
           var day, line, match, regex, shift_id, text;
           regex = /cell_(\d+)_(\d+)_(\d+)/;
           text = $(this).attr('id');
@@ -106,7 +106,7 @@
           });
           return false;
         });
-        $('.schedule_excludable td').live('click', function() {
+        $('.schedule_excludable li.cell').live('click', function() {
           var day, line, match, regex, shift_id, text;
           regex = /cell_(\d+)_(\d+)_(\d+)/;
           text = $(this).attr('id');
