@@ -8,7 +8,7 @@
             %td{:style => "width:112px"}
             %td
               Department:
-              = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id])
+              = select_tag :department_id, options_for_select(Department.identified.selection(current_admin.id), params[:department_id])
             %td
               = select_date params[:date], :start_year => 2010, :discard_day => true, :use_month_numbers => true
             %td
