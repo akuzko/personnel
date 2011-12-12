@@ -30,9 +30,6 @@ class Admin::SchedulesController < ApplicationController
     @days_in_month = Time.days_in_month(@template.month, @template.year)
     @shift_leader_color = ScheduleStatus.find_or_create_by_name('Shift Leader').color
     @statuses = ScheduleStatus.order(:name).all
-    if params[:new]
-      render 'show_new.html'
-    end
   end
 
   def show_users
