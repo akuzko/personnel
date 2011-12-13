@@ -126,10 +126,21 @@
           cancel: 'li.left_part.first'
         });
         $("#edit_selected").live('click', function() {
-          $("#overlay .contentWrap").load($(this).attr("href"), function() {
-            return $("#overlay").dialog("open");
-          });
+          if ($('.ui-selected').attr('id') !== void 0) {
+            $("#overlay .contentWrap").load($(this).attr("href"), function() {
+              return $("#overlay").dialog("open");
+            });
+            false;
+          }
           return false;
+        });
+        $('li.cell').bind('contextmenu', function(e) {
+          if ($('.ui-selected').attr('id') !== void 0) {
+            $("#overlay .contentWrap").load($("#edit_selected").attr("href"), function() {
+              return $("#overlay").dialog("open");
+            });
+            return false;
+          }
         });
         $('#edit_cells').live('click', function() {
           $("#overlay .contentWrap").load($(this).attr("href"), function() {

@@ -93,9 +93,18 @@ shiftPressed = false
       })
 
       $("#edit_selected").live 'click', ->
-        $("#overlay .contentWrap").load $(this).attr("href"), ->
-          $("#overlay").dialog("open")
+        if $('.ui-selected').attr('id') != undefined
+          $("#overlay .contentWrap").load $(this).attr("href"), ->
+            $("#overlay").dialog("open")
+          no
         no
+
+      $('li.cell').bind 'contextmenu', (e) ->
+        if $('.ui-selected').attr('id') != undefined
+          $("#overlay .contentWrap").load $("#edit_selected").attr("href"), ->
+            $("#overlay").dialog("open")
+          no
+
 #=====================================================
 
       $('#edit_cells').live 'click', ->
