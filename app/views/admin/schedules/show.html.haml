@@ -9,7 +9,7 @@
               %ul
                 %li.left_part
                   = link_to image_tag("web-app-theme/icons/calendar.png", :alt => "#{t("web-app-theme.check_interval", :default=> "Check shift interval")}"),
-                    check_shift_interval_admin_schedule_template_path(@template), :id => 'check_shift_interval', :class => "button modal_dialog", :style => "float:right;"
+                    check_shift_interval_admin_schedule_template_path(@template), :id => 'check_shift_interval', :class => "button modal_dialog", :title => "Check shift interval", :style => "float:right;"
                   = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}"),
                     new_admin_schedule_shift_path(:template => @template), :class => "button modal_dialog", :title => "Add", :style => "float:right;"
             %td
