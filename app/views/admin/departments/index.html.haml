@@ -29,7 +29,7 @@
             %td
               = department.id
             %td
-              = link_to department.name, admin_department_path(department)
+              = link_to department.name+" (#{User.find_all_by_department_id(department.id).size})", admin_department_path(department)
             %td
               - department.admins.each do |admin|
                 = admin.email
