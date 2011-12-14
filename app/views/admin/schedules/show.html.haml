@@ -30,9 +30,9 @@
               = radio_button_tag :visible,  1, params[:visible] == 1, {:class => 'visible',:action => set_visibility_admin_schedule_template_path(@template)}
               Visible
             %td
-              %button.button{:class => "button", :id => "edit_selected", :href => change_admin_schedule_cells_path(:template_id => @template.id)}
-                = image_tag("web-app-theme/icons/pencil.png", :alt => "#{t("web-app-theme.find", :default => "Edit Selected")}")
-                = t("web-app-theme.edit", :default => "Edit Selected")
+              %button.button{:class => "button", :id => "excel_import"}
+                = image_tag("web-app-theme/icons/arrow_down.png", :alt => "#{t("web-app-theme.import_excel", :default => "Import from Excel")}")
+                = t("web-app-theme.import_excel", :default => "Import from Excel")
       %table.schedule_table
         %tr
           %td
@@ -74,7 +74,8 @@
                     - cell_font_color = (cell.class != NilClass && cell.responsible?) ? 'color:#' + @shift_leader_color + ';' : '';
                     - cell_excluded = (cell.class != NilClass && cell.exclude) ? 'text-decoration:line-through;' : '';
                     - cell_border = (current_shift.nil? || current_shift != shift.id) ? 'border-top: 2px solid #002134;' : '';
-                    %li.cell{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color+cell_excluded+cell_border}
+                    %li.cell{:id=>"cell_#{shift.id}_#{line+1}_#{day+1}", :style => 'background-color:#'+cell_color+';'+cell_font_weight+cell_font_color+cell_excluded+cell_border,
+                      :batch => batch_new_admin_schedule_cells_path(:shift => shift, :line => line+1, :day => day+1)}
                       - identifier = (cell.class == NilClass || !cell.user_id?) ? ' ' : cell.user_id
                       = identifier
                   - current_shift = shift.id

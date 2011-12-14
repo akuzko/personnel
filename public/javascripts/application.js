@@ -1,8 +1,5 @@
 (function() {
-  var ctrlPressed, shiftPressed;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-  ctrlPressed = false;
-  shiftPressed = false;
   this.app = {
     init: function() {
       return $(__bind(function() {
@@ -136,39 +133,21 @@
         });
         $('li.cell').bind('contextmenu', function(e) {
           if ($('.ui-selected').attr('id') !== void 0) {
-            $("#overlay .contentWrap").load($("#edit_selected").attr("href"), function() {
+            $("#overlay .contentWrap").load('/admin/schedule_cells/change?template_id=' + $("table.schedule_table.settings").attr('val'), function() {
               return $("#overlay").dialog("open");
             });
-            return false;
+            false;
           }
-        });
-        $('#edit_cells').live('click', function() {
-          $("#overlay .contentWrap").load($(this).attr("href"), function() {
-            return $("#overlay").dialog("open");
-          });
-          false;
-          $("#batch_data .contentWrap").load($(this).attr("batch"), function() {
-            return $("#batch_data").dialog("open");
-          });
           return false;
         });
-        $('.modal_dialog').live('click', function() {
-          if (ctrlPressed) {
-            $(this).toggleClass('ui-selected');
-            return false;
-          } else if (shiftPressed) {
-            $(this).addClass('ui-selected');
-            $("#batch_data .contentWrap").load($(this).attr("batch"), function() {
+        $('#excel_import').live('click', function() {
+          if ($('.ui-selected').attr('id') !== void 0) {
+            $("#batch_data .contentWrap").load($('.ui-selected').attr("batch"), function() {
               return $("#batch_data").dialog("open");
             });
-            return false;
-          } else {
-            $(this).addClass('ui-selected');
-            $("#overlay .contentWrap").load($(this).attr("href"), function() {
-              return $("#overlay").dialog("open");
-            });
-            return false;
+            false;
           }
+          return false;
         });
         $("input.visible").click(function() {
           var href;
@@ -217,26 +196,10 @@
           changeMonth: true,
           changeYear: true
         });
-        $(".date_select").datepicker({
+        return $(".date_select").datepicker({
           dateFormat: 'yy-mm-dd',
           changeMonth: true,
           changeYear: true
-        });
-        $(window).keydown(function(evt) {
-          if (evt.which === 17) {
-            ctrlPressed = true;
-          }
-          if (evt.which === 16) {
-            return shiftPressed = true;
-          }
-        });
-        return $(window).keyup(function(evt) {
-          if (evt.which === 17) {
-            ctrlPressed = false;
-          }
-          if (evt.which === 16) {
-            return shiftPressed = false;
-          }
         });
       }, this));
     },

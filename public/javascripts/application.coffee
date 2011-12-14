@@ -1,5 +1,5 @@
-ctrlPressed = false
-shiftPressed = false
+#ctrlPressed = false
+#shiftPressed = false
 @app =
   init: ->
     $ =>
@@ -101,34 +101,33 @@ shiftPressed = false
 
       $('li.cell').bind 'contextmenu', (e) ->
         if $('.ui-selected').attr('id') != undefined
-          $("#overlay .contentWrap").load $("#edit_selected").attr("href"), ->
+          $("#overlay .contentWrap").load '/admin/schedule_cells/change?template_id='+$("table.schedule_table.settings").attr('val'), ->
             $("#overlay").dialog("open")
           no
-
-#=====================================================
-
-      $('#edit_cells').live 'click', ->
-        $("#overlay .contentWrap").load $(this).attr("href"), ->
-          $("#overlay").dialog("open")
-        no
-        $("#batch_data .contentWrap").load $(this).attr("batch"), ->
-          $("#batch_data").dialog("open")
         no
 
-      $('.modal_dialog').live 'click', ->
-        if ctrlPressed
-          $(this).toggleClass('ui-selected')
-          no
-        else if shiftPressed
-          $(this).addClass('ui-selected')
-          $("#batch_data .contentWrap").load $(this).attr("batch"), ->
+      $('#excel_import').live 'click', ->
+        if $('.ui-selected').attr('id') != undefined
+          $("#batch_data .contentWrap").load $('.ui-selected').attr("batch"), ->
             $("#batch_data").dialog("open")
           no
-        else
-          $(this).addClass('ui-selected')
-          $("#overlay .contentWrap").load $(this).attr("href"), ->
-            $("#overlay").dialog("open")
-          no
+        no
+#=====================================================
+#
+#      $('.modal_dialog').live 'click', ->
+#        if ctrlPressed
+#          $(this).toggleClass('ui-selected')
+#          no
+#        else if shiftPressed
+#          $(this).addClass('ui-selected')
+#          $("#batch_data .contentWrap").load $(this).attr("batch"), ->
+#            $("#batch_data").dialog("open")
+#          no
+#        else
+#          $(this).addClass('ui-selected')
+#          $("#overlay .contentWrap").load $(this).attr("href"), ->
+#            $("#overlay").dialog("open")
+#          no
 
       $("input.visible").click ->
         href = $(this).attr("href")
@@ -174,17 +173,17 @@ shiftPressed = false
         changeMonth: true
         changeYear: true
 
-      $(window).keydown (evt) ->
-        if (evt.which == 17)
-          ctrlPressed = true
-        if (evt.which == 16)
-          shiftPressed = true
-
-      $(window).keyup (evt) ->
-        if (evt.which == 17)
-          ctrlPressed = false
-        if (evt.which == 16)
-          shiftPressed = false
+#      $(window).keydown (evt) ->
+#        if (evt.which == 17)
+#          ctrlPressed = true
+#        if (evt.which == 16)
+#          shiftPressed = true
+#
+#      $(window).keyup (evt) ->
+#        if (evt.which == 17)
+#          ctrlPressed = false
+#        if (evt.which == 16)
+#          shiftPressed = false
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->
