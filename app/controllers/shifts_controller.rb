@@ -46,7 +46,7 @@ class ShiftsController < ApplicationController
         @missed_shifts_departments[department.name] = {}
         @missed_shifts_departments[department.name][:shifts] = missed_shifts
         @missed_shifts_departments[department.name][:admins] = admins
-        if params[:send] && department.name != 'Management'
+        if params[:send] && department.id != 2
             message = MissedShift.send_missed_shifts(department.name, missed_shifts, admins)
             message.deliver
         end
