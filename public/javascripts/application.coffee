@@ -112,22 +112,11 @@
             $("#batch_data").dialog("open")
           no
         no
-#=====================================================
-#
-#      $('.modal_dialog').live 'click', ->
-#        if ctrlPressed
-#          $(this).toggleClass('ui-selected')
-#          no
-#        else if shiftPressed
-#          $(this).addClass('ui-selected')
-#          $("#batch_data .contentWrap").load $(this).attr("batch"), ->
-#            $("#batch_data").dialog("open")
-#          no
-#        else
-#          $(this).addClass('ui-selected')
-#          $("#overlay .contentWrap").load $(this).attr("href"), ->
-#            $("#overlay").dialog("open")
-#          no
+
+      $('.modal_dialog').live 'click', ->
+        $("#overlay .contentWrap").load $(this).attr("href"), ->
+          $("#overlay").dialog("open")
+        no
 
       $("input.visible").click ->
         href = $(this).attr("href")
@@ -172,18 +161,6 @@
         dateFormat: 'yy-mm-dd'
         changeMonth: true
         changeYear: true
-
-#      $(window).keydown (evt) ->
-#        if (evt.which == 17)
-#          ctrlPressed = true
-#        if (evt.which == 16)
-#          shiftPressed = true
-#
-#      $(window).keyup (evt) ->
-#        if (evt.which == 17)
-#          ctrlPressed = false
-#        if (evt.which == 16)
-#          shiftPressed = false
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->

@@ -149,6 +149,12 @@
           }
           return false;
         });
+        $('.modal_dialog').live('click', function() {
+          $("#overlay .contentWrap").load($(this).attr("href"), function() {
+            return $("#overlay").dialog("open");
+          });
+          return false;
+        });
         $("input.visible").click(function() {
           var href;
           href = $(this).attr("href");
