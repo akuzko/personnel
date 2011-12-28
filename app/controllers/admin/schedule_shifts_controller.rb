@@ -38,10 +38,7 @@ class Admin::ScheduleShiftsController < ApplicationController
   def update
     @shift = ScheduleShift.find(params[:id])
     if @shift.update_attributes(params[:schedule_shift])
-      render(:update) do |p|
-        p.call 'app.reload_shift_admin', params[:id]
-        p.call 'app.check_month', @shift.schedule_template_id
-      end
+      render(:update) { |p| p.call 'app.reload'}
     else
       message = '<p>' + @shift.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|
