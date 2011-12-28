@@ -6,6 +6,10 @@
   = f.check_box :has_identifier, :class => 'check_box'
   %span.description check this box if members of the department have unique identifiers/numbers
 .group
+  = f.label :has_events, t("personnel.department.has-events", :default => "Track TR Events"), :class => :label
+  = f.check_box :has_events, :class => 'check_box'
+  %span.description check this box if members of this department add events to Time Report
+.group
   = f.label :has_t_shirt, t("personnel.department.has-t-shirt", :default => "Has T-shirts"), :class => :label
   = f.check_box :has_t_shirt, :class => 'check_box'
   %span.description check this box if the department offers T-Shirts

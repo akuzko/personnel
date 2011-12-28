@@ -6,10 +6,7 @@
       %li.active= link_to "#{t("web-app-theme.show", :default => "Show")}", admin_department_path
   .content
     .inner
-      %p
-        %b
-          = t("activerecord.attributes.admin_department.name", :default => t("activerecord.labels.name", :default => "Name"))
-          \:
+      %h1
         = @department.name
       %p
         %b
@@ -18,12 +15,28 @@
         = @department.has_identifier
       %p
         %b
-          = t("activerecord.attributes.admin_department.permissions", :default => t("activerecord.labels.permissions", :default => "Permissions"))
+          = t("activerecord.attributes.admin_department.has_events", :default => t("activerecord.labels.has_events", :default => "Has events"))
           \:
-        %ul{:style => "margin-left:20px"}
-          - @department.permissions.each do |d|
-            %li
-              = d.name
+        = @department.has_events
+      %p
+        %b
+          = t("activerecord.attributes.admin_department.has_levels", :default => t("activerecord.labels.has_levels", :default => "Has Levels"))
+          \:
+        = @department.has_levels
+      %p
+        %b
+          = t("activerecord.attributes.admin_department.has_t_shirt", :default => t("activerecord.labels.has_t_shirt", :default => "Has T-Shirts"))
+          \:
+        = @department.has_t_shirt
+      - if !@department.permissions.empty?
+        %p
+          %b
+            = t("activerecord.attributes.admin_department.permissions", :default => t("activerecord.labels.permissions", :default => "Permissions"))
+            \:
+          %ul{:style => "margin-left:20px"}
+            - @department.permissions.each do |d|
+              %li
+                = d.name
       .wat-cf
         = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"), edit_admin_department_path(@department), :class => "button"
         = link_to image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.delete", :default=> "Delete")}") + " " + t("web-app-theme.delete", :default => "Delete"), admin_department_path(@department), :method => "delete", :class => "button", :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"

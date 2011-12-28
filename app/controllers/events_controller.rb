@@ -32,6 +32,10 @@ class EventsController < ApplicationController
         redirect_to events_path, :notice => (flash[:notice] + "<br/>Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)").html_safe
       end
     end
+    if Department.find(current_user.department_id).has_events == false
+      @no_events = true
+      flash[:notice] = 'No further actions is required by you.'
+    end
     params[:sort_by] ||= :eventtime
     params[:sort_order] ||= 'DESC'
     @events = current_user.events.where('events.id > ?', @shift.start_event).joins('INNER JOIN `categories` ON `events`.`category_id` = `categories`.`id`').where('`categories`.`displayed` =1').paginate :page => params[:page], :per_page => 30, :order => "#{params[:sort_by]} #{params[:sort_order]}"
@@ -142,10 +146,25 @@ class EventsController < ApplicationController
       redirect_to start_shift_events_path and return
     end
     @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(shiftdate, params[:shift][:number], current_user.id)
+
+    end_time = @schedule_shift.end == 24 ? "23:59:59" : @schedule_shift.end
+    end_shift_time = Time.parse("#{end_time}")
+    current_time = DateTime.current.to_time
+
     if @shift
       if @shift.start_event.nil?
         #add login event
         @shift.start_event = Event.login(current_user.id, DateTime.current, request.remote_ip)
+
+        # for no events departments
+        if Department.find(current_user.department_id).has_events == false
+          if current_time > end_shift_time
+            @shift.end_event = Event.logout(current_user.id, current_time, request.remote_ip)
+          else
+            @shift.end_event = Event.logout(current_user.id, end_shift_time, request.remote_ip)
+          end
+        end
+
         @shift.save
       end
       session[:shift_id] = @shift.id
