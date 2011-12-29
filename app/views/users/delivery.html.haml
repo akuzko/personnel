@@ -1,8 +1,8 @@
 = form_tag(delivery_user_path, :method => :get) do
-  %table{:align => 'center', :width => 120, :style => 'font-size: 9px;text-align: center;'}
+  %table{:align => 'center', :width => 160, :style => 'font-size: 9px;text-align: center;'}
     %tr
       %td{:colspan => 3}
-        = select_date params[:date], :start_year => 2010, :use_month_numbers => true, :discard_year => true, :order => [:day, :month]
+        = select_date params[:date], :start_year => 2010, :use_month_numbers => true
         %button.button{:type => "submit"}
           = t("web-app-theme.ok", :default => "OK")
     %tr
