@@ -69,7 +69,8 @@
             %td
               = late_coming.shift.shiftdate if late_coming.shift
             %td
-              = "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
+              = "##{late_coming.shift.schedule_shift.number}"
+              -#= "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
             %td
               = (Date.current + late_coming.late_minutes.minutes).strftime("%H hrs %M min")
             %td

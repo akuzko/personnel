@@ -14,4 +14,14 @@ class ScheduleShift < ActiveRecord::Base
     end
   end
 
+  def update_shift(params)
+    new_lines = params[:schedule_shift][:lines].to_i
+    current_lines = ScheduleShift.find(params[:id]).lines
+    # Delete cells in deleted shift lines
+    if new_lines < current_lines
+      ScheduleCell.delete_all("`schedule_shift_id` = #{params[:id]} AND `line` > #{new_lines}")
+    end
+    self.update_attributes(params[:schedule_shift])
+  end
+
 end
