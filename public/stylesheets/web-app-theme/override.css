@@ -1,6 +1,6 @@
 /* Override here any style defined by web-app-theme */
 .schedule_table{
-    width: 856px;
+    width: 760px;
     background-color: #002134;
     text-align:center;
     border-collapse: collapse;
@@ -27,7 +27,7 @@
 }
 .schedule_table ul li.left_part{
     background-color: #002134;
-    width: 111px;
+    width: 103px;
     margin: 0;
     padding-left: 1px;
 }
@@ -40,7 +40,7 @@
 .schedule_table li {
     float: left;
     height: 23px;
-    width: 23px;
+    width: 20px;
     text-align: center;
     margin: 1px 1px 0 0;
 }
