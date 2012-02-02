@@ -44,6 +44,12 @@ class UsersController < ApplicationController
     flash[:error] = "Please update your profile" if @user.profile.first_name.nil?
     flash[:error] = "Please add your address" if @user.addresses.empty?
     flash[:error] = "Please update your contact information" if @user.contact.cell1.nil?
+    forum_member = SmfMember.find_by_member_name(@user.email.gsub(/@zone3000.net/, ''))
+    if forum_member
+      time = Time.now + 3153600.minutes
+      data = "a:4:{i:0;s:1:\"#{forum_member.id_member}\";i:1;s:40:\"#{Digest::SHA1.hexdigest(forum_member.passwd+forum_member.password_salt)}\";i:2;i:#{time.to_i};i:3;i:0;}"
+      cookies['SMFCookie432'] = { :value => data, :expires => time, :domain => ".#{request.domain(2)}"}
+    end
   end
 
   def edit_data
