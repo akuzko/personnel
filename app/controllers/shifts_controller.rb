@@ -10,8 +10,7 @@ class ShiftsController < ApplicationController
       else
         @event = User.find(shift.user_id).events.where('id < ?', next_shift.start_event).order(:eventtime).last
       end
-      ap @event
-      if @event
+      if @event && !shift.schedule_shift.blank?
         if (shift.shiftdate + shift.schedule_shift.end.hour < DateTime.current) && @event.eventtime < DateTime.current - 1.hour
           #add logout event
           shift.end_event = Event.logout(shift.user_id, @event.eventtime + 1.minute, request.remote_ip)
