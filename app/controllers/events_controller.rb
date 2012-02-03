@@ -147,19 +147,10 @@ class EventsController < ApplicationController
     end
     @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(shiftdate, params[:shift][:number], current_user.id)
 
-    end_time = @schedule_shift.end == 24 ? "23:59:59" : "#{@schedule_shift.end}:00:00"
-    shift_end_time = Time.parse("#{end_time}")
-
     if @shift
       if @shift.start_event.nil?
         #add login event
         @shift.start_event = Event.login(current_user.id, DateTime.current, request.remote_ip)
-
-        # for no events departments
-        if Department.find(current_user.department_id).has_events == false
-          @shift.end_event = Event.logout(current_user.id, shift_end_time, request.remote_ip)
-        end
-
         @shift.save
       end
       session[:shift_id] = @shift.id
@@ -173,8 +164,14 @@ class EventsController < ApplicationController
 
   def end_shift
     @shift = Shift.find(session[:shift_id])
-    #add logout event
-    @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip)
+    if @shift.end_event.nil?
+      #add logout event
+      @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip)
+    else
+      #update end event time for shift
+      @event = Event.find(@shift.end_event)
+      @event.update_attributes(:eventtime => DateTime.current, :ip_address => Event.ip2int(request.remote_ip))
+    end
     @shift.save
     session.delete :shift_id
     redirect_to events_path

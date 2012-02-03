@@ -41,7 +41,7 @@ class Shift < ActiveRecord::Base
   end
 
   def worked_min
-    return '' if self.endtime == '' || self.starttime == ''
+    return 0 if self.endtime == '' || self.starttime == ''
     ((self.endtime - self.starttime) / 1.minute).round
   end
 

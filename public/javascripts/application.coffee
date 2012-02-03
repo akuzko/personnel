@@ -1,5 +1,3 @@
-#ctrlPressed = false
-#shiftPressed = false
 @app =
   init: ->
     $ =>
