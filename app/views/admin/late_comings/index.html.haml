@@ -41,25 +41,9 @@
                 = t("web-app-theme.find", :default => "Find")
       %table.table
         - user = ''
-        - total = 0
-        - total_worked = 0
-        - total_work_out = 0.minutes
         - @late_comings.each do |late_coming|
           - if user != late_coming.user_full_name
-            %tr
-              %td{:colspan => 7}
-                %b
-                  = "Total Late: #{(Date.current + total.minutes).strftime("%H hrs %M min")}" if user != ''
-                %br
-                %b{:style => 'color:green;'}
-                  = "Total Worked: #{(Date.current + total_worked.minutes).strftime("%H hrs %M min")}" if user != ''
-                %br
-                %b{:style => 'color:red;'}
-                  = "Total Work Out: #{(Date.current + total_work_out).strftime("%H hrs %M min")}" if user != ''
             - user = late_coming.user_full_name
-            - total = 0
-            - total_worked = 0
-            - total_work_out = 0.minutes
             %tr
               %td{:colspan => 7}
                 %h3= user
@@ -73,16 +57,9 @@
               %th
                 = t("activerecord.attributes.shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked"))
               %th
-                = t("activerecord.attributes.shift.shift_time", :default => t("activerecord.labels.shift_time", :default => "Working Hours"))
-              %th
-                = t("activerecord.attributes.shift.workout", :default => t("activerecord.labels.workout", :default => "To Work Out"))
-              %th
                 = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
               %th
                 = t("activerecord.attributes.admin_event.action", :default => t("activerecord.labels.action", :default => ""))
-          - total = total + late_coming.late_minutes
-          - total_worked = total_worked + late_coming.shift.worked_min
-          - total_work_out = total_work_out + late_coming.shift.schedule_shift.end.hours - late_coming.shift.schedule_shift.start.hours - late_coming.shift.worked_min.minutes
           - unless late_coming.shift.nil? && late_coming.shift.schedule_shift.nil?
             %tr{:class => cycle("odd", "even")}
               %td
@@ -95,24 +72,9 @@
               %td
                 = (Date.current + late_coming.shift.worked_min.minutes).strftime("%H hrs %M min")
               %td
-                = late_coming.shift.schedule_shift.end - late_coming.shift.schedule_shift.start
-                hours
-              %td
-                = (Date.current + (late_coming.shift.schedule_shift.end.hours - late_coming.shift.schedule_shift.start.hours - late_coming.shift.worked_min.minutes)).strftime("%H hrs %M min")
-              %td
                 = late_coming.description
               %td
                 \#{link_to "#{t("web-app-theme.delete", :default => "Release")}", admin_late_coming_path(late_coming), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to release this?")}"}
-        %tr
-          %td{:colspan => 7}
-            %b
-              = "Total Late: #{(Date.current + total.minutes).strftime("%H hrs %M min")}"
-            %br
-            %b{:style => 'color:green;'}
-              = "Total Worked: #{(Date.current + total_worked.minutes).strftime("%H hrs %M min")}"
-            %br
-            %b{:style => 'color:red;'}
-              = "Total Work Out: #{(Date.current + total_work_out).strftime("%H hrs %M min")}"
       .actions-bar.wat-cf
         .actions
         = will_paginate @late_comings

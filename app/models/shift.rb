@@ -40,9 +40,37 @@ class Shift < ActiveRecord::Base
     @event.nil? ? '' : Event.int2ip(@event.ip_address)
   end
 
+  def workout
+    (self.shift_period - self.worked_min).tap{ |res| return res > 0 ? res : nil }
+  end
+
   def worked_min
     return 0 if self.endtime == '' || self.starttime == ''
     ((self.endtime - self.starttime) / 1.minute).round
+  end
+
+  def late_min
+    if self.is_late
+      ((self.starttime - self.schedule_start_time)/ 1.minutes).round
+    else
+      nil
+    end
+  end
+
+  def end_earlier
+    if self.is_end_earlier && self.endtime != ''
+      ((self.schedule_end_time - self.endtime)/ 1.minutes).round
+    else
+      nil
+    end
+  end
+
+  def overtime
+    if self.is_overtime && self.endtime != ''
+      (((self.endtime - self.schedule_end_time) + (self.schedule_start_time - self.starttime))/ 1.minutes).round
+    else
+      nil
+    end
   end
 
   def schedule_shift
@@ -50,11 +78,38 @@ class Shift < ActiveRecord::Base
   end
 
   def is_late
-    can_late_minutes = self.schedule_shift.start == 0 ? 10 : 5
-    (self.starttime - (self.shiftdate + self.schedule_shift.start.hour))/ 1.minutes > can_late_minutes
+    (self.starttime - self.schedule_start_time)/ 1.minutes > self.possible_minutes
+  end
+
+  def is_end_earlier
+    if self.endtime != ''
+      (self.schedule_end_time - self.endtime)/ 1.minutes > self.possible_minutes
+    end
+  end
+
+  def is_overtime
+     if self.endtime != ''
+      ((self.endtime - self.schedule_end_time) + (self.schedule_start_time - self.starttime))/ 1.minutes > self.possible_minutes
+     end
   end
 
   def is_over
-    (self.shiftdate + self.schedule_shift.end.hour) < DateTime.current
+    self.schedule_end_time < DateTime.current
   end
+
+  # Additional Methods
+
+  def possible_minutes
+    self.schedule_shift.start == 0 ? 10 : 5
+  end
+  def schedule_end_time
+    self.shiftdate + self.schedule_shift.end.hour
+  end
+  def schedule_start_time
+    self.shiftdate + self.schedule_shift.start.hour
+  end
+  def shift_period
+    ((self.schedule_end_time - self.schedule_start_time)/ 1.minutes).round
+  end
+
 end

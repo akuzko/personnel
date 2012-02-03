@@ -17,7 +17,7 @@ class EventsController < ApplicationController
       if @shift_next && @shift_next.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, Date.current.day).count > 0
         #End current shift
         @event = User.find(current_user.id).events.order(:eventtime).last
-        @shift.end_event = Event.logout(current_user.id, [@shift.shiftdate + @shift.schedule_shift.end.hour, @event.eventtime + 1.minute].max, request.remote_ip)
+        @shift.end_event = Event.logout(current_user.id, [@shift.shiftdate + @shift.schedule_shift.end.hour, @event.eventtime + 1.minute].max, request.remote_ip, @shift.id)
         @shift.save
         #Start new shift
         @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(Date.current, @shift_next.number, current_user.id)
@@ -25,7 +25,7 @@ class EventsController < ApplicationController
         #Check if the next shift for the user is not started
         if @shift.start_event.nil?
           #add login event
-          @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour, request.remote_ip)
+          @shift.start_event = Event.login(current_user.id, @shift.shiftdate + @shift.schedule_shift.start.hour, request.remote_ip, @shift.id)
           @shift.save
         end
         flash[:notice] ||= ''
@@ -60,6 +60,7 @@ class EventsController < ApplicationController
     @event.user_id = current_user.id
     @event.eventtime = DateTime.current
     @event.ip_address = Event.ip2int(request.remote_ip)
+    @event.shift_id = session['shift_id']
 
     if @event.save
       render(:update) do |page|
@@ -122,6 +123,7 @@ class EventsController < ApplicationController
 
   def create_shift
     shiftdate = (params[:shift]["shiftdate(1i)"].to_s+"-"+params[:shift]["shiftdate(2i)"].to_s+"-"+params[:shift]["shiftdate(3i)"].to_s).to_date
+
     # Validate shift with schedule nad actual time of start
     @template = ScheduleTemplate.find_by_department_id_and_year_and_month(current_user.department_id, shiftdate.year, shiftdate.month)
     @schedule_shift = @template.schedule_shifts.where(:number => params[:shift][:number]).first unless @template.nil?
@@ -150,7 +152,7 @@ class EventsController < ApplicationController
     if @shift
       if @shift.start_event.nil?
         #add login event
-        @shift.start_event = Event.login(current_user.id, DateTime.current, request.remote_ip)
+        @shift.start_event = Event.login(current_user.id, DateTime.current, request.remote_ip, @shift.id)
         @shift.save
       end
       session[:shift_id] = @shift.id
@@ -166,7 +168,7 @@ class EventsController < ApplicationController
     @shift = Shift.find(session[:shift_id])
     if @shift.end_event.nil?
       #add logout event
-      @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip)
+      @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip, @shift.id)
     else
       #update end event time for shift
       @event = Event.find(@shift.end_event)

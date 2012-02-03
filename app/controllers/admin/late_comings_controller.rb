@@ -44,9 +44,12 @@ class Admin::LateComingsController < ApplicationController
   end
 
   def destroy
-    @late_coming = LateComing.find(params[:id])
-    @late_coming.destroy
-
+    late_coming = LateComing.find(params[:id])
+    shift = Shift.find(late_coming.shift_id)
+    start_event = Event.find_by_id(shift.start_event)
+    start_event.eventtime = shift.schedule_start_time
+    start_event.save
+    late_coming.destroy
     respond_to do |format|
       format.html { redirect_to :back }
       format.xml { head :ok }

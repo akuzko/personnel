@@ -64,6 +64,14 @@
             = t("activerecord.attributes.admin_shift.endtime", :default => t("activerecord.labels.endtime", :default => "End Time"))
           %th
             = t("activerecord.attributes.admin_shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked, min"))
+          %th
+            = t("activerecord.attributes.admin_shift.late_min", :default => t("activerecord.labels.late_min", :default => "Late, min"))
+          %th
+            = t("activerecord.attributes.admin_shift.end_earlier", :default => t("activerecord.labels.end_earlier", :default => "End Earlier, min"))
+          %th
+            = t("activerecord.attributes.admin_shift.overtime", :default => t("activerecord.labels.overtime", :default => "Overtime, min"))
+          %th
+            = t("activerecord.attributes.admin_shift.workout", :default => t("activerecord.labels.workout", :default => "Workout, min"))
           %th.last &nbsp;
         - @shifts.each do |shift|
           %tr{:class => cycle("odd", "even")}
@@ -80,7 +88,15 @@
               = shift.endtime.to_formatted_s(:date_and_time) unless shift.endtime == ''
               = "(#{shift.end_ip})" unless shift.end_ip == ''
             %td
-              = shift.worked_min
+              = shift.worked_min ? (Date.current + shift.worked_min.minutes).strftime("%H hrs %M min") : "-"
+            %td
+              = shift.late_min ? (Date.current + shift.late_min.minutes).strftime("%H hrs %M min") : "-"
+            %td
+              = shift.end_earlier ? (Date.current + shift.end_earlier.minutes).strftime("%H hrs %M min") : "-"
+            %td
+              = shift.overtime ? (Date.current + shift.overtime.minutes).strftime("%H hrs %M min") : "-"
+            %td
+              = shift.workout ? (Date.current + shift.workout.minutes).strftime("%H hrs %M min") : "-"
             %td.last
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_shift_path(shift), :class => "modal_dialog"} |
               \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_shift_path(shift), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to delete ##{shift.number} shift?")}"}
