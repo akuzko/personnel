@@ -63,15 +63,15 @@
           %th
             = t("activerecord.attributes.admin_shift.endtime", :default => t("activerecord.labels.endtime", :default => "End Time"))
           %th
-            = t("activerecord.attributes.admin_shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked, min"))
+            = t("activerecord.attributes.admin_shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked"))
           %th
-            = t("activerecord.attributes.admin_shift.late_min", :default => t("activerecord.labels.late_min", :default => "Late, min"))
+            = t("activerecord.attributes.admin_shift.late_min", :default => t("activerecord.labels.late_min", :default => "Late"))
           %th
-            = t("activerecord.attributes.admin_shift.end_earlier", :default => t("activerecord.labels.end_earlier", :default => "End Earlier, min"))
+            = t("activerecord.attributes.admin_shift.end_earlier", :default => t("activerecord.labels.end_earlier", :default => "End Earlier"))
           %th
-            = t("activerecord.attributes.admin_shift.overtime", :default => t("activerecord.labels.overtime", :default => "Overtime, min"))
+            = t("activerecord.attributes.admin_shift.overtime", :default => t("activerecord.labels.overtime", :default => "Overtime"))
           %th
-            = t("activerecord.attributes.admin_shift.workout", :default => t("activerecord.labels.workout", :default => "Workout, min"))
+            = t("activerecord.attributes.admin_shift.workout", :default => t("activerecord.labels.workout", :default => "Workout"))
           %th.last &nbsp;
         - @shifts.each do |shift|
           %tr{:class => cycle("odd", "even")}
@@ -87,13 +87,13 @@
             %td
               = shift.endtime.to_formatted_s(:date_and_time) unless shift.endtime == ''
               = "(#{shift.end_ip})" unless shift.end_ip == ''
-            %td
+            %td.green
               = shift.worked_min ? (Date.current + shift.worked_min.minutes).strftime("%H hrs %M min") : "-"
-            %td
+            %td.red
               = shift.late_min ? (Date.current + shift.late_min.minutes).strftime("%H hrs %M min") : "-"
-            %td
+            %td.red
               = shift.end_earlier ? (Date.current + shift.end_earlier.minutes).strftime("%H hrs %M min") : "-"
-            %td
+            %td.green
               = shift.overtime ? (Date.current + shift.overtime.minutes).strftime("%H hrs %M min") : "-"
             %td
               = shift.workout ? (Date.current + shift.workout.minutes).strftime("%H hrs %M min") : "-"
