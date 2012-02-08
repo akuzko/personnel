@@ -122,18 +122,14 @@
           filter: 'li.cell',
           cancel: 'li.left_part.first'
         });
-        $("#edit_selected").live('click', function() {
-          if ($('.ui-selected').attr('id') !== void 0) {
-            $("#overlay .contentWrap").load($(this).attr("href"), function() {
-              return $("#overlay").dialog("open");
-            });
-            false;
-          }
-          return false;
-        });
         $('li.cell').bind('contextmenu', function(e) {
+          var cells;
           if ($('.ui-selected').attr('id') !== void 0) {
-            $("#overlay .contentWrap").load('/admin/schedule_cells/change?template_id=' + $("table.schedule_table.settings").attr('val'), function() {
+            cells = '';
+            $(".ui-selected").each(function() {
+              return cells += $(this).attr('id') + ',';
+            });
+            $("#overlay .contentWrap").load('/admin/schedule_cells/change?template_id=' + $("table.schedule_table.settings").attr('val') + '&cells=' + cells, function() {
               return $("#overlay").dialog("open");
             });
             false;
@@ -280,33 +276,6 @@
           return $("#new_shift .navform").show();
         }
       });
-    },
-    mass_update: function(responsible, additional_attributes, user_id, is_modified) {
-      var regex;
-      regex = /cell_(\d+)_(\d+)_(\d+)/;
-      $(".ui-selected").each(function() {
-        var day, line, match, shift_id, text;
-        text = $(this).attr('id');
-        match = text.match(regex);
-        shift_id = match[1];
-        line = match[2];
-        day = match[3];
-        return $.post("/admin/schedule_cells", {
-          shift: shift_id,
-          line: line,
-          day: day,
-          'schedule_cell[responsible]': responsible,
-          'schedule_cell[additional_attributes]': additional_attributes,
-          'schedule_cell[user_id]': user_id,
-          'schedule_cell[is_modified]': is_modified
-        }, function() {
-          return app.check_day(shift_id, day);
-        });
-      });
-      false;
-      $(".ui-selected").removeClass('ui-selected');
-      app.show_users_admin();
-      return $("#overlay").dialog("close");
     },
     check_department_for_identifier: function() {
       if ($("#user_department_id").val()) {

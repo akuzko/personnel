@@ -90,16 +90,19 @@
         cancel: 'li.left_part.first'
       })
 
-      $("#edit_selected").live 'click', ->
-        if $('.ui-selected').attr('id') != undefined
-          $("#overlay .contentWrap").load $(this).attr("href"), ->
-            $("#overlay").dialog("open")
-          no
-        no
+#      $("#edit_selected").live 'click', ->
+#        if $('.ui-selected').attr('id') != undefined
+#          $("#overlay .contentWrap").load $(this).attr("href"), ->
+#            $("#overlay").dialog("open")
+#          no
+#        no
 
       $('li.cell').bind 'contextmenu', (e) ->
         if $('.ui-selected').attr('id') != undefined
-          $("#overlay .contentWrap").load '/admin/schedule_cells/change?template_id='+$("table.schedule_table.settings").attr('val'), ->
+          cells = ''
+          $(".ui-selected").each ->
+            cells += $(this).attr('id') + ','
+          $("#overlay .contentWrap").load '/admin/schedule_cells/change?template_id='+$("table.schedule_table.settings").attr('val')+'&cells='+cells, ->
             $("#overlay").dialog("open")
           no
         no
@@ -195,9 +198,11 @@
   check_month: (template) ->
     $.get '/admin/schedule_templates/'+template+'/check_month/'
     no
+
   show_users_admin: ->
     $("#template_users").load '/admin/schedule/show_users/?id='+$("table.schedule_table.settings").attr('val')
     $("#overlay").dialog("close")
+
   reload_shift_numbers: ->
     dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()
     $("#shift_numbers").load '/events/available_shift_numbers/?date='+dt, ->
@@ -205,6 +210,7 @@
         $("#new_shift .navform").hide()
       else
         $("#new_shift .navform").show()
+
   reload_shift_numbers_admin: ->
     dt = $("#shift_shiftdate_1i").val()+'-'+$("#shift_shiftdate_2i").val()+'-'+$("#shift_shiftdate_3i").val()
     $("#shift_numbers").load '/admin/shifts/available_shift_numbers/?date='+dt+'&user_id='+$("#shift_user_id").val(), ->
@@ -212,26 +218,7 @@
         $("#new_shift .navform").hide()
       else
         $("#new_shift .navform").show()
-  mass_update: (responsible, additional_attributes, user_id, is_modified) ->
-    regex = /cell_(\d+)_(\d+)_(\d+)/
-    $(".ui-selected").each ->
-      text = $(this).attr('id')
-      match = text.match(regex)
-      shift_id = match[1]
-      line = match[2]
-      day = match[3]
-      $.post "/admin/schedule_cells",
-        {shift: shift_id, line: line, day: day,
-        'schedule_cell[responsible]': responsible,
-        'schedule_cell[additional_attributes]': additional_attributes,
-        'schedule_cell[user_id]': user_id,
-        'schedule_cell[is_modified]': is_modified,
-        }, ->
-          app.check_day shift_id, day
-    no
-    $(".ui-selected").removeClass('ui-selected')
-    app.show_users_admin()
-    $("#overlay").dialog("close")
+
   check_department_for_identifier: ->
     if $("#user_department_id").val()
       $.get '/shifts/'+$("#user_department_id").val()+'/check_department_for_identifier', (data) ->

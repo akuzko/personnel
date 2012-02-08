@@ -14,9 +14,12 @@ class Admin::ScheduleCellsController < ApplicationController
     render :layout => false
   end
 
+  ##
+  # Form for setting shifts for user
+  ##
   def change
-    @cell = ""
     @template = ScheduleTemplate.find params[:template_id]
+    @cells = params[:cells]
     render :layout => false
   end
 
@@ -25,40 +28,40 @@ class Admin::ScheduleCellsController < ApplicationController
     @shift = ScheduleShift.find params[:shift]
     @template = ScheduleTemplate.find @shift.schedule_template_id
     @wday = Date.parse("#{@template.year}-#{@template.month}-#{params[:day]}").wday
-    id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
-    cell_color_default = (1..5) === @wday  ? 'ffffff' : 'FBB999'
-    cell_color_default = @shift.number == 10  ? 'eeeeee' : cell_color_default
+    #id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
+    #cell_color_default = (1..5) === @wday  ? 'ffffff' : 'FBB999'
+    #cell_color_default = @shift.number == 10  ? 'eeeeee' : cell_color_default
     if params[:schedule_cell][:user_id] == ''
       @cell.destroy
-      render(:update) do |page|
-        page[id].css('background-color', '#'+cell_color_default)
-        page[id].css('color', '#000000')
-        page[id].css('font-weight', '')
-        page[id].html ''
-        page[id].removeClass('selected')
-        page["#overlay"].dialog("close")
-        #page.call 'app.show_users_admin', ScheduleShift.find(@cell.schedule_shift_id).schedule_template_id
-      end
+      #render(:update) do |page|
+      #  page[id].css('background-color', '#'+cell_color_default)
+      #  page[id].css('color', '#000000')
+      #  page[id].css('font-weight', '')
+      #  page[id].html ''
+      #  page[id].removeClass('selected')
+      #  page["#overlay"].dialog("close")
+      #  #page.call 'app.show_users_admin', ScheduleShift.find(@cell.schedule_shift_id).schedule_template_id
+      #end
     else
       if @cell.update_attributes(params[:schedule_cell])
         render(:update) do |page|
-          if @cell.additional_attributes?
-            page[id].css('background-color', '#'+ScheduleStatus.find_by_id(@cell.additional_attributes).color)
-          else
-            page[id].css('background-color', '#'+cell_color_default)
-          end
-          if @cell.responsible?
-            page[id].css('color', '#'+ScheduleStatus.find_by_name('Shift Leader').color)
-          else
-            page[id].css('color', '#000000')
-          end
-          if @cell.responsible? || @cell.is_modified?
-            page[id].css('font-weight', 'bold')
-          else
-            page[id].css('font-weight', '')
-          end
-          page[id].html @cell.user_id
-          page[id].removeClass('selected')
+          #if @cell.additional_attributes?
+          #  page[id].css('background-color', '#'+ScheduleStatus.find_by_id(@cell.additional_attributes).color)
+          #else
+          #  page[id].css('background-color', '#'+cell_color_default)
+          #end
+          #if @cell.responsible?
+          #  page[id].css('color', '#'+ScheduleStatus.find_by_name('Shift Leader').color)
+          #else
+          #  page[id].css('color', '#000000')
+          #end
+          #if @cell.responsible? || @cell.is_modified?
+          #  page[id].css('font-weight', 'bold')
+          #else
+          #  page[id].css('font-weight', '')
+          #end
+          #page[id].html @cell.user_id
+          #page[id].removeClass('selected')
           #page.call 'app.show_users_admin', ScheduleShift.find(@cell.schedule_shift_id).schedule_template_id
         end
       end
@@ -66,14 +69,48 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def mass_update
-    render(:update) do |page|
-      page.call 'app.mass_update',
-                params[:responsible],
-                params[:additional_attributes],
-                params[:user_id],
-                params[:is_modified]
-      page["#overlay"].dialog("close")
+    #params[:cells]
+    #params[:responsible]
+    #params[:additional_attributes]
+    #params[:user_id]
+    #params[:is_modified]
+
+    cells = params[:cells].split(',')
+    cells.each do |c|
+      match = c.match(/cell_([0-9]+)_([0-9]+)_([0-9]+)/)
+      @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(match[1], match[2], match[3])
+      @shift = ScheduleShift.find match[1]
+      @template = ScheduleTemplate.find @shift.schedule_template_id
+      @wday = Date.parse("#{@template.year}-#{@template.month}-#{match[3]}").wda
+      if params[:user_id] == ''
+        @cell.destroy
+      else
+        @cell.update_attributes(params)
+      end
     end
+
+    redirect_to "/status/view/index.html"
+
+
+    #regex = /cell_(\d+)_(\d+)_(\d+)/
+
+    #  shift_id = match[1]
+    #  line = match[2]
+    #  day = match[3]
+    #  $.post "/admin/schedule_cells",
+    #    {shift: shift_id, line: line, day: day,
+    #    'schedule_cell[responsible]': responsible,
+    #    'schedule_cell[additional_attributes]': additional_attributes,
+    #    'schedule_cell[user_id]': user_id,
+    #    'schedule_cell[is_modified]': is_modified,
+    #    }, ->
+    ##app.check_day shift_id, day
+
+    #render(:update) do |page|
+    #  page[".ui-selected"].removeClass('ui-selected')
+    #  page["#overlay"].dialog("close")
+    #  page.call 'app.show_users_admin'
+    #end
   end
 
   def batch_new
