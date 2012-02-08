@@ -69,48 +69,31 @@ class Admin::ScheduleCellsController < ApplicationController
   end
 
   def mass_update
-    #params[:cells]
-    #params[:responsible]
-    #params[:additional_attributes]
-    #params[:user_id]
-    #params[:is_modified]
-
     cells = params[:cells].split(',')
     cells.each do |c|
       match = c.match(/cell_([0-9]+)_([0-9]+)_([0-9]+)/)
+
       @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(match[1], match[2], match[3])
       @shift = ScheduleShift.find match[1]
       @template = ScheduleTemplate.find @shift.schedule_template_id
-      @wday = Date.parse("#{@template.year}-#{@template.month}-#{match[3]}").wda
+      @wday = Date.parse("#{@template.year}-#{@template.month}-#{match[3]}").wday
       if params[:user_id] == ''
         @cell.destroy
       else
-        @cell.update_attributes(params)
+        @cell.update_attributes(
+            {
+              'responsible' => params[:responsible],
+              'additional_attributes' => params[:additional_attributes],
+              'user_id' => params[:user_id],
+              'is_modified' => params[:is_modified]
+            })
       end
     end
 
-    redirect_to "/status/view/index.html"
-
-
-    #regex = /cell_(\d+)_(\d+)_(\d+)/
-
-    #  shift_id = match[1]
-    #  line = match[2]
-    #  day = match[3]
-    #  $.post "/admin/schedule_cells",
-    #    {shift: shift_id, line: line, day: day,
-    #    'schedule_cell[responsible]': responsible,
-    #    'schedule_cell[additional_attributes]': additional_attributes,
-    #    'schedule_cell[user_id]': user_id,
-    #    'schedule_cell[is_modified]': is_modified,
-    #    }, ->
+    render(:update) do |page|
+      page.reload
+    end
     ##app.check_day shift_id, day
-
-    #render(:update) do |page|
-    #  page[".ui-selected"].removeClass('ui-selected')
-    #  page["#overlay"].dialog("close")
-    #  page.call 'app.show_users_admin'
-    #end
   end
 
   def batch_new
