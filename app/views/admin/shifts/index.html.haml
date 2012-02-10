@@ -100,6 +100,34 @@
             %td.last
               \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_admin_shift_path(shift), :class => "modal_dialog"} |
               \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", admin_shift_path(shift), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to delete ##{shift.number} shift?")}"}
+        %tr
+          %th
+            %strong
+              Total:
+          %th
+            \-
+          %th
+            \-
+          %th
+            \-
+          %th
+            \-
+          %th.green
+            %strong
+              = (Date.current + @worked_min.minutes).strftime("%H hrs %M min")
+          %th.red
+            %strong
+              = (Date.current + @late_min.minutes).strftime("%H hrs %M min")
+          %th
+            \-
+          %th.green
+            %strong
+              = (Date.current + @overtime.minutes).strftime("%H hrs %M min")
+          %th.red
+            %strong
+              = (Date.current + @workout.minutes).strftime("%H hrs %M min")
+          %th
+            \-
       .actions-bar.wat-cf
         .actions
         = will_paginate @shifts

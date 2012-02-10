@@ -13,6 +13,11 @@ class Admin::ShiftsController < ApplicationController
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
     params[:per_page] ||= 15
     @shifts = Shift.joins('JOIN users ON shifts.user_id = users.id').search(params, current_admin.id)
+
+    @worked_min = @shifts.map{|x| x.worked_min.nil? ? 0 : x.worked_min}.sum
+    @late_min = @shifts.map{|x| x.late_min.nil? ? 0 : x.late_min}.sum
+    @overtime = @shifts.map{|x| x.overtime.nil? ? 0 : x.overtime}.sum
+    @workout = @shifts.map{|x| x.workout.nil? ? 0 : x.workout}.sum
   end
 
   def show
