@@ -114,18 +114,18 @@
             \-
           %th.green
             %strong
-              = (Date.current + @worked_min.minutes).strftime("%H hrs %M min")
+              = Time.at(@worked_min * 60).gmtime.strftime("%H hrs %M min")
           %th.red
             %strong
-              = (Date.current + @late_min.minutes).strftime("%H hrs %M min")
+              = Time.at(@late_min * 60).gmtime.strftime("%H hrs %M min")
           %th
             \-
           %th.green
             %strong
-              = (Date.current + @overtime.minutes).strftime("%H hrs %M min")
+              = Time.at(@overtime * 60).gmtime.strftime("%H hrs %M min")
           %th.red
             %strong
-              = (Date.current + @workout.minutes).strftime("%H hrs %M min")
+              = Time.at(@workout * 60).gmtime.strftime("%H hrs %M min")
           %th
             \-
       .actions-bar.wat-cf
