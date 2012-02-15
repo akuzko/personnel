@@ -28,13 +28,15 @@
                 %ul
                   %li
                     %a{:href => edit_schedule_path} Edit Your Schedule
-            %li= link_to t("personnel.timereport", :default => "TimeReport"), events_path
-            %li= link_to t("personnel.late_coming.title", :default => "Late Coming"), late_comings_path
-            %li{:class => ((controller.controller_path == 'events' && controller.action_name != 'index')) ? 'active' : '' }
-              %a{:href => '#'} Reports
-              %ul
-                %li
-                  %a{:href => processed_by_person_events_path} Processed: By Person
+            - if current_user.identifier?
+              %li= link_to t("personnel.timereport", :default => "TimeReport"), events_path
+              %li= link_to t("personnel.late_coming.title", :default => "Late Coming"), late_comings_path
+              %li{:class => ((controller.controller_path == 'events' && controller.action_name != 'index')) ? 'active' : '' }
+                %a{:href => '#'} Reports
+                %ul
+                  %li
+                    %a{:href => processed_by_person_events_path} Processed: By Person
+
       #wrapper.wat-cf
         .flash
           - flash.each do |type, message|
