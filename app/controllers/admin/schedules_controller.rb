@@ -15,9 +15,9 @@ class Admin::SchedulesController < ApplicationController
     end
     params[:department_id] = Department.identified.selection_by_admin(current_admin.id).first[1] unless params[:department_id]
     redirect_to admin_users_path unless current_admin.manage_department(params[:department_id].to_i)
-    @template = ScheduleTemplate.find_or_create_by_department_id_and_year_and_month(params[:department_id], params[:date].year, params[:date].month)
+    @template = ScheduleTemplate.includes(:schedule_shifts).find_or_create_by_department_id_and_year_and_month(params[:department_id], params[:date].year, params[:date].month)
     if @template.schedule_shifts.empty?
-      @previous_template = ScheduleTemplate.where('id < ?', @template.id).order('year DESC, month DESC').limit(1).find_by_department_id(params[:department_id])
+      @previous_template = ScheduleTemplate.includes(:schedule_shifts).where('id < ?', @template.id).order('year DESC, month DESC').limit(1).find_by_department_id(params[:department_id])
       if @previous_template
         @previous_template.schedule_shifts.each do |shift|
           @shift = ScheduleShift.create(:schedule_template_id => @template.id, :lines => shift.lines, :number => shift.number, :start => shift.start, :end => shift.end)

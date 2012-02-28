@@ -45,7 +45,7 @@
         %tr
           %td
             %ul{:id => "selectable"}
-              - @template.schedule_shifts.order(:number).each do |shift|
+              - @template.schedule_shifts.includes(:schedule_cells).order(:number).each do |shift|
                 - shift.lines.times do |line|
                   - if current_shift.nil? || current_shift != shift.id
                     %li.left_part.first
@@ -65,7 +65,10 @@
                   - else
                     %li.left_part
                   - @days_in_month.times do |day|
-                    - cell = shift.schedule_cells.find_by_line_and_day(line+1, day+1)
+                    - cell = nil
+                    - shift.schedule_cells.each do |c|
+                      - cell = c if c.line == line + 1 and c.day == day + 1
+                    -#- cell = shift.schedule_cells.find_by_line_and_day(line+1, day+1)
                     - cell_wday = Date.parse("#{@template.year}-#{@template.month}-#{day+1}").wday
                     - cell_color_default = (1..5) === cell_wday  ? 'ffffff' : 'FBB999'
                     - cell_color_default = shift.number == 10  ? 'eeeeee' : cell_color_default

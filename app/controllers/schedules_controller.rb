@@ -10,7 +10,7 @@ class SchedulesController < ApplicationController
       params[:date] = Time.now
     end
     params[:department_id] = User.find(current_user.id).department_id unless params[:department_id]
-    @template = ScheduleTemplate.find_by_department_id_and_year_and_month_and_visible(params[:department_id], params[:date].year, params[:date].month, 1)
+    @template = ScheduleTemplate.includes(:schedule_shifts).find_by_department_id_and_year_and_month_and_visible(params[:department_id], params[:date].year, params[:date].month, 1)
     if @template.nil?
       flash[:error] = "No schedule available at this time"
       redirect_to new_schedule_path
