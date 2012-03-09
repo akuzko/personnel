@@ -55,6 +55,7 @@ class User < ActiveRecord::Base
   before_validation :clean_unused_identifier
 
   def has_identifier?
+    return false if !active
     (department || Department.find(department_id)).has_identifier? if department_id
   end
 
