@@ -10,8 +10,8 @@ class EventsController < ApplicationController
       redirect_to new_late_coming_events_path
       return
     end
-    #Check if the current shift is over
-    if @shift.is_over
+    #Check if the current shift is over and its today's shift
+    if @shift.is_over and @shift.shiftdate == Date.current
       @template = ScheduleTemplate.find_by_department_id_and_year_and_month(current_user.department_id, Date.current.year, Date.current.month)
       @shift_next = @template.schedule_shifts.where('number < 10 AND number > ?', @shift.number).order(:number).first unless @template.nil?
       if @shift_next && @shift_next.schedule_cells.find_all_by_user_id_and_day(current_user.identifier, Date.current.day).count > 0
