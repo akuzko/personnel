@@ -39,13 +39,19 @@ class Admin::ScheduleCellsController < ApplicationController
 
   def mass_update
     cells = params[:cells].split(',')
+    cell_font_weight = (params[:is_modified] || params[:responsible]) ? 'bold' : ''
+    cell_font_color = params[:responsible] ? "##{ScheduleStatus.find_or_create_by_name('Shift Leader').color}" : '#000000'
+    if !params[:additional_attributes].blank?
+      cell_color = "##{ScheduleStatus.find_by_id(params[:additional_attributes]).color}"
+    else
+      cell_color = ''
+    end
     cells.each do |c|
       match = c.match(/cell_([0-9]+)_([0-9]+)_([0-9]+)/)
 
       @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(match[1], match[2], match[3])
       @shift = ScheduleShift.find match[1]
       @template = ScheduleTemplate.find @shift.schedule_template_id
-      @wday = Date.parse("#{@template.year}-#{@template.month}-#{match[3]}").wday
       if params[:user_id] == ''
         @cell.destroy
       else
@@ -55,10 +61,14 @@ class Admin::ScheduleCellsController < ApplicationController
               'user_id' => params[:user_id],
               'is_modified' => params[:is_modified]
             })
+
       end
     end
     render(:update) do |page|
-      page.reload
+      #page["#overlay"].dialog("close")
+      page.call 'app.repaint_selected_cells', params[:user_id], cell_font_weight, cell_font_color, cell_color
+      page.call 'app.check_month', @template.id
+      page.call 'app.show_users_admin'
     end
   end
 

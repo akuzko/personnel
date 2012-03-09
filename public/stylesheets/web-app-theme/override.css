@@ -46,6 +46,13 @@
 }
 .schedule_table li.cell {
     cursor: pointer;
+    background: #FFFFFF;
+}
+.schedule_table li.cell.weekend {
+    background: #FBB999;
+}
+.schedule_table li.cell.dayoff {
+    background: #EEE;
 }
 #selectable .ui-selecting { background: #99ff99 !important}
 #selectable .ui-selected { background: #33ff66 !important; color: #000 !important}
