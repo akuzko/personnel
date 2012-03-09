@@ -2,6 +2,7 @@ class LateComing < ActiveRecord::Base
   belongs_to :user
   belongs_to :shift
   validates_presence_of :description, :user_id, :shift_id
+  validates_length_of :description, :minimum => 5, :message => ' - it will be hard to remember the exact reason, better write it now'
   delegate :full_name, :to => :user, :prefix => true
 
   def self.search(params, admin_id)

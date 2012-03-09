@@ -221,7 +221,7 @@ class EventsController < ApplicationController
     @late_coming.shift_id = session[:shift_id]
     @late_coming.user_id = current_user.id
     @late_coming.late_minutes = (@shift.starttime - (@shift.shiftdate + @shift.schedule_shift.start.hour))/ 1.minutes
-    @late_coming.description = params[:late_coming][:description]
+    @late_coming.description = params[:late_coming][:description].strip
     if @late_coming.save
       redirect_to events_path
     else
