@@ -39,9 +39,9 @@ class Admin::ScheduleCellsController < ApplicationController
 
   def mass_update
     cells = params[:cells].split(',')
-    cell_font_weight = (params[:is_modified] || params[:responsible]) ? 'bold' : ''
-    cell_font_color = params[:responsible] ? "##{ScheduleStatus.find_or_create_by_name('Shift Leader').color}" : '#000000'
-    if !params[:additional_attributes].blank?
+    cell_font_weight = ((params[:is_modified] || params[:responsible]) and params[:user_id] != '') ? 'bold' : ''
+    cell_font_color = (params[:responsible] and params[:user_id] != '') ? "##{ScheduleStatus.find_or_create_by_name('Shift Leader').color}" : '#000000'
+    if !params[:additional_attributes].blank? and params[:user_id] != ''
       cell_color = "##{ScheduleStatus.find_by_id(params[:additional_attributes]).color}"
     else
       cell_color = ''

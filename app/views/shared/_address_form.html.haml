@@ -26,6 +26,6 @@
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
     = t("web-app-theme.save", :default => "Save")
   %span.text_button_padding= t("web-app-theme.or", :default => "or")
-  %a.button{:href => '#', :data => {'cancel-address' => true}}
+  %a.button{:href => 'javascript:void(0);', :data => {'cancel-address' => true}}
     = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
     = t("web-app-theme.cancel", :default => "Cancel")

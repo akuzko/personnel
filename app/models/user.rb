@@ -238,9 +238,9 @@ class User < ActiveRecord::Base
 
   def self.selection(department_id)
     if department_id == 0
-      with_data.order('`profiles`.last_name').active.map { |d| [d.full_name, d.id] }
+      includes(:profile).order('`profiles`.last_name').active.map { |d| [d.full_name, d.id] }
     else
-      order(:identifier).find_all_by_department_id_and_active(department_id, 1).map { |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
+      includes(:profile).order(:identifier).find_all_by_department_id_and_active(department_id, 1).map { |d| [d.identifier.to_s+ ' '+d.full_name, d.identifier] }
     end
   end
 
@@ -249,7 +249,7 @@ class User < ActiveRecord::Base
     return selection(0) if admin.super_user?
     departments = admin.departments.map { |d| d.id }
     users = []
-    with_data.order('`profiles`.last_name').active.map do |d|
+    includes(:profile).order('`profiles`.last_name').active.map do |d|
       users.push [d.full_name, d.id] if departments.include?(d.department_id)
     end
     users

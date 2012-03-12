@@ -1,6 +1,6 @@
 .pagination
   - @user.addresses.each do |addr|
-    %a{ :href => '#', :onclick => "app.showAddTab(#{addr.id})"}
+    %a{ :href => 'javascript:void(0);', :onclick => "app.showAddTab(#{addr.id})"}
       = @user.addresses.index(addr).next
 - if current_user.id == @user.id
   = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),

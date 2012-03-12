@@ -26,7 +26,7 @@
           - if n && !n.workdays.nil?
             = link_to "#{n.workdays} | #{n.weekend}", user_norms_admin_schedule_template_path(user, :tmpl_id => @template), :class => "modal_dialog"
 %p
-  %a.button{:href => '#', :id => 'clear_selection'}
+  %a.button{:href => 'javascript:void(0);', :id => 'clear_selection'}
     = image_tag("web-app-theme/icons/arrow_rotate_anticlockwise.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
     = t("web-app-theme.cancel", :default => "Clear Selection")
   - if @admin

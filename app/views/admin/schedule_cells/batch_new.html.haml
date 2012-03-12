@@ -13,6 +13,6 @@
     = f.hidden_field :line
     = f.hidden_field :day
     = hidden_field_tag "wday", @wday
-    %a.button.close{:href => '#'}
+    %a.button.close{:href => 'javascript:void(0);'}
       = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
       = t("web-app-theme.cancel", :default => "Cancel")
