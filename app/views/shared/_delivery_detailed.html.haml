@@ -8,16 +8,16 @@
       Адрес, тел
   - if !users.nil?
     - users.each do |user|
-      %tr
+      - address = user.addresses.order("`primary` DESC").first
+      %tr{:style=> (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red"}
         %td.mobile{:rowspan => 2}
           = user.identifier
         %td.mobile{:rowspan => 2}
           = user.profile.first_name
         %td.mobile
-          - address = user.addresses.order("`primary` DESC").first
           = "#{address.street},#{address.build.mb_chars.upcase.to_s} #{address.porch}/#{address.nos}"
           %br
-      %tr
+      %tr{:style=> (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red"}
         %td.mobile
           = user.contact.cell1
           = ", "+user.contact.cell2 if user.contact.cell2?

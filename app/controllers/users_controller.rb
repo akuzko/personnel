@@ -164,8 +164,8 @@ class UsersController < ApplicationController
     if params['detailed'] == '1'
       render 'delivery_detailed.html', :layout => 'mobile'
     else
-      @users_out = @users_out.map(&:identifier).in_groups_of(3)
-      @users_in = @users_in.map(&:identifier).in_groups_of(3)
+      @users_out = @users_out.in_groups_of(3)
+      @users_in = @users_in.in_groups_of(3)
       render 'delivery.html', :layout => 'mobile'
     end
   end
