@@ -38,6 +38,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def notify
+    render :layout => false
+  end
+
+  def send_notify
+    render(:update) do |page|
+      page["#overlay"].dialog("close")
+    end
+  end
+
   def show
     @user = User.find current_user.id
     flash[:error] = "Please upload your picture" if !@user.avatar.exists?

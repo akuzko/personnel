@@ -41,7 +41,10 @@ class AddressesController < ApplicationController
     params[:previous_attributes] = @address.attributes
     if @address.update_attributes(params[:address])
       Log.add(current_user, @address, params)
-      render(:update){ |p| p.call 'app.display_addresses', @address.id }
+      render(:update) do  |p|
+        p.call 'app.display_addresses', @address.id
+        p.call 'app.display_dialog', '/user/notify'
+      end
     else
       message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|

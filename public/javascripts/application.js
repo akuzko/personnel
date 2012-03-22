@@ -290,6 +290,10 @@
     },
     repaint_selected_cells: function(user_id, font_weight, font_color, color) {
       return $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).removeClass('ui-selected');
+    },
+    display_dialog: function(template) {
+      $("#overlay .contentWrap").load(template);
+      return $("#overlay").dialog("open");
     }
   };
 }).call(this);
