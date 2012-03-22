@@ -77,7 +77,9 @@ class UsersController < ApplicationController
 
   def list
     users = User.where("identifier != '' AND active = 1").order("identifier")
-    @u = users.to_a.in_groups_of(2)
+    @u = users.to_a
+    #debugger
+
     render :layout => 'lists'
   end
 
