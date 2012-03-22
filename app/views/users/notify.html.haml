@@ -1,0 +1,11 @@
+= form_tag(send_notify_user_path, :method => :put, :remote => true, :class => 'form', 'data-type' => 'script') do
+  .group
+    TESTING
+    You have just changed your address, would you like to send a notification to girls@zone3000.net about that?
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      = t("web-app-theme.send", :default => "Send")
+    %a.button.close{:href => 'javascript:void(0);'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")

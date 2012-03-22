@@ -48,9 +48,11 @@ Personnel::Application.routes.draw do
       put :update_data, :on => :member
       get :display_addresses, :on => :member
       get :display_section, :on => :member
+      get :notify, :on => :collection
       get :crop, :on => :member
       get :find, :on => :collection
       get :list, :on => :collection
+      put :send_notify, :on => :collection
   end
 
   resources :users do

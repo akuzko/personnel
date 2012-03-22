@@ -229,3 +229,8 @@
 
   repaint_selected_cells: (user_id, font_weight, font_color, color) ->
     $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).removeClass('ui-selected')
+
+  display_dialog: (template) ->
+    $("#overlay .contentWrap").load template
+#    $("#overlay").dialog({ minWidth: 450, minHeight: 600 })
+    $("#overlay").dialog("open")
