@@ -160,12 +160,14 @@ class UsersController < ApplicationController
     end
     @users_in = []
     @users_in = User.with_data.active.order(:identifier).where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
-
+    @users_in_ids = in_ids
+    @users_out_ids = out_ids
     if params['detailed'] == '1'
       render 'delivery_detailed.html', :layout => 'mobile'
     else
       @users_out = @users_out.in_groups_of(3)
       @users_in = @users_in.in_groups_of(3)
+
       render 'delivery.html', :layout => 'mobile'
     end
   end

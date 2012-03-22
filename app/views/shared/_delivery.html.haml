@@ -3,9 +3,12 @@
     %tr
       - l.each do |item|
         - if item
-          - address = item.addresses.order("`primary` DESC").first if item
-          - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red"
+          - address = item.addresses.order("`primary` DESC").first
+          - if opposite_users.include? item.identifier
+            - style = "color:green"
+          - else
+            - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red"
         - else
           - style = ""
         %td{:style=> style}
-          = item[:identifier] if item
+          = item.identifier if item
