@@ -43,7 +43,10 @@ class UsersController < ApplicationController
   end
 
   def send_notify
+    message = Notify.address_changed(current_user)
+    message.deliver
     render(:update) do |page|
+      page['.flash'].html "<div class='message notice'><p>Email has been sent</p></div>"
       page["#overlay"].dialog("close")
     end
   end

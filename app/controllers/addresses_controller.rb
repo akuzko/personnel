@@ -43,7 +43,7 @@ class AddressesController < ApplicationController
       Log.add(current_user, @address, params)
       render(:update) do  |p|
         p.call 'app.display_addresses', @address.id
-        p.call 'app.display_dialog', '/user/notify'
+        p.call 'app.display_dialog', '/user/notify' if @address.primary and current_user.has_identifier?
       end
     else
       message = '<p>' + @address.errors.full_messages.join('</p><p>') + '</p>'
