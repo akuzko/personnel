@@ -1,3 +1,4 @@
+.rvmrc
 .idea
 .bundle
 db/*.sqlite3
@@ -7,4 +8,3 @@ Gemfile.lock
 db/schema.rb
 config/database.yml
 vector.rb
-.rvmrc
