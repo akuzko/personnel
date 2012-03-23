@@ -39,7 +39,8 @@
             %ul
               %li.left_part
               - @days_in_month.times do |day|
-                %li.header_part
+                - taxi_route = TaxiRoute.find_by_traced(Date.strptime("{ #{@template.year}, #{@template.month}, #{day+1} }", "{ %Y, %m, %d }"))
+                %li.header_part{:style => taxi_route.blank? ? "" : "background-color:red"}
                   = day + 1
       %table.schedule_table
         %tr
