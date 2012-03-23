@@ -1,0 +1,20 @@
+%table{:align => 'center', :width => 160, :style => 'font-size: 9px;text-align: center;'}
+  %tr
+    %td{:colspan => 3}
+      = form_tag(taxi_routes_path, :method => :get) do
+        = select_date params[:date], :start_year => 2010, :use_month_numbers => true
+        %button.button{:type => "submit"}
+          = t("web-app-theme.ok", :default => "OK")
+      - if @taxi_route
+        = form_tag(taxi_route_path(@taxi_route), :method => :post) do
+          = hidden_field_tag('_method', :delete)
+          %button.button{:type => "submit"}
+            Отменить прокладку маршрута
+      - else
+        = form_tag(taxi_routes_path(), :method => :post) do
+          = hidden_field_tag('taxi_route[traced]', params[:date])
+          = hidden_field_tag('back_url', @back_url)
+          %button.button{:type => "submit"}
+            Маршруты проложены
+
+

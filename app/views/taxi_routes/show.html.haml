@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Traced:
+  = @taxi_route.traced
+
+= link_to 'Edit', edit_taxi_route_path(@taxi_route)
+\|
+= link_to 'Back', taxi_routes_path

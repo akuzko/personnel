@@ -1,5 +1,7 @@
 Personnel::Application.routes.draw do
 
+  resources :taxi_routes, :only => [:index, :create, :destroy]
+
   #get "users/show"
 
   # The priority is based upon order of creation:

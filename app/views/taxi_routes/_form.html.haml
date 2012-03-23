@@ -1,0 +1,13 @@
+= form_for @taxi_route do |f|
+  -if @taxi_route.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@taxi_route.errors.count, "error")} prohibited this taxi_route from being saved:"
+      %ul
+        - @taxi_route.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :traced
+    = f.date_select :traced
+  .actions
+    = f.submit 'Save'
