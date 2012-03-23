@@ -8,11 +8,23 @@
     %th= t("activerecord.attributes.contact.cell1", :default => t("activerecord.labels.cell1", :default => "Cell"))
     %th= t("activerecord.attributes.user.full_name", :default => t("activerecord.labels.full_name", :default => "Full Name"))
     %th= t("activerecord.attributes.user.address", :default => t("activerecord.labels.address", :default => "Address"))
-
-    - @u.each do |l|
+    - i = 0
+    - while i < @u.count / 2 # - 1
       %tr{:style=>"border: 1px solid black"}
-      - l.each do |item|
-        - if !item.nil?
+        - item = @u[i]
+        %td{:style=>"border: 1px solid black"}
+          %b
+            = item.identifier
+        %td{:style=>"border: 1px solid black"}
+          = item.cell1
+        %td{:style=>"border: 1px solid black"}= item.full_name
+        %td{:style=>"border: 1px solid black"}
+          - item.addresses.order("`primary` DESC").each do |addr|
+            = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
+            %br
+        - j = i + @u.count / 2
+        - if j < @u.count - 1
+          - item = @u[j]
           %td{:style=>"border: 1px solid black"}
             %b
               = item.identifier
@@ -21,5 +33,7 @@
           %td{:style=>"border: 1px solid black"}= item.full_name
           %td{:style=>"border: 1px solid black"}
             - item.addresses.order("`primary` DESC").each do |addr|
-              = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
+              %span{:style=> (Date.today - addr.updated_at.to_date).days > 10.days ? "" : "color:red"}
+                = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
               %br
+        - i += 1

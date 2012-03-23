@@ -16,11 +16,11 @@
       %td{:colspan => 2}
         %div#in
           %b Привезти в 00:00
-          = render 'shared/delivery_detailed', :users => @users_in
+          = render :partial => 'shared/delivery_detailed', :locals => {:users => @users_in, :opposite_users => @users_out_ids}
     %tr
       %td{:colspan => 2}
         %div#out{:style => 'display:none'}
           %b Отвезти в 00:00
-          = render 'shared/delivery_detailed', :users => @users_out
+          = render :partial => 'shared/delivery_detailed', :locals => {:users => @users_out, :opposite_users => @users_in_ids}
 %center
   = link_to "Простой", delivery_admin_users_path
