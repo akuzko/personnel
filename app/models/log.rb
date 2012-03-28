@@ -77,8 +77,10 @@ class Log < ActiveRecord::Base
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+obj.attributes.to_a.map { |k, v| k+":"+v.to_s }.join("; ")
              when "make_primary" then
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+obj.attributes.to_a.map { |k, v| k+":"+v.to_s }.join("; ")
+             when "toggle_exclude" then
+               '<b>'+subject_type+' excluded: '+params[:excluded].to_s+'</b>'
              else
-               '<b>'+'unknown action'+'</b>'
+               '<b>'+'unknown action: '+params[:action]+'</b>'
            end
     author.logs_entered.create(
         :body => body,

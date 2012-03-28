@@ -49,7 +49,7 @@
             %td= log.subject_type
             %td= log.subject
             %td.last{:style => 'text-align:left'}
-              = log.body.gsub!(/\n/, '<br />').html_safe
+              = log.body.gsub(/\n/, '<br />').html_safe
       .actions-bar.wat-cf
         .actions
         = will_paginate @logs

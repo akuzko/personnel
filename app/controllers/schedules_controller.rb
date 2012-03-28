@@ -121,6 +121,7 @@ class SchedulesController < ApplicationController
         else
           page[id].css('text-decoration', 'none')
         end
+        Log.add(current_user, @cell, params.merge({:excluded => @cell.exclude}))
         message = "<div class='message notice'><p>Delivery status is changed</p></div>"
         page['.flash'].parents(0).show
         page['.flash'].html message

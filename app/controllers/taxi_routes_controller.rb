@@ -22,6 +22,7 @@ class TaxiRoutesController < ApplicationController
     @back_url = params[:back_url]
     respond_to do |format|
       if @taxi_route.save
+        Log.add(current_user, @taxi_route, params)
         format.html { redirect_to @back_url, :notice => 'Taxi route was successfully traced.' }
         format.json { render :json => @taxi_route, :status => :created, :location => @back_url }
       else
@@ -34,6 +35,7 @@ class TaxiRoutesController < ApplicationController
   def destroy
     @taxi_route = TaxiRoute.find(params[:id])
     @back_url = request.env["HTTP_REFERER"].blank? ? taxi_routes_url : request.env["HTTP_REFERER"]
+    Log.add(current_user, @taxi_route, params)
     @taxi_route.destroy
 
     respond_to do |format|

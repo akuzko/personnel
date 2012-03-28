@@ -4,4 +4,8 @@ class ScheduleCell < ActiveRecord::Base
   def date
     Date.parse("#{schedule_shift.schedule_template.year}-#{schedule_shift.schedule_template.month}-#{day}")
   end
+
+  def name
+    date
+  end
 end
