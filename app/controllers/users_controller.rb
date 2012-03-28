@@ -133,6 +133,8 @@ class UsersController < ApplicationController
     end
     params[:date] = date
 
+    @taxi_route = TaxiRoute.find_by_traced(params[:date])
+
     #Out 24:00
     out_ids = []
     templates = ScheduleTemplate.find_all_by_year_and_month date.year, date.month

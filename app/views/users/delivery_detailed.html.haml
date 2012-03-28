@@ -8,6 +8,10 @@
         %button.button{:type => "submit"}
           = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Show")}")
           = t("web-app-theme.find", :default => "Show")
+    - unless @taxi_route.blank?
+      %tr
+        %td{:colspan => 3, :style => "color:red"}
+          Маршруты проложены
     %tr
       %td{:colspan => 2}
         %a{:href=>'#', :onclick => 'ShowIn()'} in 0
