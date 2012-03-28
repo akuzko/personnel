@@ -9,7 +9,8 @@ class TaxiRoutesController < ApplicationController
     end
     params[:date] = date
     @taxi_route = TaxiRoute.find_by_traced(params[:date])
-    @back_url = request.env["HTTP_REFERER"].blank? ? taxi_routes_url : request.env["HTTP_REFERER"]
+    @back_url = request.url
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @taxi_route }
