@@ -128,7 +128,6 @@ class Admin::UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
-    ap params[:user]
     respond_to do |format|
       if @user.update_attributes(params[:user])
         Log.add(current_admin, @user, params)
