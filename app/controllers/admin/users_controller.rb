@@ -128,10 +128,11 @@ class Admin::UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
+    ap params[:user]
     respond_to do |format|
       if @user.update_attributes(params[:user])
         Log.add(current_admin, @user, params)
-        format.html { redirect_to @back_url } #redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
+        format.html { redirect_to @back_url, :notice => 'User was successfully updated.' } #redirect_to(admin_user_url, :notice => 'User was successfully updated.') }
         format.xml { head :ok }
       else
         format.html { render :action => "edit" }

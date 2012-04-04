@@ -233,7 +233,7 @@ class User < ActiveRecord::Base
     if !self.department_id.nil?
       self.identifier = "" unless Department.find(self.department_id).has_identifier?
     end
-    self.fired_at = "" unless self.fired
+    #self.fired_at = "" unless self.fired  # set automaticly when all permissions unset
   end
 
   def self.selection(department_id)

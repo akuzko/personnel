@@ -13,7 +13,7 @@
   = f.text_field :hired_at, :class => 'text_field date_select', :style => "width:160px"
 .group
   = f.label :fired_at, t("personnel.user.fired", :default => "Fired"), :class => :label
-  = f.check_box :fired, :class => 'check_box'
+  = f.check_box :fired, :class => 'check_box', :disabled => true
   = f.text_field :fired_at, :class => 'text_field date_select', :style => "width:160px"
 = render 'shared/user_form', :f => f
 

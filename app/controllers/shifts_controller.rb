@@ -58,4 +58,22 @@ class ShiftsController < ApplicationController
   def check_department_for_identifier
     render :text => Department.find(params[:id]).has_identifier
   end
+
+  def check_fired_permissions
+    #Check user permissions and send letter to department admin
+    fired_users = User.where('fired_at <= ?', Date.current).where('active = 1').where('fired = 0').all
+
+    if !fired_users.empty?
+      fired_users.each do |u|
+        if u.permissions.empty?
+          u.fired = 1
+          u.save
+        else
+          message = FiredPermissions.send_missed_permissions(u)
+          message.deliver
+        end
+      end
+    end
+    render :nothing => true
+  end
 end

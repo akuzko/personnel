@@ -1,0 +1,21 @@
+.block
+  .content
+    %h2.title
+      Missed Permissions For Fired User
+    .inner.form
+      %h3
+        = @department_name
+      %span.description= "Admin: #{@admins.join(", ")}" if !@admins.empty?
+      %br
+      %br
+      %span.description= "User: #{@user.name}, Fired Date: #{@user.fired_at}"
+      %br
+      %br
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.user.active_permissions", :default => t("activerecord.labels.active_permissions", :default => "Active Permissions"))
+        - @missed_permissions.each do |p|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = p.name

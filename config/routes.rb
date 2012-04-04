@@ -68,6 +68,7 @@ Personnel::Application.routes.draw do
     get :close_old, :on => :collection
     get :check, :on => :collection
     get :check_department_for_identifier, :on => :member
+    get :check_fired_permissions, :on => :collection
   end
   resource :schedule do
     post :update_cell, :on => :collection
