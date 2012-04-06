@@ -18,6 +18,10 @@
   = f.check_box :has_levels, :class => 'check_box'
   %span.description check this box if the department has levels
 .group
+  = f.label :has_schedule, t("personnel.department.has-schedule", :default => "Has Schedule"), :class => :label
+  = f.check_box :has_schedule, :class => 'check_box'
+  %span.description check this box if the department has schedule
+.group
   = f.label :show_address, t("personnel.department.show-address", :default => "Show Address"), :class => :label
   = f.check_box :show_address, :class => 'check_box'
   %span.description check this box if the department allows to show member's address

@@ -25,6 +25,11 @@
         = @department.has_levels
       %p
         %b
+          = t("activerecord.attributes.admin_department.has_schedule", :default => t("activerecord.labels.has_schedule", :default => "Has Schedule"))
+          \:
+        = @department.has_schedule
+      %p
+        %b
           = t("activerecord.attributes.admin_department.has_t_shirt", :default => t("activerecord.labels.has_t_shirt", :default => "Has T-Shirts"))
           \:
         = @department.has_t_shirt
