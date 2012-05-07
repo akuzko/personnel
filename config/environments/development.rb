@@ -23,7 +23,7 @@ Personnel::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  config.logger = Logger.new(File.dirname(__FILE__) + "/../../log/#{ENV["RAILS_ENV"]}.log", "weekly")
+  config.logger = Logger.new(File.dirname(__FILE__) + "/../../log/#{ENV["RAILS_ENV"]}.log", 10, 10*1024**2)
 end
 
 
