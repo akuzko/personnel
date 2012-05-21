@@ -3,21 +3,43 @@ class ShiftsController < ApplicationController
     # Close old shifts, run every hour
     @shifts = Shift.where('shiftdate <= ?', Date.current).where('end_event =0 OR end_event IS NULL').all
     @shifts.each do |shift|
+      puts "Shift ##{shift.id}, user ##{shift.user_id}"
+      logger.debug "Shift ##{shift.id}, user ##{shift.user_id}"
       next_shift = Shift.where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
       #find last user's event
       if next_shift.nil?
+        puts "Next shift is nil"
+        logger.debug "Next shift is nil"
         @event = User.find(shift.user_id).events.order(:eventtime).last
       else
+        puts "Next shift ##{next_shift.id}"
+        logger.debug "Next shift ##{next_shift.id}"
         @event = User.find(shift.user_id).events.where('id < ?', next_shift.start_event).order(:eventtime).last
       end
+      puts @event
+      logger.debug @event
       if @event && !shift.schedule_shift.blank?
+        puts "Event is found and shift is scheduled"
+        logger.debug "Event is found and shift is scheduled"
         if (shift.shiftdate + shift.schedule_shift.end.hour < DateTime.current) && @event.eventtime < DateTime.current - 1.hour
+          puts "Shift is over and last event was over 1 hour ago"
+          logger.debug "Shift is over and last event was over 1 hour ago"
           #add logout event
-          shift.end_event = Event.logout(shift.user_id, @event.eventtime + 1.minute, request.remote_ip, @shift.id)
+          shift.end_event = Event.logout(shift.user_id, @event.eventtime + 1.minute, request.remote_ip, shift.id)
           #shift.time_difference = (((@event.eventtime + 1.minute).to_datetime - shift.created_at.to_datetime) * 24 * 60).minutes - 480.minutes
           #close shift
           shift.save
+        else
+          puts "Shift is not over OR last event happened less than 1 hour ago"
+          logger.debug "Shift is not over OR last event happened less than 1 hour ago"
+          puts "Shift end #{shift.shiftdate + shift.schedule_shift.end.hour}, last event: #{@event.eventtime}"
+          logger.debug "Shift end #{shift.shiftdate + shift.schedule_shift.end.hour}, last event: #{@event.eventtime}"
         end
+      else
+        puts "No Event OR shift is not scheduled"
+        logger.debug "No Event OR shift is not scheduled"
+        puts "Schedule: #{shift.schedule_shift}"
+        logger.debug "Schedule: #{shift.schedule_shift}"
       end
     end
     render :nothing => true
