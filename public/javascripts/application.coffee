@@ -163,6 +163,13 @@
         changeMonth: true
         changeYear: true
 
+      $("#self_score_score").change ->
+        $(".self_score").hide()
+        if $(this).val() > 3
+          $(".self_score.high").show()
+        else
+          $(".self_score.low").show()
+
   flashFade: ->
     $('.flash-fade').children().each (i) ->
       setTimeout((=> $(this).fadeOut()), 250 + i * 1000)

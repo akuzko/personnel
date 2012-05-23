@@ -242,4 +242,21 @@ class EventsController < ApplicationController
     end
   end
 
+  def new_self_score
+    shift = current_user.shifts.order(:shiftdate).order(:number).last
+    next_shift = Shift.where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
+    redirect_to events_path if next_shift or SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id)
+    @self_score = SelfScore.new(:score_date => shift.shiftdate)
+  end
+
+  def create_self_score
+    @self_score = SelfScore.new(:user_id => current_user.id)
+    if @self_score.update_attributes(params[:self_score])
+      redirect_to events_path
+    else
+      flash[:error] = @self_score.errors.full_messages
+      redirect_to :back
+    end
+  end
+
 end

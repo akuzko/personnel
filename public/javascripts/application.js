@@ -1,9 +1,10 @@
 (function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
   this.app = {
     init: function() {
-      return $(__bind(function() {
-        this.flashFade();
+      var _this = this;
+      return $(function() {
+        _this.flashFade();
         $('[data-load-user]').live('click', function() {
           $('#sidebar').load($(this).data('load-user'));
           return false;
@@ -198,18 +199,27 @@
           changeMonth: true,
           changeYear: true
         });
-        return $(".date_select").datepicker({
+        $(".date_select").datepicker({
           dateFormat: 'yy-mm-dd',
           changeMonth: true,
           changeYear: true
         });
-      }, this));
+        return $("#self_score_score").change(function() {
+          $(".self_score").hide();
+          if ($(this).val() > 3) {
+            return $(".self_score.high").show();
+          } else {
+            return $(".self_score.low").show();
+          }
+        });
+      });
     },
     flashFade: function() {
       return $('.flash-fade').children().each(function(i) {
-        return setTimeout((__bind(function() {
-          return $(this).fadeOut();
-        }, this)), 250 + i * 1000);
+        var _this = this;
+        return setTimeout((function() {
+          return $(_this).fadeOut();
+        }), 250 + i * 1000);
       });
     },
     reload: function() {
@@ -296,4 +306,5 @@
       return $("#overlay").dialog("open");
     }
   };
+
 }).call(this);

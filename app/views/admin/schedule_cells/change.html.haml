@@ -1,6 +1,6 @@
 %div{:class => "flash", :style => 'display:none;'}
   %div{:id => "cell_flash", :class => "message error"}
-= form_tag (mass_update_admin_schedule_cells_path, :method => :put, :remote => true, :class => 'form', 'data-type' => 'script') do
+= form_tag mass_update_admin_schedule_cells_path, :method => :put, :remote => true, :class => 'form', 'data-type' => 'script' do
   = hidden_field_tag(:cells, @cells)
   .group
     = label :user_id, t("activerecord.attributes.schedule_cell.user_id", :default => "User"), :class => :label

@@ -82,6 +82,8 @@ Personnel::Application.routes.draw do
     get :new_late_coming, :on => :collection
     post :create_late_coming, :on => :collection
     get :processed_by_person, :on => :collection
+    get :new_self_score, :on => :collection
+    post :create_self_score, :on => :collection
   end
   resources :late_comings
   # Sample resource route within a namespace:

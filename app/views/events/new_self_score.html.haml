@@ -1,0 +1,24 @@
+#box
+  .block
+    %h2= t('personnel.self_score.title', :default => 'Self Assessment')
+    .content.login
+      %div{:class => "flash", :style => 'display:none;'}
+        %div{:id => "self_score_flash", :class => "message error"}
+      = form_for @self_score, :url => create_self_score_events_path, :html => {:class => 'form login'} do |f|
+        .group.wat-cf
+          = f.hidden_field :score_date
+          = f.select :score, SelfScore.selection, { :include_blank => true }
+        .group.wat-cf.self_score.high{:style => 'display:none'}
+          = t('personnel.self_score.reason4-5', :default => 'What helped you to score a 4 or a 5 during your shift?')
+        .group.wat-cf.self_score.low{:style => 'display:none'}
+          = t('personnel.self_score.reason1-3', :default => 'What are the reasons you only scored a 3, 2, or a 1? What could you have done better to go for a 4 or a 5?')
+        .group.wat-cf
+          = f.text_field :comment, :size => 70
+        .group.navform.wat-cf
+          %button.button{:type => "submit"}
+            = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.score", :default => "Score")}")
+            = t("web-app-theme.score", :default => "Score")
+          %span.text_button_padding= t("web-app-theme.or", :default => "or")
+          %a.button{:href => events_path}
+            = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+            = t("web-app-theme.cancel", :default => "Cancel")

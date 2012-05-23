@@ -5,7 +5,7 @@ class ShiftsController < ApplicationController
     @shifts.each do |shift|
       puts "Shift ##{shift.id}, user ##{shift.user_id}"
       logger.debug "Shift ##{shift.id}, user ##{shift.user_id}"
-      next_shift = Shift.where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
+      next_shift = Shift.where('number < 10').where('id > ?', shift.id).order(:id).find_all_by_user_id(shift.user_id).first
       #find last user's event
       if next_shift.nil?
         puts "Next shift is nil"
@@ -70,8 +70,8 @@ class ShiftsController < ApplicationController
         @missed_shifts_departments[department.name][:shifts] = missed_shifts
         @missed_shifts_departments[department.name][:admins] = admins
         if params[:send] && department.id != 2
-            message = MissedShift.send_missed_shifts(department.name, missed_shifts, admins)
-            message.deliver
+          message = MissedShift.send_missed_shifts(department.name, missed_shifts, admins)
+          message.deliver
         end
       end
     end

@@ -1,20 +1,22 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.1.0'
+gem 'rails', '~> 3.2.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mongrel'
 gem 'mysql2'
-gem 'haml'
+
 gem 'devise'
 gem 'will_paginate'
-gem 'jquery-rails'
-gem 'ruby-debug'
-gem 'sass'
-gem 'prototype-rails'
 gem 'paperclip'
+gem 'haml'
+gem 'prototype-rails'
+
+group :assets do
+  gem 'sass-rails', '~> 3.2.3'
+  gem 'jquery-rails', '~> 1.0.0'
+end
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -35,12 +37,12 @@ gem 'paperclip'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'thin'
+  gem 'debugger'
   #gem "erb2haml"
   gem 'capybara'
-  gem 'rspec-rails'
-  gem 'haml-rails'
   gem 'hpricot'
   gem 'ruby_parser'
-  gem 'web-app-theme'
+  #gem 'web-app-theme'
   gem 'awesome_print'
 end
