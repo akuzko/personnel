@@ -165,10 +165,14 @@
 
       $("#self_score_score").change ->
         $(".self_score").hide()
-        if $(this).val() > 3
-          $(".self_score.high").show()
+        if $(this).val() > ''
+          $(".self_score.comment").show()
+          if $(this).val() > 3
+            $(".self_score.high").show()
+          else
+            $(".self_score.low").show()
         else
-          $(".self_score.low").show()
+          $(".self_score").hide()
 
   flashFade: ->
     $('.flash-fade').children().each (i) ->

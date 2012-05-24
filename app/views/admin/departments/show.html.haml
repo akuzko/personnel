@@ -20,6 +20,11 @@
         = @department.has_events
       %p
         %b
+          = t("activerecord.attributes.admin_department.self_scored", :default => t("activerecord.labels.self_scored", :default => "Self Scored"))
+          \:
+        = @department.self_scored
+      %p
+        %b
           = t("activerecord.attributes.admin_department.has_levels", :default => t("activerecord.labels.has_levels", :default => "Has Levels"))
           \:
         = @department.has_levels

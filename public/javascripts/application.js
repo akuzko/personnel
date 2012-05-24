@@ -206,10 +206,15 @@
         });
         return $("#self_score_score").change(function() {
           $(".self_score").hide();
-          if ($(this).val() > 3) {
-            return $(".self_score.high").show();
+          if ($(this).val() > '') {
+            $(".self_score.comment").show();
+            if ($(this).val() > 3) {
+              return $(".self_score.high").show();
+            } else {
+              return $(".self_score.low").show();
+            }
           } else {
-            return $(".self_score.low").show();
+            return $(".self_score").hide();
           }
         });
       });

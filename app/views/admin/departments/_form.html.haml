@@ -10,6 +10,10 @@
   = f.check_box :has_events, :class => 'check_box'
   %span.description check this box if members of this department add events to Time Report
 .group
+  = f.label :self_scored, t("personnel.department.self_scored", :default => "Self Scored"), :class => :label
+  = f.check_box :self_scored, :class => 'check_box'
+  %span.description check this box if members of this department score themselves
+.group
   = f.label :has_t_shirt, t("personnel.department.has-t-shirt", :default => "Has T-shirts"), :class => :label
   = f.check_box :has_t_shirt, :class => 'check_box'
   %span.description check this box if the department offers T-Shirts

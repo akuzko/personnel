@@ -1,18 +1,22 @@
 #box
   .block
-    %h2= t('personnel.self_score.title', :default => 'Self Assessment')
+    %h2
+      = t('personnel.self_score.title', :default => 'Self Assessment for')
+      = @self_score.score_date
     .content.login
       %div{:class => "flash", :style => 'display:none;'}
         %div{:id => "self_score_flash", :class => "message error"}
       = form_for @self_score, :url => create_self_score_events_path, :html => {:class => 'form login'} do |f|
         .group.wat-cf
+          = t('personnel.self_score.question', :default => 'On a scale from 1 to 5 how would you rate your shift, where 1 is unacceptable and 5 is excellent, perfect?')
+        .group.wat-cf
           = f.hidden_field :score_date
           = f.select :score, SelfScore.selection, { :include_blank => true }
-        .group.wat-cf.self_score.high{:style => 'display:none'}
+        .group.wat-cf.self_score.high{:style => "display:#{f.object.score.to_i < 4 ? 'none' : ''};"}
           = t('personnel.self_score.reason4-5', :default => 'What helped you to score a 4 or a 5 during your shift?')
-        .group.wat-cf.self_score.low{:style => 'display:none'}
+        .group.wat-cf.self_score.low{:style => "display:#{(f.object.score.blank? or f.object.score.to_i > 3) ? 'none' : ''};"}
           = t('personnel.self_score.reason1-3', :default => 'What are the reasons you only scored a 3, 2, or a 1? What could you have done better to go for a 4 or a 5?')
-        .group.wat-cf
+        .group.wat-cf.self_score.comment{:style => "display:#{f.object.score.blank? ? 'none' : ''};"}
           = f.text_field :comment, :size => 70
         .group.navform.wat-cf
           %button.button{:type => "submit"}
