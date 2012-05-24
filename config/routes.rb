@@ -118,6 +118,7 @@ Personnel::Application.routes.draw do
       get :processed_by_person, :on => :collection
       get :processed_by_day_of_week, :on => :collection
       get :self_scores, :on => :collection
+      get :self_scores_grouped, :on => :collection
     end
     resources :schedule_templates do
       post :set_visibility, :on => :member
