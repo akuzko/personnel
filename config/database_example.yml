@@ -37,3 +37,13 @@ production:
   username: root
   password:
   socket: /var/run/mysqld/mysqld.sock
+
+smf_forum:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: z3kforum
+  pool: 5
+  username: z3kforum
+  password:
+  socket: /var/run/mysqld/mysqld.sock

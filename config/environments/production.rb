@@ -23,7 +23,7 @@ Personnel::Application.configure do
 
   # Use a different logger for distributed setups
   # config.logger = SyslogLogger.new
-  config.logger = Logger.new(File.dirname(__FILE__) + "/../../log/#{ENV["RAILS_ENV"]}.log", 10, 100*1024**2)
+  config.logger = Logger.new(File.dirname(__FILE__) + "/../../log/production.log", 10, 100*1024**2)
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
