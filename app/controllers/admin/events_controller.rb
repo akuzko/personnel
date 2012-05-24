@@ -118,6 +118,7 @@ class Admin::EventsController < ApplicationController
 
   def self_scores
     @self_scores = SelfScore.joins('JOIN users ON self_scores.user_id = users.id').search(params, current_admin)
+    @average = SelfScore.search_average(params, current_admin).avg_score
   end
 
   def self_scores_grouped
