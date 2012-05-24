@@ -115,4 +115,8 @@ class Admin::EventsController < ApplicationController
       format.xml { render :xml => @events }
     end
   end
+
+  def self_scores
+    @self_scores = SelfScore.joins('JOIN users ON self_scores.user_id = users.id').search(params, current_admin)
+  end
 end
