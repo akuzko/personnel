@@ -47,7 +47,7 @@ class Admin::LateComingsController < ApplicationController
     late_coming = LateComing.find(params[:id])
     shift = Shift.find(late_coming.shift_id)
     start_event = Event.find_by_id(shift.start_event)
-    start_event.eventtime = shift.schedule_start_time
+    start_event.eventtime = shift.schedule_start_time rescue nil
     start_event.save
     late_coming.destroy
     respond_to do |format|

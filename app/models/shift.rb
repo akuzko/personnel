@@ -78,19 +78,22 @@ class Shift < ActiveRecord::Base
   end
 
   def is_late
+    return false if self.schedule_shift.nil?
     (self.starttime - self.schedule_start_time)/ 1.minutes > self.possible_minutes
   end
 
   def is_end_earlier
+    return false if self.schedule_shift.nil?
     if self.endtime != ''
       (self.schedule_end_time - self.endtime)/ 1.minutes > self.possible_minutes
     end
   end
 
   def is_overtime
-     if self.endtime != ''
+    return false if self.schedule_shift.nil?
+    if self.endtime != ''
       ((self.endtime - self.schedule_end_time) + (self.schedule_start_time - self.starttime))/ 1.minutes > self.possible_minutes
-     end
+    end
   end
 
   def is_over
@@ -103,19 +106,9 @@ class Shift < ActiveRecord::Base
     self.schedule_shift.start == 0 ? 10 : 5
   end
   def schedule_end_time
-    #if self.schedule_shift
-    #  DateTime.parse("#{self.shiftdate} #{self.schedule_shift.end}:00:00 +0300")
-    #else
-    #  DateTime.parse(self.schedule_start_time.to_s)
-    #end
     self.shiftdate + self.schedule_shift.end.hour
   end
   def schedule_start_time
-    #if self.schedule_shift
-    #  DateTime.parse("#{self.shiftdate} #{self.schedule_shift.start}:00:00 +0300")
-    #else
-    #  DateTime.parse(self.schedule_start_time.to_s)
-    #end
     self.shiftdate + self.schedule_shift.start.hour
   end
 
