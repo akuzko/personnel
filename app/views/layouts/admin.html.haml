@@ -24,9 +24,6 @@
             %li{:class => controller.controller_path == 'admin/departments' ? 'active' : '' }
               %a{:href => admin_departments_path}
                 =t("personnel.department.title", :default => "Departments")
-            %li{:class => controller.controller_path == 'admin/categories' ? 'active' : '' }
-              %a{:href => admin_categories_path}
-                =t("personnel.category.title", :default => "Categories")
             %li{:class => (controller.controller_path == 'admin/users'  && controller.action_name != 'working_shifts') ? 'active' : '' }
               %a{:href => admin_users_path}
                 =t("personnel.user.title", :default => "Users")
@@ -34,27 +31,33 @@
               %a{:href => admin_schedule_statuses_path} Schedule Statuses
             %li{:class => controller.controller_path == 'admin/schedules' ? 'active' : '' }
               %a{:href => admin_schedule_path} Schedule
-            %li{:class => controller.controller_path == 'admin/shifts' ? 'active' : '' }
-              %a{:href => admin_shifts_path} Shifts
-            %li{:class => (controller.controller_path == 'admin/events' && controller.action_name == 'index') ? 'active' : '' }
-              %a{:href => admin_events_path} Events
-            %li{:class => controller.controller_path == 'admin/permissions' ? 'active' : '' }
-              %a{:href => admin_permissions_path} Check List
-            %li{:class => ((controller.controller_path == 'admin/events' && controller.action_name != 'index') || (controller.controller_path == 'admin/late_comings') || (controller.action_name == 'working_shifts')) ? 'active' : '' }
+            %li{:class => (controller.controller_path == 'admin/categories' || (controller.controller_path == 'admin/events' && controller.action_name == 'index')) ? 'active' : '' }
+              %a{:href => '#'} TimeReport
+              %ul
+                %li
+                  %a{:href => admin_categories_path}
+                    =t("personnel.category.title", :default => "Categories")
+                %li
+                  %a{:href => admin_events_path} Events
+            %li{:class => ((controller.controller_path == 'admin/events' && controller.action_name != 'index') || (controller.controller_path == 'admin/late_comings') || (controller.action_name == 'working_shifts') || (controller.controller_path == 'admin/shifts')) ? 'active' : '' }
               %a{:href => '#'} Reports
               %ul
                 %li
-                  %a{:href => processed_by_person_admin_events_path} Processed: By Person
+                  %a{:href => admin_shifts_path} Shifts
                 %li
                   %a{:href => admin_late_comings_path} Late Comings
                 %li
                   %a{:href => working_shifts_admin_users_path} Working Shifts
+                %li
+                  %a{:href => processed_by_person_admin_events_path} Processed: By Person
                 %li
                   %a{:href => processed_by_day_of_week_admin_events_path} Processed: By Days Of Week
                 %li
                   %a{:href => self_scores_admin_events_path} Self-Assessment
                 %li
                   %a{:href => self_scores_grouped_admin_events_path} Self-Assessment (Grouped)
+            %li{:class => controller.controller_path == 'admin/permissions' ? 'active' : '' }
+              %a{:href => admin_permissions_path} Check List
             %li{:class => controller.controller_path == 'admin/logs' ? 'active' : '' }
               %a{:href => admin_logs_path} Logs
       #wrapper.wat-cf
