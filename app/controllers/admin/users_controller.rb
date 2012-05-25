@@ -283,7 +283,7 @@ class Admin::UsersController < ApplicationController
 
   def get_for_department
     @department = Department.find_by_id params['did']
-    @users = User.find_all_by_department_id @department.id
+    @users = User.active.find_all_by_department_id @department.id
     @permission = Permission.find_by_id params['pid']
     render 'get_for_department.html', :layout => false
   end
