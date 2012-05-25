@@ -103,10 +103,12 @@ class Shift < ActiveRecord::Base
     self.schedule_shift.start == 0 ? 10 : 5
   end
   def schedule_end_time
-    self.shiftdate + self.schedule_shift.end.hour
+    DateTime.parse("#{self.shiftdate} #{self.schedule_shift.end}:00:00 +0300") if self.schedule_shift
+    #self.shiftdate + self.schedule_shift.end.hour
   end
   def schedule_start_time
-    self.shiftdate + self.schedule_shift.start.hour
+    DateTime.parse("#{self.shiftdate} #{self.schedule_shift.start}:00:00 +0300") if self.schedule_shift
+    #self.shiftdate + self.schedule_shift.start.hour
   end
   def shift_period
     ((self.schedule_end_time - self.schedule_start_time)/ 1.minutes).round
