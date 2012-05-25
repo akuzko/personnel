@@ -113,6 +113,7 @@ class Shift < ActiveRecord::Base
   end
 
   def shift_period
+    return 0 if self.schedule_shift.nil?
     ((self.schedule_end_time - self.schedule_start_time)/ 1.minutes).round
   end
 
