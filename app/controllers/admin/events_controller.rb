@@ -123,5 +123,11 @@ class Admin::EventsController < ApplicationController
 
   def self_scores_grouped
     @self_scores = SelfScore.joins('JOIN users ON self_scores.user_id = users.id').search_grouped(params, current_admin)
+    if params[:export]
+      headers['Content-Type'] = "application/vnd.ms-excel"
+      headers['Content-Disposition'] = 'attachment; filename="self_scores.xls"'
+      headers['Cache-Control'] = ''
+      render 'export_self_scores_grouped', :layout => false
+    end
   end
 end
