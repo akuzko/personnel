@@ -42,7 +42,7 @@ class EventsController < ApplicationController
     @events = current_user.events.where('events.id > ?', @shift.start_event).joins('INNER JOIN `categories` ON `events`.`category_id` = `categories`.`id`').where('`categories`.`displayed` =1').paginate :page => params[:page], :per_page => 30, :order => "#{params[:sort_by]} #{params[:sort_order]}"
 
     # self score
-    @display_self_score = self_score_available?(@shift, :current)
+    @display_self_score = self_score_available?(:current)
   end
 
   def show
@@ -121,8 +121,7 @@ class EventsController < ApplicationController
       flash[:error] = "You dont have permissions to view this page"
       redirect_to user_path and return
     end
-    shift_ended = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
-    redirect_to new_self_score_events_path and return if self_score_available?(shift_ended, :ended)
+    redirect_to new_self_score_events_path and return if self_score_available?(:ended)
     @shift = Shift.new
     @shift.shiftdate = Date.current + 1.day if DateTime.current.hour == 23
   end
@@ -172,7 +171,7 @@ class EventsController < ApplicationController
 
   def end_shift
     @shift = Shift.find(session[:shift_id])
-    redirect_to new_self_score_events_path and return if self_score_available?(@shift, :current)
+    redirect_to new_self_score_events_path and return if self_score_available?(:current)
     if @shift.end_event.nil?
       #add logout event
       @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip, @shift.id)
@@ -250,13 +249,13 @@ class EventsController < ApplicationController
   end
 
   def new_self_score
-    shift_current = current_user.shifts.where("shiftdate = ?", Date.current).order(:shiftdate).order(:number).last
-    shift_ended = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
-    if self_score_available?(shift_ended, :ended)
-      @self_score = SelfScore.new(:score_date => shift_ended.shiftdate)
+    if self_score_available?(:ended)
+      shift = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
+      @self_score = SelfScore.new(:score_date => shift.shiftdate)
     else
-      if self_score_available?(shift_current, :current)
-        @self_score = SelfScore.new(:score_date => shift_current.shiftdate)
+      if self_score_available?(:current)
+        shift = current_user.shifts.where("shiftdate = ?", Date.current).order(:shiftdate).order(:number).last
+        @self_score = SelfScore.new(:score_date => shift.shiftdate)
       else
         redirect_to events_path
       end
@@ -276,13 +275,14 @@ class EventsController < ApplicationController
 
   private
 
-  def self_score_available?(shift, mode = :current)
+  def self_score_available?(mode = :current)
     return false unless Department.find(current_user.department_id).self_scored?
     case mode
       when :ended
-        shift = Shift.where("shiftdate <= ? ", shift.shiftdate).where('number < 10').where('id < ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).last
+        shift = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
         SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?
       else
+        shift = current_user.shifts.where("shiftdate = ?", Date.current).order(:shiftdate).order(:number).last
         next_shift = Shift.where(:shiftdate => shift.shiftdate).where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
         (next_shift.blank? and SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?)
     end
