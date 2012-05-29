@@ -121,8 +121,8 @@ class EventsController < ApplicationController
       flash[:error] = "You dont have permissions to view this page"
       redirect_to user_path and return
     end
-    shift = current_user.shifts.where("shiftdate <= ?", Date.current).order(:shiftdate).order(:number).last
-    redirect_to new_self_score_events_path and return if self_score_available?(shift, :ended)
+    shift_ended = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
+    redirect_to new_self_score_events_path and return if self_score_available?(shift_ended, :ended)
     @shift = Shift.new
     @shift.shiftdate = Date.current + 1.day if DateTime.current.hour == 23
   end
