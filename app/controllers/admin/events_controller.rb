@@ -117,12 +117,16 @@ class Admin::EventsController < ApplicationController
   end
 
   def self_scores
-    @self_scores = SelfScore.joins('JOIN users ON self_scores.user_id = users.id').search(params, current_admin)
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @self_scores = SelfScore.search(params, current_admin)
     @average = SelfScore.search_average(params, current_admin).avg_score
   end
 
   def self_scores_grouped
-    @self_scores = SelfScore.joins('JOIN users ON self_scores.user_id = users.id').search_grouped(params, current_admin)
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @self_scores = SelfScore.search_grouped(params, current_admin)
     if params[:export]
       headers['Content-Type'] = "application/vnd.ms-excel"
       headers['Content-Disposition'] = 'attachment; filename="self_scores.xls"'

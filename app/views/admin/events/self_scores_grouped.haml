@@ -53,9 +53,9 @@
         %tr
           %th
             = t("activerecord.attributes.admin_self_score.date", :default => t("activerecord.labels.date", :default => "Date"))
-          %th
+          %th{:sort => 'full_name', :class => 'sortable'}
             = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
-          %th
+          %th{:sort => 'score', :class => 'sortable'}
             = t("activerecord.attributes.admin_self_score.score", :default => t("activerecord.labels.rating", :default => "Rating"))
         - @self_scores.each do |line|
           %tr{:class => cycle("odd", "even")}

@@ -250,9 +250,17 @@ class EventsController < ApplicationController
   end
 
   def new_self_score
-    shift = current_user.shifts.where("shiftdate <= ?", Date.current).order(:shiftdate).order(:number).last
-    redirect_to events_path unless self_score_available?(shift, :current)
-    @self_score = SelfScore.new(:score_date => shift.shiftdate)
+    shift_current = current_user.shifts.where("shiftdate = ?", Date.current).order(:shiftdate).order(:number).last
+    shift_ended = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
+    if self_score_available?(shift_ended, :ended)
+      @self_score = SelfScore.new(:score_date => shift_ended.shiftdate)
+    else
+      if self_score_available?(shift_current, :current)
+        @self_score = SelfScore.new(:score_date => shift_current.shiftdate)
+      else
+        redirect_to events_path
+      end
+    end
   end
 
   def create_self_score
@@ -272,7 +280,7 @@ class EventsController < ApplicationController
     return false unless Department.find(current_user.department_id).self_scored?
     case mode
       when :ended
-        shift = Shift.where("shiftdate < ? ", shift.shiftdate).where('number < 10').where('id < ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).last
+        shift = Shift.where("shiftdate <= ? ", shift.shiftdate).where('number < 10').where('id < ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).last
         SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?
       else
         next_shift = Shift.where(:shiftdate => shift.shiftdate).where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
