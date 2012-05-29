@@ -282,7 +282,7 @@ class EventsController < ApplicationController
         shift = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
         SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?
       else
-        shift = current_user.shifts.where("shiftdate = ?", Date.current).order(:shiftdate).order(:number).last
+        shift = current_user.shifts.where("shiftdate <= ?", Date.current).order(:shiftdate).order(:number).last
         next_shift = Shift.where(:shiftdate => shift.shiftdate).where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
         (next_shift.blank? and SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?)
     end
