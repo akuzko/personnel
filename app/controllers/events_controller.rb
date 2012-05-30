@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   layout 'user'
 
   def index
-    @shift = Shift.find session[:shift_id]
+    @shift = Shift.find_by_id session[:shift_id]
     if @shift.is_late && @shift.late_coming.nil?
       redirect_to new_late_coming_events_path
       return
@@ -33,7 +33,7 @@ class EventsController < ApplicationController
         redirect_to events_path, :notice => (flash[:notice] + "<br/>Your shift was automatically changed to #{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)").html_safe
       end
     end
-    if Department.find(current_user.department_id).has_events == false
+    unless Department.find(current_user.department_id).has_events
       @no_events = true
       flash[:notice] = 'No further actions is required by you.'
     end
@@ -143,7 +143,7 @@ class EventsController < ApplicationController
     end
     # Allow to start only -2 hours or start or if the shift is not ended
     start_time = shiftdate + @schedule_shift.start.hours
-    end_time =  shiftdate + @schedule_shift.end.hours
+    end_time = shiftdate + @schedule_shift.end.hours
     if ((start_time.to_datetime - DateTime.current)*24).to_i > 2
       flash[:error] = "The shift will start #{((start_time.to_datetime - DateTime.current)*24).to_i} hours later"
       redirect_to start_shift_events_path and return
@@ -170,7 +170,7 @@ class EventsController < ApplicationController
   end
 
   def end_shift
-    @shift = Shift.find(session[:shift_id])
+    @shift = Shift.find_by_id session[:shift_id]
     redirect_to new_self_score_events_path and return if self_score_available?(:current)
     if @shift.end_event.nil?
       #add logout event
@@ -237,8 +237,8 @@ class EventsController < ApplicationController
   end
 
   def processed_by_person
-    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time)  if !params[:date_from]
-    params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time) if !params[:date_from]
+    params[:date_to] = DateTime.current.to_formatted_s(:date_and_time) if !params[:date_to]
     params[:user_id] = (current_user.id).to_s
     @events = Event.processed_by_person(params, 0)
 
@@ -254,7 +254,7 @@ class EventsController < ApplicationController
       @self_score = SelfScore.new(:score_date => shift.shiftdate)
     else
       if self_score_available?(:current)
-        shift = current_user.shifts.where("shiftdate = ?", Date.current).order(:shiftdate).order(:number).last
+        shift = Shift.find_by_id session[:shift_id]
         @self_score = SelfScore.new(:score_date => shift.shiftdate)
       else
         redirect_to events_path
@@ -280,10 +280,12 @@ class EventsController < ApplicationController
     case mode
       when :ended
         shift = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
+        return false unless shift
         SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?
       else
-        shift = current_user.shifts.where("shiftdate <= ?", Date.current).order(:shiftdate).order(:number).last
-        next_shift = Shift.where(:shiftdate => shift.shiftdate).where('number < 10').where('id > ?', shift.id). order(:id).find_all_by_user_id(shift.user_id).first
+        shift = Shift.find_by_id session[:shift_id]
+        return false unless shift
+        next_shift = Shift.where(:shiftdate => shift.shiftdate).where('number < 10').where('id > ?', shift.id).order(:id).find_all_by_user_id(shift.user_id).first
         (next_shift.blank? and SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?)
     end
 
