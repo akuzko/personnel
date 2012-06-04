@@ -51,7 +51,7 @@ class SelfScore < ActiveRecord::Base
     params[:sort_order] ||= "DESC"
     sort_by = {
         :score_date => '`score_date`',
-        :score => '`score`',
+        :score => '`avg_score`',
         :full_name => '`profiles`.last_name'
     }
 
