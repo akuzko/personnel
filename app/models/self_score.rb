@@ -2,7 +2,7 @@ class SelfScore < ActiveRecord::Base
   belongs_to :user
   delegate :full_name, :to => :user, :prefix => true
   attr_accessible :score, :comment, :score_date, :selection
-  validates_presence_of :score, :comment
+  validates_presence_of :score
 
   def self.selection
     (1..5).each do |d|
