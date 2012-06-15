@@ -2,8 +2,11 @@
   = f.label :name, t("activerecord.attributes.category.name", :default => "Name"), :class => :label
   = f.text_field :name, :class => 'text_field'
 .group
-  = f.label :department_id, t("activerecord.attributes.category.department_id", :default => "Department"), :class => :label
-  = f.select :department_id, Department.selection_by_admin(current_admin.id)
+  = f.label :departments, t("personnel.category.assigned-departments", :default => "Assigned Departments"), :class => :label
+  - Department.selection.each do |d|
+    = check_box_tag "departments[]", d.last, @category.departments.map(&:id).include?(d.last)
+    = d.first
+    %br
 .group
   = f.label :displayed, t("activerecord.attributes.category.displayed", :default => "Display"), :class => :label
   = f.check_box :displayed, :class => 'check_box'

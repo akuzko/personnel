@@ -38,12 +38,12 @@ class Admin::CategoriesController < ApplicationController
 
   def edit
     @category = Category.find(params[:id])
-    redirect_to admin_categories_path unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path unless current_admin.manage_department(@category.departments)
   end
 
   def create
     @category = Category.new(params[:category])
-    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.departments)
     respond_to do |format|
       if @category.save
         Log.add(current_admin, @category, params)
@@ -58,7 +58,19 @@ class Admin::CategoriesController < ApplicationController
 
   def update
     @category = Category.find(params[:id])
-    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.departments)
+    old_departments = @category.departments.map{|d|d.id.to_s}
+    if old_departments != params[:departments]
+      old_departments.each do |d|
+        DepartmentCategory.find_by_category_id_and_department_id(@category.id,d.to_i).destroy unless (params[:departments].is_a?(Array) && params[:departments].include?(d))
+      end
+      if params[:departments]
+        new_departments = params[:departments] - old_departments
+        new_departments.each do |d|
+          DepartmentCategory.find_or_create_by_category_id_and_department_id(@category.id,d.to_i)
+        end
+      end
+    end
     params[:previous_attributes] = @category.attributes
     respond_to do |format|
       if @category.update_attributes(params[:category])
@@ -74,7 +86,7 @@ class Admin::CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id])
-    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.department_id)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.departments)
     Log.add(current_admin, @category, params)
     @category.destroy
 

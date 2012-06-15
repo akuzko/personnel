@@ -13,9 +13,12 @@
         = @category.name
       %p
         %b
-          = t("activerecord.attributes.admin_category.department_id", :default => "Department")
+          = t("activerecord.attributes.admin_category.departments", :default => "Departments")
           \:
-        = @category.department_name
+        %br/
+        - @category.departments.each do |dep|
+          = dep.name
+          %br
       %p
         %b
           = t("activerecord.attributes.admin_category.displayed", :default => "Display")

@@ -30,9 +30,8 @@ class Admin < ActiveRecord::Base
     end
   end
 
-  def manage_department(department_id)
-    super_user? || departments.map{|d|d.id}.include?(department_id.to_i)
-    #departments.map{|d|d.id}.include?(department_id)
+  def manage_department(department_ids)
+    super_user? || (departments.map(&:id) & (department_ids.is_a?(Fixnum) ? [department_ids] : department_ids.map(&:id))).any?
   end
 
   def name

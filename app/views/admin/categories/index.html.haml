@@ -45,7 +45,7 @@
           %th{:sort => 'name', :class => 'sortable'}
             = t("activerecord.attributes.admin_category.name", :default => t("activerecord.labels.name", :default => "Name"))
           %th{:sort => 'department_id', :class => 'sortable'}
-            = t("activerecord.attributes.admin_category.department", :default => t("activerecord.labels.name", :default => "Department"))
+            = t("activerecord.attributes.admin_category.departments", :default => t("activerecord.labels.name", :default => "Departments"))
           %th{:sort => 'displayed', :class => 'sortable'}
             = t("activerecord.attributes.admin_category.displayed", :default => t("activerecord.labels.name", :default => "Display"))
           %th{:sort => 'display_order', :class => 'sortable'}
@@ -61,7 +61,9 @@
             %td
               = link_to category.name, admin_category_path(category)
             %td
-              = category.department_name
+              - category.departments.each do |dep|
+                = dep.name
+                %br
             %td
               - if category.displayed?
                 &#10003;

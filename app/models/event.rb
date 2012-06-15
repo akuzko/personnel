@@ -29,7 +29,8 @@ class Event < ActiveRecord::Base
     model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
     if by_admin
       admin = Admin.find_by_id(user_id)
-      model_query = model_query.where("categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+      model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+      model_query = model_query.where("department_categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     else
       model_query = model_query.where('user_id = ?', user_id)
     end
@@ -47,12 +48,13 @@ class Event < ActiveRecord::Base
     model_query = model_query.joins('JOIN users ON events.user_id = users.id')
     model_query = model_query.joins('JOIN profiles ON profiles.user_id = users.id')
     model_query = model_query.where("events.user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
-    model_query = model_query.where("categories.department_id = '" + params[:department_id] + "'") unless params[:department_id].nil? || params[:department_id] == ""
+    model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+    model_query = model_query.where("department_categories.department_id = '" + params[:department_id] + "'") unless params[:department_id].nil? || params[:department_id] == ""
     if admin_id != 0
       admin = Admin.find_by_id(admin_id)
       model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     end
-    model_query = model_query.where("category_id IN (#{params[:categories].map{|d|d}.join(',')})") unless params[:categories].nil? || params[:categories].empty?
+    model_query = model_query.where("events.category_id IN (#{params[:categories].map{|d|d}.join(',')})") unless params[:categories].nil? || params[:categories].empty?
     model_query = model_query.where("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == ""
     model_query = model_query.where("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == ""
     model_query = model_query.group('categories.name, username')
@@ -66,7 +68,8 @@ class Event < ActiveRecord::Base
     model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
     if by_admin
       admin = Admin.find_by_id(user_id)
-      model_query = model_query.where("categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+      model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+      model_query = model_query.where("department_categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     else
       model_query = model_query.where('user_id = ?', user_id)
     end
