@@ -176,9 +176,17 @@ class EventsController < ApplicationController
       #add logout event
       @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip, @shift.id)
     else
-      #update end event time for shift
+      #update end event time for shift - only if end event less then regular shift end
       @event = Event.find(@shift.end_event)
-      @event.update_attributes(:eventtime => DateTime.current, :ip_address => Event.ip2int(request.remote_ip))
+      puts "End time ##{@event.eventtime}"
+      logger.debug "End time ##{@event.eventtime}"
+      puts "Regular ##{@shift.schedule_end_time}"
+      logger.debug "Regular ##{@shift.schedule_end_time}"
+      if @event.eventtime <= @shift.schedule_end_time
+        puts "Updating shift ##{@shift.id} endtime"
+        logger.debug "Updating shift ##{@shift.id} endtime"
+        @event.update_attributes(:eventtime => DateTime.current, :ip_address => Event.ip2int(request.remote_ip))
+      end
     end
     @shift.save
     session.delete :shift_id
