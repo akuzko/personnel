@@ -256,6 +256,16 @@ class User < ActiveRecord::Base
     users
   end
 
+  def self.selection_by_team_lead(user_id)
+    user = User.find_by_id(user_id)
+    return false unless user.team_lead?
+    users = []
+    includes(:profile).order('`profiles`.last_name').active.map do |d|
+      users.push [d.full_name, d.id] if user.department_id == d.department_id
+    end
+    users
+  end
+
   def reprocess_avatar
     avatar.reprocess!
   end

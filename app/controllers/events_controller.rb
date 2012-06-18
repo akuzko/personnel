@@ -245,9 +245,18 @@ class EventsController < ApplicationController
   end
 
   def processed_by_person
-    params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time) if !params[:date_from]
+    ap session
+    if session[:shift_id]
+      shift = Shift.find_by_id session[:shift_id]
+      params[:date_from] = shift.schedule_start_time.to_formatted_s(:date_and_time) rescue nil
+    else
+      params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_and_time) if !params[:date_from]
+    end
+
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time) if !params[:date_to]
-    params[:user_id] = (current_user.id).to_s
+
+    params[:user_id] = (current_user.id).to_s unless current_user.team_lead?
+
     @events = Event.processed_by_person(params, 0)
 
     respond_to do |format|

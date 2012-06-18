@@ -56,6 +56,7 @@
           %th{:sort => 'active', :class => 'sortable'}= t("personnel.user.active", :default => "Active")
           %th{:sort => 'identifier', :class => 'sortable'}= t("personnel.user.identifier", :default => "IDentifier")
           %th{:sort => 'full_name', :class => 'sortable'}= t("personnel.user.full_name", :default => "Full Name")
+          %th= t("personnel.user.team_lead", :default => "Team Lead")
           %th= t("personnel.contact.cell", :default => "Cell")
           %th= t("personnel.contact.home_phone", :default => "Home Phone")
           %th= t("personnel.user.department", :default => "Department")
@@ -70,6 +71,9 @@
                 &#10003;
             %td= user.identifier
             %td= user.full_name
+            %td
+              - if user.team_lead?
+                &#10003;
             %td
               = user.cell1
               %br

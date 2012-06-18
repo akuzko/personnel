@@ -48,8 +48,10 @@ class Event < ActiveRecord::Base
     model_query = model_query.joins('JOIN users ON events.user_id = users.id')
     model_query = model_query.joins('JOIN profiles ON profiles.user_id = users.id')
     model_query = model_query.where("events.user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
-    model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
-    model_query = model_query.where("department_categories.department_id = '" + params[:department_id] + "'") unless params[:department_id].nil? || params[:department_id] == ""
+    begin
+      model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+      model_query = model_query.where("department_categories.department_id = '" + params[:department_id] + "'")
+    end unless params[:department_id].nil? || params[:department_id] == ""
     if admin_id != 0
       admin = Admin.find_by_id(admin_id)
       model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?

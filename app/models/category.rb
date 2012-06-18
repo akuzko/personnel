@@ -38,7 +38,7 @@ class Category < ActiveRecord::Base
     departments = admin.departments.map(&:id)
     categories = []
     order('display_order, name').map do |d|
-      categories.push [d.name, d.id] if (departments & d.departments.map(&:id)).any?
+      categories.push [d.name, d.id] if (departments & d.departments.map(&:id)).any? or %w(Login Logout).include?(d.name)
     end
     categories
   end
