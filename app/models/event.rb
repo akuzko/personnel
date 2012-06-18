@@ -82,7 +82,7 @@ class Event < ActiveRecord::Base
 
   def self.login(user_id, time, ip, shift_id)
     @general_department = Department.find_or_create_by_name('General')
-    @category = Category.find_or_create_by_name_and_department_id('Login', @general_department.id)
+    @category = Category.find_or_create_by_name('Login')
     @event = Event.create(:user_id => user_id, :shift_id => shift_id, :category_id => @category.id, :eventtime => time, :ip_address => ip2int(ip), :description => '-')
     @event.save
     @event.id
@@ -90,7 +90,7 @@ class Event < ActiveRecord::Base
 
   def self.logout(user_id, time, ip, shift_id)
     @general_department = Department.find_or_create_by_name('General')
-    @category = Category.find_or_create_by_name_and_department_id('Logout', @general_department.id)
+    @category = Category.find_or_create_by_name('Logout')
     @event = Event.create(:user_id => user_id, :shift_id => shift_id, :category_id => @category.id, :eventtime => time, :ip_address => ip2int(ip), :description => '-')
     @event.save
     @event.id
