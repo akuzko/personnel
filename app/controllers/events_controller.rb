@@ -245,7 +245,6 @@ class EventsController < ApplicationController
   end
 
   def processed_by_person
-    ap session
     if session[:shift_id]
       shift = Shift.find_by_id session[:shift_id]
       params[:date_from] = shift.schedule_start_time.to_formatted_s(:date_and_time) rescue nil
