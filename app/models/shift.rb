@@ -9,7 +9,7 @@ class Shift < ActiveRecord::Base
 
     admin = Admin.find_by_id(admin_id)
     conditions = []
-    conditions.push("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    conditions.push("`users`.department_id IN (#{admin.departments.map { |d| d.id }.join(',')})") unless admin.super_user?
     conditions.push("`users`.department_id = '" + params[:department_id] + "'") unless params[:department_id].nil? || params[:department_id] == ""
     conditions.push("user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
     conditions.push("shiftdate >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
@@ -41,7 +41,7 @@ class Shift < ActiveRecord::Base
   end
 
   def workout
-    (self.shift_period - self.worked_min).tap{ |res| return res > 0 ? res : nil }
+    (self.shift_period - self.worked_min).tap { |res| return res > 0 ? res : nil }
   end
 
   def worked_min
@@ -58,7 +58,7 @@ class Shift < ActiveRecord::Base
   end
 
   def end_earlier
-    if self.is_end_earlier && self.endtime != ''
+    if self.is_end_earlier
       ((self.schedule_end_time - self.endtime)/ 1.minutes).round
     else
       nil
@@ -66,7 +66,7 @@ class Shift < ActiveRecord::Base
   end
 
   def overtime
-    if self.is_overtime && self.endtime != ''
+    if self.is_overtime
       (((self.endtime - self.schedule_end_time) + (self.schedule_start_time - self.starttime))/ 1.minutes).round
     else
       nil
@@ -78,22 +78,18 @@ class Shift < ActiveRecord::Base
   end
 
   def is_late
-    return false if self.schedule_shift.nil?
+    return false if bad_shift?
     (self.starttime - self.schedule_start_time)/ 1.minutes > self.possible_minutes
   end
 
   def is_end_earlier
-    return false if self.schedule_shift.nil?
-    if self.endtime != ''
-      (self.schedule_end_time - self.endtime)/ 1.minutes > self.possible_minutes
-    end
+    return false if bad_shift?
+    (self.schedule_end_time - self.endtime)/ 1.minutes > self.possible_minutes
   end
 
   def is_overtime
-    return false if self.schedule_shift.nil?
-    if self.endtime != ''
-      ((self.endtime - self.schedule_end_time) + (self.schedule_start_time - self.starttime))/ 1.minutes > self.possible_minutes
-    end
+    return false if bad_shift?
+    ((self.endtime - self.schedule_end_time) + (self.schedule_start_time - self.starttime))/ 1.minutes > self.possible_minutes
   end
 
   def is_over
@@ -105,16 +101,24 @@ class Shift < ActiveRecord::Base
   def possible_minutes
     self.schedule_shift.start == 0 ? 10 : 5
   end
+
   def schedule_end_time
     self.shiftdate + self.schedule_shift.end.hour
   end
+
   def schedule_start_time
     self.shiftdate + self.schedule_shift.start.hour
   end
 
   def shift_period
-    return 0 if self.schedule_shift.nil?
+    return 0 if bad_shift?
     ((self.schedule_end_time - self.schedule_start_time)/ 1.minutes).round
+  end
+
+  private
+
+  def bad_shift?
+    (self.schedule_shift.nil? or self.endtime.blank? or self.schedule_end_time.blank? or self.schedule_start_time.blank? or self.starttime.blank?)
   end
 
 end

@@ -5,6 +5,5 @@ db/*.sqlite3
 log/
 tmp/
 Gemfile.lock
-db/schema.rb
 config/database.yml
 vector.rb
