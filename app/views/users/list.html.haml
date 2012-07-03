@@ -23,7 +23,7 @@
             = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
             %br
         - j = i + @u.count / 2
-        - if j < @u.count -1
+        - if j < @u.count
           - item = @u[j]
           %td{:style=>"border: 1px solid black"}
             %b
