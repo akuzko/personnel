@@ -78,7 +78,7 @@ class Shift < ActiveRecord::Base
   end
 
   def is_late
-    return false if bad_shift?
+    return false if self.schedule_start_time.blank?
     (self.starttime - self.schedule_start_time)/ 1.minutes > self.possible_minutes
   end
 
