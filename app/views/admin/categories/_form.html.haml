@@ -4,9 +4,10 @@
 .group
   = f.label :departments, t("personnel.category.assigned-departments", :default => "Assigned Departments"), :class => :label
   - Department.selection.each do |d|
-    = check_box_tag "departments[]", d.last, @category.departments.map(&:id).include?(d.last)
-    = d.first
-    %br
+    %span{:style => "display:#{current_admin.manage_department(d.last) ? '' : 'none'};",}
+      = check_box_tag "departments[]", d.last, @category.departments.map(&:id).include?(d.last)
+      = d.first
+      %br
 .group
   = f.label :displayed, t("activerecord.attributes.category.displayed", :default => "Display"), :class => :label
   = f.check_box :displayed, :class => 'check_box'

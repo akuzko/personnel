@@ -46,6 +46,11 @@ class Admin::CategoriesController < ApplicationController
     redirect_to admin_categories_path and return unless current_admin.manage_department(@category.departments)
     respond_to do |format|
       if @category.save
+        if params[:departments].is_a? Array
+          params[:departments].each do |d|
+            DepartmentCategory.find_or_create_by_category_id_and_department_id(@category.id,d.to_i)
+          end
+        end
         Log.add(current_admin, @category, params)
         format.html { redirect_to([:admin, @category], :notice => 'Category was successfully created.') }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
