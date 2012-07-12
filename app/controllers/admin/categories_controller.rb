@@ -43,7 +43,7 @@ class Admin::CategoriesController < ApplicationController
 
   def create
     @category = Category.new(params[:category])
-    redirect_to admin_categories_path and return unless current_admin.manage_department(@category.departments)
+    redirect_to admin_categories_path and return unless current_admin.manage_department(params[:departments])
     respond_to do |format|
       if @category.save
         if params[:departments].is_a? Array

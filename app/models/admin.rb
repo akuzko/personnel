@@ -15,8 +15,8 @@ class Admin < ActiveRecord::Base
 
   validates_confirmation_of :password
   validates_format_of :email,
-    :with => /\A([^@\s]+)@zone3000\.net\Z/i,
-    :message => 'Only Zone3000 local email is acceptable'
+                      :with => /\A([^@\s]+)@zone3000\.net\Z/i,
+                      :message => 'Only Zone3000 local email is acceptable'
 
   def active_for_authentication?
     super && approved?
@@ -31,7 +31,16 @@ class Admin < ActiveRecord::Base
   end
 
   def manage_department(department_ids)
-    super_user? || (departments.map(&:id) & (department_ids.is_a?(Fixnum) ? [department_ids] : department_ids.map(&:id))).any?
+    if department_ids.is_a?(Fixnum)
+      dep = [department_ids]
+    else
+      if department_ids.is_a?(Array)
+        dep = department_ids.map(&:to_i)
+      else
+        dep = department_ids.map(&:id)
+      end
+    end
+    super_user? || (departments.map(&:id) & dep).any?
   end
 
   def name
