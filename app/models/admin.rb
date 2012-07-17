@@ -35,9 +35,11 @@ class Admin < ActiveRecord::Base
       dep = [department_ids]
     else
       if department_ids.is_a?(Array)
-        dep = department_ids.map(&:to_i)
-      else
-        dep = department_ids.map(&:id)
+        begin
+          dep = department_ids.map(&:id)
+        rescue
+          dep = department_ids.map(&:to_i)
+        end
       end
     end
     super_user? || (departments.map(&:id) & dep).any?
