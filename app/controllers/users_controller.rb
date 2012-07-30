@@ -105,6 +105,11 @@ class UsersController < ApplicationController
     render '_show_'+params[:section]+'.html', :layout => false
   end
 
+  def by_department
+    @users = User.selection_by_admin(current_admin.id, params[:department_id])
+    render :layout => false
+  end
+
   def find
     @user = User.find current_user.id
     params[:sort_by] ||= "identifier"

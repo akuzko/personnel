@@ -59,6 +59,7 @@ Personnel::Application.routes.draw do
 
   resources :users do
     get :view, :on => :member
+    get :by_department, :on => :collection
   end
 
   resources :addresses do

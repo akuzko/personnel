@@ -194,6 +194,9 @@
         $("[name*='shiftdate']").change(function() {
           return app.reload_shift_numbers();
         });
+        $("#department_id").change(function() {
+          return app.reload_users_by_department();
+        });
         $(".datetime_select").datetimepicker({
           dateFormat: 'yy-mm-dd',
           changeMonth: true,
@@ -291,6 +294,11 @@
           return $("#new_shift .navform").show();
         }
       });
+    },
+    reload_users_by_department: function() {
+      var dep_id;
+      dep_id = $("#department_id").val();
+      return $("#users_select").load('/users/by_department/?department_id=' + dep_id);
     },
     check_department_for_identifier: function() {
       if ($("#user_department_id").val()) {

@@ -153,6 +153,9 @@
       $("[name*='shiftdate']").change ->
         app.reload_shift_numbers()
 
+      $("#department_id").change ->
+        app.reload_users_by_department()
+
       $(".datetime_select").datetimepicker
         dateFormat: 'yy-mm-dd'
         changeMonth: true
@@ -229,6 +232,10 @@
         $("#new_shift .navform").hide()
       else
         $("#new_shift .navform").show()
+
+  reload_users_by_department: ->
+    dep_id = $("#department_id").val()
+    $("#users_select").load '/users/by_department/?department_id='+dep_id
 
   check_department_for_identifier: ->
     if $("#user_department_id").val()
