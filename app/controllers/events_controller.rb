@@ -21,7 +21,7 @@ class EventsController < ApplicationController
         @shift.end_event = Event.logout(current_user.id, @shift.shiftdate + @shift.schedule_shift.end.hour, request.remote_ip, @shift.id)
         @shift.save
         #Start new shift
-        @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(Date.current, @shift_next.number, current_user.id)
+        @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id_and_schedule_shift_id(Date.current, @shift_next.number, current_user.id, @shift_next.id)
         session[:shift_id] = @shift.id
         #Check if the next shift for the user is not started
         if @shift.start_event.nil?
@@ -152,7 +152,7 @@ class EventsController < ApplicationController
       flash[:error] = "The shift is already over"
       redirect_to start_shift_events_path and return
     end
-    @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id(shiftdate, params[:shift][:number], current_user.id)
+    @shift = Shift.find_or_create_by_shiftdate_and_number_and_user_id_and_schedule_shift_id(shiftdate, params[:shift][:number], current_user.id, @schedule_shift.id)
 
     if @shift
       if @shift.start_event.nil?

@@ -18,7 +18,7 @@
               = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id), params[:department_id]), { :include_blank => true }
             %td
               User
-              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id), params[:user_id]), { :include_blank => true }
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id, params[:department_id]), params[:user_id]), { :include_blank => true }
             %td
               &nbsp;
             %td
@@ -82,10 +82,10 @@
             %td
               = shift.number
             %td
-              = shift.starttime.to_formatted_s(:date_and_time) unless shift.starttime == ''
+              = shift.started.eventtime.to_formatted_s(:date_and_time) if shift.started
               = "(#{shift.start_ip})" unless shift.start_ip == ''
             %td
-              = shift.endtime.to_formatted_s(:date_and_time) unless shift.endtime == ''
+              = shift.ended.eventtime.to_formatted_s(:date_and_time) if shift.ended
               = "(#{shift.end_ip})" unless shift.end_ip == ''
             %td.green
               = shift.worked_min ? (Date.current + shift.worked_min.minutes).strftime("%H hrs %M min") : "-"

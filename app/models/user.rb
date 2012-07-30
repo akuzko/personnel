@@ -245,9 +245,9 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.selection_by_admin(admin_id)
+  def self.selection_by_admin(admin_id, department_id = nil)
     admin = Admin.find_by_id(admin_id)
-    return selection(0) if admin.super_user?
+    return selection(department_id.to_i) if admin.super_user?
     departments = admin.departments.map { |d| d.id }
     users = []
     includes(:profile).order('`profiles`.last_name').active.map do |d|

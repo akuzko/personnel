@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120618160030) do
+ActiveRecord::Schema.define(:version => 20120730085236) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -236,8 +236,10 @@ ActiveRecord::Schema.define(:version => 20120618160030) do
     t.integer  "end_event"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "schedule_shift_id"
   end
 
+  add_index "shifts", ["schedule_shift_id"], :name => "index_shifts_on_schedule_shift_id"
   add_index "shifts", ["user_id"], :name => "index_shifts_on_user_id"
 
   create_table "taxi_routes", :force => true do |t|
