@@ -111,10 +111,12 @@ class Shift < ActiveRecord::Base
   end
 
   def schedule_end_time
+    return nil unless self.schedule_shift
     self.shiftdate + self.schedule_shift.end.hour
   end
 
   def schedule_start_time
+    return nil unless self.schedule_shift
     self.shiftdate + self.schedule_shift.start.hour
   end
 

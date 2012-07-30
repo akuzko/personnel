@@ -24,20 +24,22 @@ class Department < ActiveRecord::Base
              :order => "#{params[:sort_by]} #{params[:sort_order]}"
   end
 
-  def self.selection
+  def self.selection(tracked_only = false)
     order(:name).all.map do |d|
+      next if tracked_only and not d.has_events?
       [d.name, d.id]
-    end
+    end.compact
   end
 
-  def self.selection_by_admin(admin_id)
+  def self.selection_by_admin(admin_id, tracked_only = false)
     admin = Admin.find_by_id(admin_id)
-    return selection if admin.super_user?
+    return selection(tracked_only) if admin.super_user?
     departments = admin.departments.map(&:id)
     admin.departments.order(:name).all.map do |d|
       if departments.include?(d.id)
+        next if tracked_only and not d.has_events?
         [d.name, d.id]
       end
-    end
+    end.compact
   end
 end
