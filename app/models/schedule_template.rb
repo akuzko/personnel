@@ -14,7 +14,7 @@ class ScheduleTemplate < ActiveRecord::Base
     shifts.each do |shift|
       hours = shift.end - shift.start
       cells = ScheduleCell.find_all_by_schedule_shift_id_and_day(shift.id, day)
-      if !cells.nil?
+      unless cells.nil?
         cells.each do |cell|
           total_fact += cell.user_id * hours unless cell.user_id.nil?
         end
