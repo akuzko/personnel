@@ -262,6 +262,23 @@ class User < ActiveRecord::Base
     users
   end
 
+  def self.selection_by_admin_list(admin_id, department_id = nil)
+    admin = Admin.find_by_id(admin_id)
+    if admin.super_user?
+      if department_id.to_i == 0
+        return includes(:profile).order('`profiles`.last_name').active.map { |d| [d.full_name, d.id] }
+      else
+        return includes(:profile).order('`profiles`.last_name').find_all_by_department_id_and_active(department_id, 1).map { |d| [d.full_name, d.id]  }
+      end
+    end
+    departments = department_id.to_i == 0 ? admin.departments.map { |d| d.id } : [department_id.to_i]
+    users = []
+    includes(:profile).order('`profiles`.last_name').active.map do |d|
+      users.push [d.full_name, d.id] if departments.include?(d.department_id)
+    end
+    users
+  end
+
   def self.selection_by_team_lead(user_id)
     user = User.find_by_id(user_id)
     return false unless user.team_lead?

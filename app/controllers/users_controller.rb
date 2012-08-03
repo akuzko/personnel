@@ -106,7 +106,7 @@ class UsersController < ApplicationController
   end
 
   def by_department
-    @users = User.selection_by_admin(current_admin.id, params[:department_id])
+    @users = User.selection_by_admin_list(current_admin.id, params[:department_id])
     render :layout => false
   end
 
