@@ -186,11 +186,18 @@ class EventsController < ApplicationController
         # last event
         @category = Category.find_or_create_by_name('Logout')
         @last_event = User.find(@shift.user_id).events.where("category_id <> ?", @category.id).order(:eventtime).last
-        puts "Last event: #{@last_event.eventtime}"
-        logger.debug "Last event: #{@last_event.eventtime}"
+        if @last_event
+          puts "Last event: #{@last_event.eventtime}"
+          logger.debug "Last event: #{@last_event.eventtime}"
+          @ent_time = [[@last_event.eventtime + 1.minute, @shift.schedule_end_time].max, DateTime.current].min
+        else
+          puts "No Last event"
+          logger.debug "No Last event"
+          @ent_time = @shift.schedule_end_time
+        end
         puts "Updating shift ##{@shift.id} endtime"
         logger.debug "Updating shift ##{@shift.id} endtime"
-        @event.update_attributes(:eventtime => [@last_event.eventtime + 1.minute, @shift.schedule_end_time].max, :ip_address => Event.ip2int(request.remote_ip))
+        @event.update_attributes(:eventtime => @ent_time, :ip_address => Event.ip2int(request.remote_ip))
       end
     end
     @shift.save
