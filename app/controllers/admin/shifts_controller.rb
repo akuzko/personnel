@@ -35,7 +35,14 @@ class Admin::ShiftsController < ApplicationController
   end
 
   def create
+    @user = User.find_by_id params[:shift][:user_id]
+    render(:update) { |page| page['#shift_flash'].parents(0).show; page['#shift_flash'].html 'User not found'} and return unless @user
+    @template = ScheduleTemplate.find_by_department_id_and_year_and_month(@user.department_id, params[:shift]["shiftdate(1i)"], params[:shift]["shiftdate(2i)"])
+    render(:update) { |page| page['#shift_flash'].parents(0).show; page['#shift_flash'].html 'Template not found'} and return unless @template
+    @schedule_shift = @template.schedule_shifts.where(:number => params[:shift][:number]).first
+    render(:update) { |page| page['#shift_flash'].parents(0).show; page['#shift_flash'].html 'Scheduled shift not found'} and return unless @schedule_shift
     @shift = Shift.new(params[:shift])
+    @shift.schedule_shift = @schedule_shift
     @shift.start_event = Event.login(@shift.user_id, Time.zone.parse("#{@shift.shiftdate} #{@shift.schedule_shift.start}:00").utc, request.remote_ip, @shift.id)
     @shift.end_event = Event.logout(@shift.user_id, Time.zone.parse("#{@shift.shiftdate} #{@shift.schedule_shift.end}:00").utc, request.remote_ip, @shift.id)
     if @shift.save
