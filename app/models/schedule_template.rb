@@ -40,7 +40,6 @@ class ScheduleTemplate < ActiveRecord::Base
           end
         end
       end
-      ap total_fact
       missed << user.identifier if total_fact < total_normal
       extra << user.identifier if total_fact > total_normal
     end
