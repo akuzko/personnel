@@ -93,7 +93,8 @@
               %li.left_part
               - @days_in_month.times do |day|
                 %li.header_part
-                  %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
+                  %a.modal_dialog{href: check_day_detailed_admin_schedule_template_url(@template, {day: (day+1)})}
+                    %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
       %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')
 %div.modal#overlay

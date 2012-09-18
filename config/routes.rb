@@ -126,6 +126,7 @@ Personnel::Application.routes.draw do
       get :select_users, :on => :member
       put :update_editable_users, :on => :member
       get :check_day, :on => :member
+      get :check_day_detailed, :on => :member
       get :check_month, :on => :member
       get :default_norms, :on => :member
       get :user_norms, :on => :member

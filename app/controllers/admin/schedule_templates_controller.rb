@@ -54,6 +54,12 @@ class Admin::ScheduleTemplatesController < ApplicationController
     end
   end
 
+  def check_day_detailed
+    @schedule_template = ScheduleTemplate.find params[:id]
+    @missed, @extra = @schedule_template.check_day_detailed(params[:day])
+    render :layout => false
+  end
+
   def check_month
     @schedule_template = ScheduleTemplate.find params[:id]
     @days_in_month = Time.days_in_month(@schedule_template.month, @schedule_template.year)

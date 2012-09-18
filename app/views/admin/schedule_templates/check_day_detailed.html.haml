@@ -1,0 +1,8 @@
+-if @missed.any?
+  %h2 Missed
+  %p= "#{@missed.join(', ')}"
+-if @extra.any?
+  %h2 Extra
+  %p= "#{@extra.join(', ')}"
+-if @missed.empty? and @extra.empty?
+  %h2 Everything is fine
