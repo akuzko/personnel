@@ -158,6 +158,15 @@ Personnel::Application.routes.draw do
     end
   end
 
+  namespace :api do
+    resources :departments, :only => [:index]
+    resources :users, :only => [:index] do
+      get :rate, :on => :collection
+      get :feedbacks, :on => :collection
+      get :shifts, :on => :collection
+    end
+  end
+
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => "home#index"
