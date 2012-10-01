@@ -1,10 +1,11 @@
 # Additional translations at http://github.com/plataformatec/devise/wiki/I18n
 
 ru:
+  activate the account: Активировать учетную запись
   errors:
     messages:
       not_found: "не найден"
-      already_confirmed: "уже поджвержден, попробуйте войти"
+      already_confirmed: "уже подтвержден, попробуйте войти"
       not_locked: "не заблокирован"
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
