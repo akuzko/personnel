@@ -25,7 +25,40 @@ class Api::UsersController < Api::BaseController
   end
 
   def feedbacks
-    error!('Not implemented yet', 501)
+    # Survey Follow-up
+    @category = Category.find_by_name('Survey Follow-up')
+    error!('Category Survey Follow-up not found', 404) and return unless @category
+    conditions = []
+    conditions.push("`events`.category_id = %d" % @category.id)
+    conditions.push("`users`.department_id =  %d " % params[:department_id]) unless params[:department_id].blank?
+    conditions.push("`shifts`.shiftdate >= '%s'" % Date.parse(params[:date_from]).to_formatted_s(:db)) unless params[:date_from].blank?
+    conditions.push("`shifts`.shiftdate <= '%s'" % Date.parse(params[:date_to]).to_formatted_s(:db)) unless params[:date_to].blank?
+
+    @events = Event.select("count(*) as total_tickets, number, shiftdate").
+        joins(:user).
+        joins(:shift).
+        where(conditions.join(' and ')).
+        group("shifts.shiftdate, shifts.number").
+        order("shifts.shiftdate, shifts.number")
+    date = ""
+    date_hash = {}
+    shifts_hash = @events.inject([]) do |res,shift|
+      if date == shift.shiftdate.to_formatted_s(:db)
+        date_hash.merge!(shift.number => shift.total_tickets) if date == shift.shiftdate.to_formatted_s(:db)
+      else
+        res << {date => date_hash} unless date_hash.blank?
+        date_hash = {shift.number => shift.total_tickets}
+        date = shift.shiftdate.to_formatted_s(:db)
+      end
+
+      if shift == @events.last
+        res << {date => date_hash} unless date_hash.blank?
+      end
+      res
+    end
+    respond_to do |format|
+      format.json { render json: shifts_hash }
+    end
   end
 
   def shifts
@@ -39,7 +72,7 @@ class Api::UsersController < Api::BaseController
         where(conditions.join(' and ')).
         group(:schedule_shift_id, :number, :shiftdate).
         order(:shiftdate, :number)
-    date = @shifts.first.shiftdate.to_formatted_s(:db)
+    date = ""
     date_hash = {}
     shifts_hash = @shifts.inject([]) do |res,shift|
       # shift_leader
@@ -50,11 +83,16 @@ class Api::UsersController < Api::BaseController
       else
         shift_leader = nil
       end
-      date_hash.merge!(shift.number => {total_employees: shift.total_employees, shift_leader: shift_leader})
-      if date != shift.shiftdate.to_formatted_s(:db) or shift == @shifts.last
+      if date == shift.shiftdate.to_formatted_s(:db)
+        date_hash.merge!(shift.number => {total_employees: shift.total_employees, shift_leader: shift_leader})
+      else
         res << {date => date_hash} unless date_hash.blank?
-        date_hash = {}
+        date_hash = {total_employees: shift.total_employees, shift_leader: shift_leader}
         date = shift.shiftdate.to_formatted_s(:db)
+      end
+
+      if shift == @shifts.last
+        res << {date => date_hash} unless date_hash.blank?
       end
       res
     end
