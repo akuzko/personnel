@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730085236) do
+ActiveRecord::Schema.define(:version => 20121005074007) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -285,6 +285,7 @@ ActiveRecord::Schema.define(:version => 20120730085236) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.boolean  "team_lead",                             :default => false
+    t.integer  "norm",                                  :default => 8
   end
 
   add_index "users", ["department_id"], :name => "index_users_on_department_id"
