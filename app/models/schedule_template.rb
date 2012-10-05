@@ -9,7 +9,6 @@ class ScheduleTemplate < ActiveRecord::Base
       total_normal += user.identifier * user.norm
     end
     total_fact = 0
-    ap day
     shifts = ScheduleShift.includes(:schedule_cells).find_all_by_schedule_template_id self.id
     shifts.each do |shift|
       hours = shift.end - shift.start
@@ -17,7 +16,6 @@ class ScheduleTemplate < ActiveRecord::Base
       unless cells.nil?
         cells.each do |cell|
           if shift.number == 10
-            ap cell.user_id
             user = @users.find{|k| k.identifier == cell.user_id.to_i}
             total_fact += cell.user_id * user.norm unless cell.user_id.nil? or user.nil?
           else
