@@ -241,9 +241,9 @@
     if $("#user_department_id").val()
       $.get '/shifts/'+$("#user_department_id").val()+'/check_department_for_identifier', (data) ->
         if data == 'false'
-          $("#user_identifier").parents("div.group").hide()
+          $(".for_identified_only").hide()
         else
-          $("#user_identifier").parents("div.group").show()
+          $(".for_identified_only").show()
 
   repaint_selected_cells: (user_id, font_weight, font_color, color) ->
     $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).removeClass('ui-selected')

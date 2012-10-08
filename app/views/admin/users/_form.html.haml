@@ -4,10 +4,10 @@
 .group
   = f.label :department_id, t("personnel.user.department", :default => "Department"), :class => :label
   = f.select :department_id, Department.selection_by_admin(current_admin.id), {}, {:onchange => 'app.check_department_for_identifier()'}
-.group
+.group.for_identified_only
   = f.label :norm, t("personnel.user.norm", :default => "Norm"), :class => :label
   = f.text_field :norm, :class => 'text_field', :style => "width:160px"
-.group
+.group.for_identified_only
   = f.label :identifier, t("personnel.user.identifier", :default => "IDentifier"), :class => :label
   = f.select :identifier, User.identifier_selection(f.object.identifier), :include_blank => true
   = f.hidden_field :back_url, :value => @back_url

@@ -304,9 +304,9 @@
       if ($("#user_department_id").val()) {
         return $.get('/shifts/' + $("#user_department_id").val() + '/check_department_for_identifier', function(data) {
           if (data === 'false') {
-            return $("#user_identifier").parents("div.group").hide();
+            return $(".for_identified_only").hide();
           } else {
-            return $("#user_identifier").parents("div.group").show();
+            return $(".for_identified_only").show();
           }
         });
       }
