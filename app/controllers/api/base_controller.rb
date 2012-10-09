@@ -1,7 +1,6 @@
 class Api::BaseController < ActionController::Base
-
   respond_to :json
-  before_filter :default_format_json
+  before_filter :auth, :default_format_json
 
   private
 
@@ -13,5 +12,11 @@ class Api::BaseController < ActionController::Base
     respond_to do |format|
       format.json { render json: { error: message }, status: status }
     end
+  end
+
+
+  def auth
+    render json: { error: 'Missing required parameter: auth_token'} , status: 401 and return if params[:auth_token].blank?
+    render json: { error: 'Authorization failed'} , status: 401 and return if params[:auth_token] != "JEGpHxStUjJf9Dw"
   end
 end
