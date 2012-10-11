@@ -63,6 +63,7 @@ class Api::UsersController < Api::BaseController
 
   def shifts
     conditions = []
+    conditions.push("number IN (1,2,3,4,5)")
     conditions.push("`users`.department_id =  %d " % params[:department_id]) unless params[:department_id].blank?
     conditions.push("shiftdate >= '%s'" % Date.parse(params[:date_from]).to_formatted_s(:db)) unless params[:date_from].blank?
     conditions.push("shiftdate <= '%s'" % Date.parse(params[:date_to]).to_formatted_s(:db)) unless params[:date_to].blank?
@@ -87,7 +88,7 @@ class Api::UsersController < Api::BaseController
         date_hash.merge!(shift.number => {total_employees: shift.total_employees, shift_leader: shift_leader})
       else
         res << {date => date_hash} unless date_hash.blank?
-        date_hash = {total_employees: shift.total_employees, shift_leader: shift_leader}
+        date_hash = {shift.number => {total_employees: shift.total_employees, shift_leader: shift_leader}}
         date = shift.shiftdate.to_formatted_s(:db)
       end
 
