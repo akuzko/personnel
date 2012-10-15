@@ -84,7 +84,9 @@ Personnel::Application.routes.draw do
     post :create_late_coming, :on => :collection
     get :processed_by_person, :on => :collection
     get :new_self_score, :on => :collection
+    get :new_shift_leader_score, :on => :collection
     post :create_self_score, :on => :collection
+    post :create_shift_leader_score, :on => :collection
   end
   resources :late_comings
   # Sample resource route within a namespace:
@@ -165,6 +167,7 @@ Personnel::Application.routes.draw do
       get :feedbacks, :on => :collection
       get :shifts, :on => :collection
     end
+    resources :leader_shifts, :only => [:index]
   end
 
   # You can have the root of your site routed with "root"

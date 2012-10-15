@@ -44,7 +44,7 @@ class Api::UsersController < Api::BaseController
     date_hash = {}
     shifts_hash = @events.inject([]) do |res,shift|
       if date == shift.shiftdate.to_formatted_s(:db)
-        date_hash.merge!(shift.number => shift.total_tickets) if date == shift.shiftdate.to_formatted_s(:db)
+        date_hash.merge!(shift.number => shift.total_tickets)
       else
         res << {date => date_hash} unless date_hash.blank?
         date_hash = {shift.number => shift.total_tickets}
@@ -77,7 +77,7 @@ class Api::UsersController < Api::BaseController
     date_hash = {}
     shifts_hash = @shifts.inject([]) do |res,shift|
       # shift_leader
-      shift_leader_cell = shift.schedule_shift.schedule_cells.find_by_day_and_responsible(shift.shiftdate.strftime("%d"), 1)
+      shift_leader_cell = shift.schedule_shift.schedule_cells.find_by_day_and_responsible(shift.shiftdate.day, 1)
       if shift_leader_cell
         user = User.find_by_identifier(shift_leader_cell.user_id)
         shift_leader = {id: user.id, identifier:user.identifier, name: user.full_name}
