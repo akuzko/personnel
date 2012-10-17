@@ -7,6 +7,8 @@
       %li{:style => 'float:right'}= link_to "#{t("personnel.shift.end", :default => "End Shift")}", end_shift_events_path, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
       - if @display_self_score
         %li{:style => 'float:right'}= link_to "#{t("personnel.self_score.label", :default => "Self Score")}", new_self_score_events_path
+      - if  @display_shift_leader_score
+        %li{:style => 'float:right'}= link_to "#{t("personnel.shift_leader_score.label", :default => "Rate Shift Leader")}", new_shift_leader_score_events_path
   .content
     %h2.title
       = "#{t('personnel.schedule.shift', :default => 'Shift')} ##{@shift.number} (#{@shift.shiftdate} #{@shift.schedule_shift.start}:00 - #{@shift.schedule_shift.end}:00)"

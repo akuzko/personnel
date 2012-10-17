@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121005074007) do
+ActiveRecord::Schema.define(:version => 20121010073648) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -226,6 +226,17 @@ ActiveRecord::Schema.define(:version => 20121005074007) do
     t.string   "comment"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "shift_leader_scores", :force => true do |t|
+    t.date     "shift_date"
+    t.integer  "shift_number"
+    t.integer  "shift_leader_id"
+    t.integer  "user_id"
+    t.integer  "score"
+    t.string   "comment"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "shifts", :force => true do |t|

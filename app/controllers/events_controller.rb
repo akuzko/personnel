@@ -43,6 +43,9 @@ class EventsController < ApplicationController
 
     # self score
     @display_self_score = self_score_available?(:current)
+
+    # shift leader score
+    @display_shift_leader_score = shift_leader_score_available?
   end
 
   def show
@@ -302,6 +305,22 @@ class EventsController < ApplicationController
     end
   end
 
+  def new_shift_leader_score
+    @shift_leader_score = ShiftLeaderScore.new()
+    current_shift = Shift.find_by_id session[:shift_id]
+    ap current_shift
+  end
+
+  def create_shift_leader_score
+    @shift_leader_score = ShiftLeaderScore.new(params[:shift_leader_score])
+    if @shift_leader_score.save
+      redirect_to events_path
+    else
+      flash[:error] = @shift_leader_score.errors.full_messages
+      render :new_shift_leader_score
+    end
+  end
+
   private
 
   def self_score_available?(mode = :current)
@@ -317,7 +336,15 @@ class EventsController < ApplicationController
         next_shift = Shift.where(:shiftdate => shift.shiftdate).where('number < 10').where('id > ?', shift.id).order(:id).find_all_by_user_id(shift.user_id).first
         (next_shift.blank? and SelfScore.find_by_score_date_and_user_id(shift.shiftdate, current_user.id).blank?)
     end
+  end
 
+  def shift_leader_score_available?
+    current_shift = Shift.find_by_id session[:shift_id]
+    return false unless current_shift.schedule_cell.responsible?
+    # find prev shift and check if it is rated already
+
+    return false unless sl =  current_shift.prev_shift[:schedule_shift].shift_leader(current_shift.prev_shift[:date].day)
+    ShiftLeaderScore.find_by_shift_date_and_shift_number_and_user_id(current_shift.prev_shift[:date], current_shift.prev_shift[:schedule_shift].number, current_user.id).blank?
   end
 
 end

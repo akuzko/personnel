@@ -1,0 +1,27 @@
+#box
+  .block
+    %h2
+      = t('personnel.shift_leader_score.title', :default => 'Shift')
+      = @shift_leader_score.shift_date
+      = @shift_leader_score.shift_number
+    .content.login
+      %div{:class => "flash", :style => 'display:none;'}
+        %div{:id => "self_score_flash", :class => "message error"}
+      = form_for @shift_leader_score, :url => create_shift_leader_score_events_path, :html => {:class => 'form login'} do |f|
+        .group.wat-cf
+          = t('personnel.shift_leader_score.question', :default => 'On a scale from 1 to 5 how would you rate the shift leader passing all the outstanding issues to you?')
+        .group.wat-cf
+          = f.hidden_field :shift_date
+          = f.hidden_field :shift_number
+          = f.hidden_field :shift_leader_id
+          = f.select :score, SelfScore.selection, { :include_blank => true }
+        .group.wat-cf.self_score.comment{:style => "display:#{f.object.score.blank? ? 'none' : ''};"}
+          = f.text_field :comment, :size => 70
+        .group.navform.wat-cf
+          %button.button{:type => "submit"}
+            = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.score", :default => "Score")}")
+            = t("web-app-theme.score", :default => "Score")
+          %span.text_button_padding= t("web-app-theme.or", :default => "or")
+          %a.button{:href => events_path}
+            = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+            = t("web-app-theme.cancel", :default => "Cancel")

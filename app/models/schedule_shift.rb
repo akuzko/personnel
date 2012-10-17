@@ -24,4 +24,8 @@ class ScheduleShift < ActiveRecord::Base
     self.update_attributes(params[:schedule_shift])
   end
 
+  def shift_leader(day)
+    schedule_cells.where("user_id IS NOT NULL").find_by_day_and_responsible(day, 1)
+  end
+
 end

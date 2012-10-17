@@ -26,15 +26,11 @@ class Shift < ActiveRecord::Base
   def starttime
     return '' unless self.started
     self.started.eventtime
-    #@event = Event.find_by_id(self.start_event)
-    #@event.nil? ? '' : @event.eventtime
   end
 
   def endtime
     return '' unless self.ended
     self.ended.eventtime
-    #@event = Event.find_by_id(self.end_event)
-    #@event.nil? ? '' : @event.eventtime
   end
 
   def start_ip
@@ -81,10 +77,6 @@ class Shift < ActiveRecord::Base
     end
   end
 
-  #def schedule_shift
-  #  ScheduleTemplate.find_by_department_id_and_year_and_month(User.find(self.user_id).department_id, self.shiftdate.year, self.shiftdate.month).schedule_shifts.find_by_number(self.number)
-  #end
-
   def is_late
     return false if self.schedule_start_time.blank?
     (self.starttime - self.schedule_start_time)/ 1.minutes > self.possible_minutes
@@ -123,6 +115,21 @@ class Shift < ActiveRecord::Base
   def shift_period
     return 0 if bad_shift?
     ((self.schedule_end_time - self.schedule_start_time)/ 1.minutes).round
+  end
+
+  def schedule_cell
+    schedule_shift.schedule_cells.find{|k| k.user_id == user.identifier and k.day == shiftdate.day}
+  end
+
+  def prev_shift
+    date = shiftdate
+    date = date - 1.day if number == 1
+
+    template = ScheduleTemplate.where(department_id: user.department_id).where(year: date.year).where(month: date.month).first
+
+    schedule_shifts = template.schedule_shifts.where("number < 10")
+    schedule_shifts = schedule_shifts.where("number <  ?", number) unless number == 1
+    {schedule_shift: schedule_shifts.order(:number).last, date: date}
   end
 
   private
