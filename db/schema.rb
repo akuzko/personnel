@@ -296,7 +296,7 @@ ActiveRecord::Schema.define(:version => 20121010073648) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.boolean  "team_lead",                             :default => false
-    t.integer  "norm",                                  :default => 8
+    t.integer  "norm",                                  :default => 8,     :null => false
   end
 
   add_index "users", ["department_id"], :name => "index_users_on_department_id"

@@ -306,13 +306,21 @@ class EventsController < ApplicationController
   end
 
   def new_shift_leader_score
-    @shift_leader_score = ShiftLeaderScore.new()
     current_shift = Shift.find_by_id session[:shift_id]
-    ap current_shift
+    @prev_shift = current_shift.prev_shift
+
+    @shift_leader_cell = current_shift.prev_shift[:schedule_shift].shift_leader_cell(current_shift.prev_shift[:date].day) rescue nil
+
+    redirect_to events_path unless @shift_leader_cell
+    @shift_leader = User.find_by_identifier(@shift_leader_cell.user_id)
+    redirect_to events_path unless @shift_leader
+
+    @shift_leader_score = ShiftLeaderScore.new(shift_date: @shift_leader_cell.date, shift_number: @prev_shift[:schedule_shift].number, shift_leader_id: @shift_leader.id)
   end
 
   def create_shift_leader_score
     @shift_leader_score = ShiftLeaderScore.new(params[:shift_leader_score])
+    @shift_leader_score.user_id = current_user.id
     if @shift_leader_score.save
       redirect_to events_path
     else
@@ -343,7 +351,7 @@ class EventsController < ApplicationController
     return false unless current_shift.schedule_cell.responsible?
     # find prev shift and check if it is rated already
 
-    return false unless sl =  current_shift.prev_shift[:schedule_shift].shift_leader(current_shift.prev_shift[:date].day)
+    return false unless current_shift.prev_shift[:schedule_shift].shift_leader_cell(current_shift.prev_shift[:date].day)
     ShiftLeaderScore.find_by_shift_date_and_shift_number_and_user_id(current_shift.prev_shift[:date], current_shift.prev_shift[:schedule_shift].number, current_user.id).blank?
   end
 
