@@ -161,7 +161,7 @@ Personnel::Application.routes.draw do
   end
 
   namespace :api do
-    resources :departments, :only => [:index]
+    resources :departments, :only => [:index, :show]
     resources :users, :only => [:index] do
       get :rate, :on => :collection
       get :feedbacks, :on => :collection
