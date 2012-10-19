@@ -18,7 +18,7 @@ class Api::DepartmentsController < Api::BaseController
     error!('Schedule not found', 404) and return unless template
     user_ids, newbies = [], []
     template.schedule_shifts.where("number < 10").each do |shift|
-      user_ids = user_ids + shift.schedule_cells.where("additional_attributes != 13").map(&:user_id)
+      user_ids = user_ids + shift.schedule_cells.where("additional_attributes != 13 OR additional_attributes IS NULL").map(&:user_id)
       newbies = newbies + shift.schedule_cells.where(additional_attributes: 2).map(&:user_id)
     end
     respond_to do |format|
