@@ -164,6 +164,7 @@ class EventsController < ApplicationController
         @shift.save
       end
       session[:shift_id] = @shift.id
+      redirect_to new_shift_leader_score_events_path and return if shift_leader_score_available?
       redirect_to events_path
     else
       flash[:error] = @shift.errors
@@ -347,6 +348,7 @@ class EventsController < ApplicationController
   end
 
   def shift_leader_score_available?
+    return false unless session[:shift_id]
     return false unless current_user.department_id == 6
     current_shift = Shift.find_by_id session[:shift_id]
     return false unless current_shift.schedule_cell.responsible?
