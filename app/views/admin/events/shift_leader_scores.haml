@@ -1,0 +1,80 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Shift Leader Score
+    .inner
+      = form_tag(shift_leader_scores_admin_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id, true), params[:department_id]), { :include_blank => true }
+            %td#users_select
+              User
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id, params[:department_id]), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_from_check, 1, params[:date_from_check]
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_to_check, 1, params[:date_to_check]
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              per page
+              = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_self_score.date", :default => t("activerecord.labels.date", :default => "Date"))
+          %th{:sort => 'full_name', :class => 'sortable'}
+            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th{:sort => 'score', :class => 'sortable'}
+            = t("activerecord.attributes.admin_self_score.score", :default => t("activerecord.labels.rating", :default => "Rating"))
+          %th
+            = t("activerecord.attributes.admin_self_score.comments", :default => t("activerecord.labels.comments", :default => "Comments"))
+        - @self_scores.each do |line|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = line.shift_date.to_formatted_s(:date)
+              = "##{line.shift_number}"
+            %td
+              = line.shift_leader.full_name
+            %td
+              = line.score
+            %td
+              = line.comment
+        %tr
+          %td{:colspan => 2}
+          %td
+            %b
+              = "Average: %.2f" % @average if @average
+          %td
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @self_scores
+%div.modal#overlay
+  %div.contentWrap

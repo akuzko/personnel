@@ -123,6 +123,12 @@ class Admin::EventsController < ApplicationController
     @average = SelfScore.search_average(params, current_admin).avg_score
   end
 
+  def shift_leader_scores
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+    @self_scores = ShiftLeaderScore.search(params, current_admin)
+  end
+
   def self_scores_grouped
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
     params[:per_page] ||= 15
