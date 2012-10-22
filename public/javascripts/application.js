@@ -105,14 +105,13 @@
           return false;
         });
         $('.schedule_excludable li.cell').live('click', function() {
-          var day, line, match, regex, shift_id, text;
-          if (confirm("Are you sure you want to toggle the delivery status?")) {
-            regex = /cell_(\d+)_(\d+)_(\d+)/;
-            text = $(this).attr('id');
-            match = text.match(regex);
-            shift_id = match[1];
-            line = match[2];
-            day = match[3];
+          var day, line, match, shift_id;
+          match = $(this).attr('id').match(/cell_(\d+)_(\d+)_(\d+)/);
+          shift_id = match[1];
+          line = match[2];
+          day = match[3];
+          match = $(this).text().match(/[\d]+/);
+          if (current_user !== '' && match !== null && match[0] === current_user && confirm("Are you sure you want to toggle the delivery status?")) {
             $.post("/schedule/toggle_exclude", {
               shift: shift_id,
               line: line,
