@@ -106,18 +106,20 @@
         });
         $('.schedule_excludable li.cell').live('click', function() {
           var day, line, match, regex, shift_id, text;
-          regex = /cell_(\d+)_(\d+)_(\d+)/;
-          text = $(this).attr('id');
-          match = text.match(regex);
-          shift_id = match[1];
-          line = match[2];
-          day = match[3];
-          $.post("/schedule/toggle_exclude", {
-            shift: shift_id,
-            line: line,
-            day: day
-          });
-          return false;
+          if (confirm("Are you sure you want to toggle the delivery status?")) {
+            regex = /cell_(\d+)_(\d+)_(\d+)/;
+            text = $(this).attr('id');
+            match = text.match(regex);
+            shift_id = match[1];
+            line = match[2];
+            day = match[3];
+            $.post("/schedule/toggle_exclude", {
+              shift: shift_id,
+              line: line,
+              day: day
+            });
+            return false;
+          }
         });
         $("#selectable").selectable({
           filter: 'li.cell',
