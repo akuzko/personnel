@@ -349,7 +349,7 @@ class EventsController < ApplicationController
 
   def shift_leader_score_available?
     return false unless session[:shift_id]
-    return false unless current_user.department_id == 24
+    return false unless current_user.department_id == 6
     current_shift = Shift.find_by_id session[:shift_id]
     return false unless current_shift.schedule_cell.responsible?
     # find prev shift and check if it is rated already
