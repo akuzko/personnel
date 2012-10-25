@@ -176,6 +176,7 @@ class EventsController < ApplicationController
   def end_shift
     @shift = Shift.find_by_id session[:shift_id]
     redirect_to new_self_score_events_path and return if self_score_available?(:current)
+    redirect_to new_shift_leader_score_events_path and return if shift_leader_score_available?
     if @shift.end_event.nil?
       #add logout event
       @shift.end_event = Event.logout(current_user.id, DateTime.current, request.remote_ip, @shift.id)
