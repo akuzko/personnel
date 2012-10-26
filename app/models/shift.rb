@@ -127,7 +127,8 @@ class Shift < ActiveRecord::Base
 
     template = ScheduleTemplate.where(department_id: user.department_id).where(year: date.year).where(month: date.month).first
 
-    schedule_shifts = template.schedule_shifts.where("number < 10").where("end - start > 4")
+    schedule_shifts = template.schedule_shifts.where("number < 10")
+    schedule_shifts = template.schedule_shifts.where("number = #{number - 2}") if %w(3 5).include?(number.to_s) and (schedule_shift.end - schedule_shift.start == 4)
     schedule_shifts = schedule_shifts.where("number <  ?", number) unless number == 1
     {schedule_shift: schedule_shifts.order(:number).last, date: date}
   end
