@@ -17,6 +17,6 @@ class Api::BaseController < ActionController::Base
 
   def auth
     render json: { error: 'Missing required parameter: auth_token'} , status: 401 and return if params[:auth_token].blank?
-    render json: { error: 'Authorization failed'} , status: 401 and return if params[:auth_token] != "JEGpHxStUjJf9Dw"
+    render json: { error: 'Authorization failed'} , status: 401 and return if params[:auth_token] != API_CONFIG["api_key"]
   end
 end

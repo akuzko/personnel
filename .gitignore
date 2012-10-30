@@ -6,4 +6,5 @@ log/
 tmp/
 Gemfile.lock
 config/database.yml
+config/api.yml
 vector.rb
