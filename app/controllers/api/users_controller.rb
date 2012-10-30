@@ -64,12 +64,13 @@ class Api::UsersController < Api::BaseController
   def shifts
     conditions = []
     conditions.push("number IN (1,2,3,4,5)")
+    conditions.push("schedule_shift_id IS NOT NULL")
     conditions.push("`users`.department_id =  %d " % params[:department_id]) unless params[:department_id].blank?
     conditions.push("shiftdate >= '%s'" % Date.parse(params[:date_from]).to_formatted_s(:db)) unless params[:date_from].blank?
     conditions.push("shiftdate <= '%s'" % Date.parse(params[:date_to]).to_formatted_s(:db)) unless params[:date_to].blank?
     @shifts = Shift.select("count(*) as total_employees, number, schedule_shift_id, shiftdate").
         joins(:user).
-        includes(:schedule_shift).
+        includes(schedule_shift: :schedule_cells).
         where(conditions.join(' and ')).
         group(:schedule_shift_id, :number, :shiftdate).
         order(:shiftdate, :number)
@@ -77,18 +78,21 @@ class Api::UsersController < Api::BaseController
     date_hash = {}
     shifts_hash = @shifts.inject([]) do |res,shift|
       # shift_leader
-      shift_leader_cell = shift.schedule_shift.schedule_cells.find_by_day_and_responsible(shift.shiftdate.day, 1)
+      shift_leader_cell = shift.schedule_shift.schedule_cells.find{|k|k.day == shift.shiftdate.day and k.responsible == 1}
       if shift_leader_cell
         user = User.find_by_identifier(shift_leader_cell.user_id)
         shift_leader = {id: user.id, identifier:user.identifier, name: user.full_name}
       else
         shift_leader = nil
       end
+      # traning supervisor = 13
+      supervisors = shift.schedule_shift.schedule_cells.find_all{|k|k.day == shift.shiftdate.day and k.additional_attributes == 13}.count
+
       if date == shift.shiftdate.to_formatted_s(:db)
-        date_hash.merge!(shift.number => {total_employees: shift.total_employees, shift_leader: shift_leader})
+        date_hash.merge!(shift.number => {total_employees: shift.total_employees - supervisors, shift_leader: shift_leader})
       else
         res << {date => date_hash} unless date_hash.blank?
-        date_hash = {shift.number => {total_employees: shift.total_employees, shift_leader: shift_leader}}
+        date_hash = {shift.number => {total_employees: shift.total_employees - supervisors, shift_leader: shift_leader}}
         date = shift.shiftdate.to_formatted_s(:db)
       end
 
