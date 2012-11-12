@@ -56,7 +56,7 @@
             = t("activerecord.attributes.admin_self_score.score", :default => t("activerecord.labels.rating", :default => "Rating"))
           %th
             = t("activerecord.attributes.admin_self_score.comments", :default => t("activerecord.labels.comments", :default => "Comments"))
-        - @self_scores.each do |line|
+        - @scores.each do |line|
           %tr{:class => cycle("odd", "even")}
             %td
               = line.score_date.to_formatted_s(:date)
@@ -74,6 +74,6 @@
           %td
       .actions-bar.wat-cf
         .actions
-        = will_paginate @self_scores
+        = will_paginate @scores
 %div.modal#overlay
   %div.contentWrap

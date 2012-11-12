@@ -2,9 +2,9 @@
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All")
-      Self-Assessments
+      Shift Leader Score
     .inner
-      = form_tag(self_scores_grouped_admin_events_path, :method => :get, :id => 'find_form') do
+      = form_tag(shift_leader_scores_grouped_admin_events_path, :method => :get, :id => 'find_form') do
         %table
           %tr
             %td
@@ -60,9 +60,10 @@
         - @scores.each do |line|
           %tr{:class => cycle("odd", "even")}
             %td
-              = line.score_date.to_formatted_s(:date)
+              = line.shift_date.to_formatted_s(:date)
+              = "##{line.shift_number}"
             %td
-              = line.user_full_name
+              = line.shift_leader.full_name
             %td
               = "%.2f" % line.avg_score
       .actions-bar.wat-cf
