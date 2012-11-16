@@ -47,10 +47,9 @@ class SelfScore < ActiveRecord::Base
   end
 
   def self.search_grouped(params, admin_id)
-    params[:sort_by] ||= :score_date
-    params[:sort_order] ||= "DESC"
+    params[:sort_by] ||= :full_name
+    params[:sort_order] ||= "ASC"
     sort_by = {
-        :score_date => '`score_date`',
         :score => '`avg_score`',
         :full_name => '`profiles`.last_name'
     }
@@ -63,7 +62,7 @@ class SelfScore < ActiveRecord::Base
     conditions.push("score_date >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
     conditions.push("score_date <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
 
-    select("self_scores.score_date, self_scores.comment, self_scores.user_id, avg(score) as avg_score").
+    select("self_scores.user_id, avg(score) as avg_score").
         includes(:user => :profile).
         paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
                  :conditions => conditions.join(' and '),

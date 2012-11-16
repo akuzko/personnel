@@ -41,10 +41,9 @@ class ShiftLeaderScore < ActiveRecord::Base
   end
 
   def self.search_grouped(params, admin_id)
-    params[:sort_by] ||= :shift_date
-    params[:sort_order] ||= "DESC"
+    params[:sort_by] ||= :full_name
+    params[:sort_order] ||= "ASC"
     sort_by = {
-        :shift_date => '`shift_date`',
         :score => '`score`',
         :full_name => '`profiles`.last_name'
     }
@@ -62,7 +61,7 @@ class ShiftLeaderScore < ActiveRecord::Base
                  :conditions => conditions.join(' and '),
                  :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
 
-    select("shift_leader_scores.shift_date, shift_leader_scores.shift_number, shift_leader_scores.shift_leader_id, avg(score) as avg_score").
+    select("shift_leader_scores.shift_leader_id, avg(score) as avg_score").
         includes(:user => :profile).
         paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
                  :conditions => conditions.join(' and '),

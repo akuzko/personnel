@@ -51,17 +51,12 @@
                 = t("web-app-theme.export", :default => "Export")
       %table.table
         %tr
-          %th
-            = t("activerecord.attributes.admin_self_score.date", :default => t("activerecord.labels.date", :default => "Date"))
           %th{:sort => 'full_name', :class => 'sortable'}
             = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
           %th{:sort => 'score', :class => 'sortable'}
             = t("activerecord.attributes.admin_self_score.score", :default => t("activerecord.labels.rating", :default => "Rating"))
         - @scores.each do |line|
           %tr{:class => cycle("odd", "even")}
-            %td
-              = line.shift_date.to_formatted_s(:date)
-              = "##{line.shift_number}"
             %td
               = line.shift_leader.full_name
             %td
