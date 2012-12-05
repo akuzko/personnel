@@ -16,8 +16,8 @@ class Event < ActiveRecord::Base
     conditions = []
     conditions.push("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     conditions.push("user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
-    conditions.push("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
-    conditions.push("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
+    conditions.push("eventtime >= '" + Time.zone.parse(params[:date_from]).getutc.to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
+    conditions.push("eventtime <= '" + Time.zone.parse(params[:date_to]).getutc.to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
 
     paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
