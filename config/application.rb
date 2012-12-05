@@ -48,6 +48,13 @@ module Personnel
     config.filter_parameters += [:password]
 
     config.action_mailer.default_url_options = {:host => 'staff.zone3000.net'}
+    config.action_mailer.smtp_settings = { :openssl_verify_mode  => 'none'}
+    config.action_mailer.delivery_method = :sendmail
+    config.action_mailer.sendmail_settings = {
+        :location       => '/usr/sbin/sendmail',
+        :arguments      => '-i',
+        :openssl_verify_mode  => 'none'
+    }.
     config.to_prepare do
       Devise::SessionsController.layout "sign"
       Devise::PasswordsController.layout "sign"
