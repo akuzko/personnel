@@ -7,7 +7,7 @@ class BirthdaysController < ApplicationController
     departments = []
     departments << current_user.department_id
     #departments << 7
-    @users = User.includes(:profile, :department).where("department_id IN (?)", departments)
+    @users = User.includes(:profile, :department).where("profiles.birthdate IS NOT NULL").where("department_id IN (?)", departments)
 
     @result = @users.each do |user|
       date = DateTime.new(Date.current.year, user.profile.birthdate.month, user.profile.birthdate.day)
