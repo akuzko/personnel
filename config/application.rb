@@ -54,7 +54,7 @@ module Personnel
         :location       => '/usr/sbin/sendmail',
         :arguments      => '-i',
         :openssl_verify_mode  => 'none'
-    }.
+    }
     config.to_prepare do
       Devise::SessionsController.layout "sign"
       Devise::PasswordsController.layout "sign"

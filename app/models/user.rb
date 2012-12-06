@@ -8,12 +8,13 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :email, :password, :password_confirmation, :identifier,
   #                :department_id, :active, :hired_at, :fired_at, :fired, :avatar
-
+  attr_accessor :birth_day_and_month
   belongs_to :department
 
   has_one :profile, :dependent => :destroy
   has_many :addresses, :dependent => :destroy
   has_one :contact, :dependent => :destroy
+  belongs_to :department
   has_many :schedule_cells, :dependent => :destroy
   has_many :events
   has_many :shifts

@@ -89,12 +89,7 @@ Personnel::Application.routes.draw do
     post :create_shift_leader_score, :on => :collection
   end
   resources :late_comings
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
+  resources :birthdays
   devise_for :admins, :controllers => { :registrations => "admin_registrations" }
   namespace :admin do
     root :to => "users#index"

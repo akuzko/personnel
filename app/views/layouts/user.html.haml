@@ -22,6 +22,7 @@
             %li{:class => (params[:controller] == "home" ? "first active" : "first")}= link_to t("personnel.profile.title", :default => "Profile"), user_path
             %li= link_to t("personnel.user.crop_picture", :default => "Crop Picture"), crop_user_path
             %li= link_to t("personnel.user.find_people", :default => "Find People"), find_user_path
+            %li= link_to t("personnel.user.birthdays", :default => "Birthdays"), birthdays_path
             %li
               = link_to t("personnel.schedule.title", :default => "Schedule"), schedule_path
               - if current_user.can_edit_schedule > 0
