@@ -21,6 +21,12 @@
 .group
   = f.label :team_lead, t("personnel.user.team_lead", :default => "Team Lead"), :class => :label
   = f.check_box :team_lead, :class => 'check_box'
+.group
+  = f.label :extended_permissions, t("personnel.user.permissions", :default => "Permissions"), :class => :label
+  = f.text_area :extended_permissions, rows: 4
+  %br/
+  %span.description= t("personnel.user.extended_permission", :default => 'set it like "birthdays: 7,13,25" with allowed department IDs')
+
 = render 'shared/user_form', :f => f
 
 .group.navform.wat-cf

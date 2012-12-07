@@ -1,22 +1,22 @@
 .block
   .content
-    %div{:style => "float:left"}
+    %div
       %h2.title
         = t("personnel.user.birthdays", :default => "Birthdays")
-  .inner
     - if @result
       %table.table
         %tr
           %th
+            &nbsp;
           %th= t("personnel.user.identifier", :default => "IDentifier")
           %th= t("personnel.user.full_name", :default => "Full Name")
           %th= t("personnel.user.department", :default => "Department")
-          %th= t("personnel.profile.birthdate", :default => "BirthDate")
+          %th= t("personnel.profile.birthdate", :default => "Upcoming Birthdays")
         - @result.each do |user|
           %tr{:class => cycle("odd", "even")}
             %td
-              = image_tag user.avatar.url(:thumb)
+              = image_tag user.avatar.url(:thumb), style:"width:50px"
             %td= user.identifier
             %td= user.full_name
             %td= user.department_name if user.department_id
-            %td= user.birth_day_and_month.to_formatted_s(:date_only)
+            %td= user.birth_day_and_month.to_formatted_s(:month_and_day_only)

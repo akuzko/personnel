@@ -177,6 +177,14 @@ class User < ActiveRecord::Base
     forum_member.save
   end
 
+  def extended_permissions_by_section(section_name)
+    extended_permissions.split("\r\n").each do |section|
+      name, depts = section.split(":").map(&:strip)
+      return depts.split(",").map(&:to_i) if name == section_name rescue nil
+    end
+    nil
+  end
+
   private
 
   def create_internals
