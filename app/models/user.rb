@@ -180,9 +180,16 @@ class User < ActiveRecord::Base
   def extended_permissions_by_section(section_name)
     extended_permissions.split("\r\n").each do |section|
       name, depts = section.split(":").map(&:strip)
+      return Department.all.map(&:id) if depts == "all"
       return depts.split(",").map(&:to_i) if name == section_name rescue nil
     end
     nil
+  end
+
+  def self.birthdays_selection
+    [1,3,6,12].each do |d|
+      [d, d]
+    end
   end
 
   private
