@@ -3,7 +3,7 @@
     %div
       %h2.title
         = t("personnel.user.birthdays", :default => "Birthdays")
-      - if @today
+      - if @today.any?
         %table.table
           %tr
             %td{colspan: 4}
