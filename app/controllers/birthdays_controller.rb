@@ -8,7 +8,7 @@ class BirthdaysController < ApplicationController
     departments = []
     departments << current_user.department_id
     departments << current_user.extended_permissions_by_section('birthdays')
-    @users = User.includes(:profile, :department).where("profiles.birthdate IS NOT NULL").where("department_id IN (?)", departments.flatten)
+    @users = User.active.includes(:profile, :department).where("profiles.birthdate IS NOT NULL").where("department_id IN (?)", departments.flatten)
     @today = []
     @result = @users.each.inject([]) do |res, user|
       date = Date.new(Date.current.year, user.profile.birthdate.month, user.profile.birthdate.day)
