@@ -70,6 +70,7 @@ class EventsController < ApplicationController
     @event.shift_id = session['shift_id']
 
     if @event.save
+      logger.debug "create event IP: #{request.remote_ip}"
       render(:update) do |page|
         page["#overlay"].dialog("close")
         flash[:notice] = t("personnel.event.Record has been added", :default => "Record has been added")
@@ -91,6 +92,7 @@ class EventsController < ApplicationController
     @event.ip_address = Event.ip2int(request.remote_ip)
 
     if @event.update_attributes(params[:event])
+      logger.debug "update event IP: #{request.remote_ip}"
       render(:update) do |page|
         page["#overlay"].dialog("close")
         page.call 'app.reload'
