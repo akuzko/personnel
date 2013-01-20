@@ -71,6 +71,8 @@ class EventsController < ApplicationController
 
     if @event.save
       logger.debug "create event IP: #{request.remote_ip}"
+      logger.debug "ip2int event IP: #{@event.ip_address}"
+      logger.debug "int2ip event IP: #{Event.int2ip(@event.ip_address)}"
       render(:update) do |page|
         page["#overlay"].dialog("close")
         flash[:notice] = t("personnel.event.Record has been added", :default => "Record has been added")
@@ -93,6 +95,8 @@ class EventsController < ApplicationController
 
     if @event.update_attributes(params[:event])
       logger.debug "update event IP: #{request.remote_ip}"
+      logger.debug "ip2int event IP: #{@event.ip_address}"
+      logger.debug "int2ip event IP: #{Event.int2ip(@event.ip_address)}"
       render(:update) do |page|
         page["#overlay"].dialog("close")
         page.call 'app.reload'
