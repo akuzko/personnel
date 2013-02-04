@@ -161,6 +161,7 @@ Personnel::Application.routes.draw do
     resources :departments, :only => [:index, :show]
     resources :users, :only => [:index] do
       get :rate, :on => :collection
+      get :rates, :on => :collection
       get :feedbacks, :on => :collection
       get :shifts, :on => :collection
     end

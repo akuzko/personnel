@@ -1,5 +1,5 @@
 class Api::UsersController < Api::BaseController
-  before_filter :check_params, :only => [:rate, :feedbacks, :shifts]
+  before_filter :check_params, :only => [:rate, :rates, :feedbacks, :shifts]
   def index
     error!('Missing required parameter: department_id', 404) and return unless params[:department_id]
     @users = User.with_data.active.where(department_id: params[:department_id]).inject([]) do |res, i|
@@ -21,6 +21,27 @@ class Api::UsersController < Api::BaseController
 
     respond_to do |format|
       format.json { render json: @average.avg_score }
+    end
+  end
+
+  def rates
+    conditions = []
+    conditions.push("`users`.department_id IN (%s) " % params[:department_id]) unless params[:department_id].blank?
+    conditions.push("score_date >= '%s'" % Date.parse(params[:date_from]).to_formatted_s(:db)) unless params[:date_from].blank?
+    conditions.push("score_date <= '%s'" % Date.parse(params[:date_to]).to_formatted_s(:db)) unless params[:date_to].blank?
+
+    scores = SelfScore.select("score_date, count(*) as count, avg(score) as avg").group(:score_date).joins(:user).where(conditions.join(' and '))
+
+    date_hash = scores.inject({}) do |res, score|
+      res[score.score_date] = {
+          count: score.count,
+          average: score.avg
+      }
+      res
+    end
+
+    respond_to do |format|
+      format.json { render json: date_hash }
     end
   end
 
