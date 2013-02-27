@@ -237,7 +237,8 @@
     dep_id = $("#department_id").val()
     $("#users_select").load '/users/by_department/?department_id='+dep_id
 
-  check_department_for_identifier: ->
+  check_department_for_identifier: (show_alert = false) ->
+    alert("After save all user's permissions will be copied to the new department") if show_alert
     if $("#user_department_id").val()
       $.get '/shifts/'+$("#user_department_id").val()+'/check_department_for_identifier', (data) ->
         if data == 'false'

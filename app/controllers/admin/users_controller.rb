@@ -128,6 +128,15 @@ class Admin::UsersController < ApplicationController
       params[:user].delete(:password)
       params[:user].delete(:password_confirmation)
     end
+    if @user.department_id != params[:user][:department_id]
+      puts "Dept changed"
+      # copy permissions to department
+      @new_dept = Department.find_by_id(params[:user][:department_id])
+      new_permissions = @user.permissions.map(&:id) - @new_dept.permissions.map(&:id)
+      new_permissions.each do |d|
+        DepartmentPermission.find_or_create_by_department_id_and_permission_id(@new_dept.id,d)
+      end
+    end
     respond_to do |format|
       if @user.update_attributes(params[:user])
         Log.add(current_admin, @user, params)
