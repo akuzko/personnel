@@ -27,6 +27,20 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_crop
+    @user = User.find current_user.id
+    respond_to do |format|
+      if @user.crop_avatar(params[:user])
+        Log.add(current_user, @user, params)
+        format.html { redirect_to(@user, :notice => t('personnel.user.User was successfully updated', :default => 'User was successfully updated')) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "crop" }
+        format.xml  { render :xml => @user.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
   def view
     @user = User.with_data.find(params[:id])
     @department = Department.find @user.department_id

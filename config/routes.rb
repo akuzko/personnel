@@ -48,6 +48,7 @@ Personnel::Application.routes.draw do
       get :delivery, :on => :collection
       get :edit_data, :on => :member
       put :update_data, :on => :member
+      put :update_crop, :on => :member
       get :display_addresses, :on => :member
       get :display_section, :on => :member
       get :notify, :on => :collection

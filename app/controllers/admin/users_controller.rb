@@ -242,7 +242,7 @@ class Admin::UsersController < ApplicationController
   def update_crop
     @user = User.find params[:id]
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.crop_avatar(params[:user])
         format.html { redirect_to(admin_user_url, :notice => 'User\'s picture was successfully updated.') }
         format.xml { head :ok }
       else
