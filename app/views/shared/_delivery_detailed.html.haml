@@ -19,7 +19,7 @@
         %td.mobile{:rowspan => 2}
           = user.profile.first_name
         %td.mobile
-          = "#{address.street},#{address.build.mb_chars.upcase.to_s} #{address.porch}/#{address.nos}"
+          = "#{address.street},#{address.build.mb_chars.upcase.to_s} #{address.porch}/#{address.nos}" rescue "NO ADDRESS"
           %br
       %tr{:style=> style}
         %td.mobile
