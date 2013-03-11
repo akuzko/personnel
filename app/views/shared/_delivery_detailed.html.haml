@@ -12,7 +12,7 @@
       - if opposite_users.include? user.identifier
         - style = "color:green"
       - else
-        - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red"
+        - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red" rescue ""
       %tr{:style=> style}
         %td.mobile{:rowspan => 2}
           = user.identifier
