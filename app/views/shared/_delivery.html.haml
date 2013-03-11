@@ -7,7 +7,7 @@
           - if opposite_users.include? item.identifier
             - style = "color:green"
           - else
-            - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red"
+            - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red" rescue ""
         - else
           - style = ""
         %td{:style=> style}
