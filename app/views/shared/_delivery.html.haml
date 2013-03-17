@@ -1,6 +1,8 @@
-%table{:border => 1, :align => 'center', :width => 110}
-  - users.each do |l|
+%table{:border => 1, :align => 'center'}
+  - users.each_with_index do |l, index|
     %tr
+      %td{style: "background-color:#aaa"}
+        = index +1
       - l.each do |item|
         - if item
           - address = item.addresses.order("`primary` DESC").first

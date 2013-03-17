@@ -1,21 +1,23 @@
 = form_tag(delivery_admin_users_path, :method => :get) do
-  %table{:align => 'center', :width => 160, :style => 'font-size: 9px;text-align: center;'}
+  %table{:align => 'center', :width => 160, :style => 'text-align: center;'}
     %tr
-      %td{:colspan => 3}
+      %td
         = select_date params[:date], :start_year => 2010, :use_month_numbers => true
         %button.button{:type => "submit"}
           = t("web-app-theme.ok", :default => "OK")
     - unless @taxi_route.blank?
       %tr
-        %td{:colspan => 3, :style => "color:red"}
+        %td{:style => "color:red"}
           Маршруты проложены
     %tr
-      %td{:colspan => 3}
-        Привезти в 00:00
+      %td
+        %b
+          Привезти в 00:00
         = render :partial => 'shared/delivery', :locals => {:users => @users_in, :opposite_users => @users_out_ids}
     %tr
-      %td{:colspan => 3}
-        Отвезти в 00:00
+      %td
+        %b
+          Отвезти в 00:00
         = render :partial => 'shared/delivery', :locals => {:users => @users_out, :opposite_users => @users_in_ids}
 %center
   = link_to "С адресами", delivery_admin_users_path({:detailed => '1'})

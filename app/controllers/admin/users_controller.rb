@@ -35,9 +35,9 @@ class Admin::UsersController < ApplicationController
 
     #Out 24:00
     out_ids = []
-    templates = ScheduleTemplate.find_all_by_year_and_month date.year, date.month
+    templates = ScheduleTemplate.includes(schedule_shifts: :schedule_cells).find_all_by_year_and_month date.year, date.month
     templates.each do |tpl|
-      tpl.schedule_shifts.where('number < 10').where('end = 24').each do |shift|
+      tpl.schedule_shifts.find_all{|s| s.number < 10 and s.end == 24}.each do |shift|
         shift.schedule_cells.each do |cell|
           out_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude
         end
@@ -49,9 +49,9 @@ class Admin::UsersController < ApplicationController
     #In 0:00
     in_ids = []
     date = date + 1.day
-    templates = ScheduleTemplate.find_all_by_year_and_month date.year, date.month
+    templates = ScheduleTemplate.includes(schedule_shifts: :schedule_cells).find_all_by_year_and_month date.year, date.month
     templates.each do |tpl|
-      tpl.schedule_shifts.where('number < 10').where('start = 0').each do |shift|
+      tpl.schedule_shifts.find_all{|s| s.number < 10 and s.start == 0}.each do |shift|
         shift.schedule_cells.each do |cell|
           in_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude
         end
@@ -64,13 +64,13 @@ class Admin::UsersController < ApplicationController
     @users_out_ids = out_ids
 
     if params['detailed'] == '1'
-      render 'delivery_detailed.html', :layout => 'mobile'
+      render 'delivery_detailed', layout: 'mobile', format: :html
     else
 
-      @users_out = @users_out.in_groups_of(3)
-      @users_in = @users_in.in_groups_of(3)
+      @users_out = @users_out.in_groups_of(4)
+      @users_in = @users_in.in_groups_of(4)
 
-      render 'delivery.html', :layout => 'mobile'
+      render 'delivery', layout: 'mobile', format: :html
     end
   end
 
