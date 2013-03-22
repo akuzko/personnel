@@ -16,5 +16,16 @@
           = hidden_field_tag('back_url', @back_url)
           %button.button{:type => "submit"}
             Маршруты проложены
-
+  - if @excludes.any?
+    %tr
+      %td{colspan: 3}
+        Исключения:
+    - @excludes.each do |ex|
+      %tr
+        %td
+          = User.find_by_id(ex.author_id).identifier
+        %td
+          = ex.body =~ /false/ ? "добавлен" : "исключен"
+        %td
+          = ex.created_at.to_formatted_s(:time)
 
