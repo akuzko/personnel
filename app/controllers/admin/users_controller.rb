@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Admin::UsersController < ApplicationController
   before_filter :authenticate_admin!
   before_filter :check_permissions, :except => :delivery
@@ -12,9 +13,21 @@ class Admin::UsersController < ApplicationController
       params[:active] = "1"
       params[:employed] = "1"
     end
-    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
-    params[:per_page] ||= 15
+    if params[:export]
+      params[:per_page] = User.count
+      params[:page] = 1
+    else
+      params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+      params[:per_page] ||= 15
+    end
+
     @users = User.with_data.search_by_admin(params, current_admin.id)
+    if params[:export]
+      headers['Content-Type'] = "application/vnd.ms-excel"
+      headers['Content-Disposition'] = 'attachment; filename="users.xls"'
+      headers['Cache-Control'] = ''
+      render 'export_users', :layout => false
+    end
   end
 
   def list
