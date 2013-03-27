@@ -21,11 +21,22 @@
       %td{colspan: 3}
         Исключения:
     - @excludes.each do |ex|
-      %tr
-        %td
-          = User.find_by_id(ex.author_id).identifier
-        %td
-          = ex.body =~ /false/ ? "добавлен" : "исключен"
-        %td
-          = ex.created_at.to_formatted_s(:time)
+      - if ex.subject_type == 'TaxiRoute'
+        %tr.alert
+          %td
 
+          %td{colspan: 2}
+            Маршрут
+            = ex.body =~ /destroy/ ? "удален" : "составлен"
+          %td
+            = ex.created_at.to_formatted_s(:time)
+      - else
+        %tr
+          %td
+            = User.find_by_id(ex.author_id).identifier
+          %td
+            = ex.body =~ /false/ ? "добавлен" : "исключен"
+          %td
+            = ex.subject.day
+          %td
+            = ex.created_at.to_formatted_s(:time)

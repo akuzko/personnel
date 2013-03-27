@@ -11,7 +11,7 @@ class TaxiRoutesController < ApplicationController
     @taxi_route = TaxiRoute.find_by_traced(params[:date])
     @back_url = request.url
 
-    @excludes = Log.where(subject_type: "ScheduleCell").where("body LIKE '%excluded%'").where("DATE(created_at) = ?", Date.current).order(:created_at)
+    @excludes = Log.where("(subject_type = 'ScheduleCell' and body LIKE '%excluded%') OR subject_type = 'TaxiRoute'").where("DATE(created_at) = ?", Date.current).order(:created_at)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @taxi_route }

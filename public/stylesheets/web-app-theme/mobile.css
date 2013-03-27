@@ -4,3 +4,6 @@ th, .mobile{
 th {
     background-color: #cccccc
 }
+.alert{
+    color: red;
+}
