@@ -177,6 +177,12 @@
         else
           $(".self_score").hide()
 
+      $("#late_coming_late_type").change ->
+        if $(this).val() > 5
+          $(".late_description").show()
+        else
+          $(".late_description").hide()
+
   flashFade: ->
     $('.flash-fade').children().each (i) ->
       setTimeout((=> $(this).fadeOut()), 250 + i * 1000)

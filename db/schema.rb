@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121207122542) do
+ActiveRecord::Schema.define(:version => 20130401155017) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(:version => 20121207122542) do
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ip_address"
+    t.integer  "ip_address",  :limit => 8
   end
 
   add_index "events", ["category_id"], :name => "index_events_on_category_id"
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(:version => 20121207122542) do
     t.integer  "user_id"
     t.integer  "shift_id"
     t.integer  "late_minutes"
+    t.integer  "late_type",    :default => 7, :null => false
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -296,7 +297,7 @@ ActiveRecord::Schema.define(:version => 20121207122542) do
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.boolean  "team_lead",                             :default => false
-    t.integer  "norm",                                  :default => 8
+    t.integer  "norm",                                  :default => 8,     :null => false
     t.text     "extended_permissions"
   end
 

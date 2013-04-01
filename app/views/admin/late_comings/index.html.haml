@@ -10,6 +10,9 @@
             %td
               &nbsp;
             %td
+              Type
+              = select_tag :late_type, options_for_select(LateComing.type_selection, params[:late_type]), { :include_blank => true }
+            %td
               Department
               = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id, true), params[:department_id]), { :include_blank => true }
             %td#users_select
@@ -57,6 +60,8 @@
               %th
                 = t("activerecord.attributes.shift.worked_min", :default => t("activerecord.labels.worked_min", :default => "Worked"))
               %th
+                Type
+              %th
                 = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
               %th
                 = t("activerecord.attributes.admin_event.action", :default => t("activerecord.labels.action", :default => ""))
@@ -71,6 +76,8 @@
                 = (Date.current + late_coming.late_minutes.minutes).strftime("%H hrs %M min")
               %td
                 = (Date.current + late_coming.shift.worked_min.minutes).strftime("%H hrs %M min")
+              %td
+                = LateComing::LATE_TYPES[late_coming.late_type.to_s]
               %td
                 = late_coming.description
               %td

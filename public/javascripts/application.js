@@ -209,7 +209,7 @@
           changeMonth: true,
           changeYear: true
         });
-        return $("#self_score_score").change(function() {
+        $("#self_score_score").change(function() {
           $(".self_score").hide();
           if ($(this).val() > '') {
             $(".self_score.comment").show();
@@ -220,6 +220,13 @@
             }
           } else {
             return $(".self_score").hide();
+          }
+        });
+        return $("#late_coming_late_type").change(function() {
+          if ($(this).val() > 5) {
+            return $(".late_description").show();
+          } else {
+            return $(".late_description").hide();
           }
         });
       });

@@ -241,7 +241,7 @@ class EventsController < ApplicationController
       redirect_to events_path
       return
     end
-    @late_coming = LateComing.new
+    @late_coming = LateComing.new(late_type: 1)
     @late_coming.shift_id = session[:shift_id]
     @late_coming.user_id = current_user.id
     @late_coming.late_minutes = (@shift.starttime - (@shift.shiftdate + @shift.schedule_shift.start.hour))/ 1.minutes
@@ -258,12 +258,13 @@ class EventsController < ApplicationController
     @late_coming.shift_id = session[:shift_id]
     @late_coming.user_id = current_user.id
     @late_coming.late_minutes = (@shift.starttime - (@shift.shiftdate + @shift.schedule_shift.start.hour))/ 1.minutes
-    @late_coming.description = params[:late_coming][:description].strip
+    @late_coming.late_type = params[:late_coming][:late_type]
+    @late_coming.description = params[:late_coming][:description].strip if @late_coming.late_type > 5
     if @late_coming.save
       redirect_to events_path
     else
       flash[:error] = @late_coming.errors.full_messages
-      redirect_to :back
+      render :new_late_coming
     end
   end
 

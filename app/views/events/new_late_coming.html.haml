@@ -9,7 +9,9 @@
 
         .group.wat-cf
           = t('personnel.late_coming.reason', :default => 'You are %d minutes late. Please input your reason here').% @late_coming.late_minutes
-
+        .group.wat-cf
+          = f.select :late_type, LateComing.type_selection
+        .group.wat-cf.late_description{:style => "display:#{(f.object.late_type.to_i > 5) ? '' : 'none'};"}
           = f.text_field :description, :size => 70
         .group.navform.wat-cf
           %button.button{:type => "submit"}
