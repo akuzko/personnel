@@ -1,6 +1,6 @@
 = form_tag(delivery_user_path, :method => :get) do
   = hidden_field_tag 'detailed', '1'
-  %table{:align => 'center', :width => 210}
+  %table{:align => 'center'}
     %tr
       %td
         = select_date params[:date], :start_year => 2010, :use_month_numbers => true
