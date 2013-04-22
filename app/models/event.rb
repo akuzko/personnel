@@ -28,10 +28,10 @@ class Event < ActiveRecord::Base
   def self.processed_total(params, user_id, by_admin)
     model_query = Event.select('categories.name, COUNT(events.id) as total')
     model_query = model_query.where('categories.reported = 1')
-    model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
+    model_query = model_query.joins('INNER JOIN categories ON events.category_id = categories.id')
     if by_admin
       admin = Admin.find_by_id(user_id)
-      model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+      model_query = model_query.joins('INNER JOIN department_categories ON department_categories.category_id = categories.id')
       model_query = model_query.where("department_categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     else
       model_query = model_query.where('user_id = ?', user_id)
@@ -46,12 +46,12 @@ class Event < ActiveRecord::Base
   def self.processed_by_person(params, admin_id)
     model_query = Event.select('CONCAT(profiles.last_name," ",profiles.first_name) as username, categories.name, COUNT(events.id) as total')
     model_query = model_query.where('categories.reported = 1')
-    model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
-    model_query = model_query.joins('JOIN users ON events.user_id = users.id')
-    model_query = model_query.joins('JOIN profiles ON profiles.user_id = users.id')
+    model_query = model_query.joins('INNER JOIN categories ON events.category_id = categories.id')
+    model_query = model_query.joins('INNER JOIN users ON events.user_id = users.id')
+    model_query = model_query.joins('INNER JOIN profiles ON profiles.user_id = users.id')
     model_query = model_query.where("events.user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
     begin
-      model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+      model_query = model_query.joins('INNER JOIN department_categories ON department_categories.category_id = categories.id')
       model_query = model_query.where("department_categories.department_id = '" + params[:department_id] + "'")
     end unless params[:department_id].nil? || params[:department_id] == ""
     if admin_id != 0
@@ -69,10 +69,10 @@ class Event < ActiveRecord::Base
   def self.processed_by_day_of_week(params, user_id, by_admin)
     model_query = Event.select('DAYOFWEEK(eventtime) as weekday, categories.name, COUNT(events.id) as total')
     model_query = model_query.where('categories.reported = 1')
-    model_query = model_query.joins('JOIN categories ON events.category_id = categories.id')
+    model_query = model_query.joins('INNER JOIN categories ON events.category_id = categories.id')
     if by_admin
       admin = Admin.find_by_id(user_id)
-      model_query = model_query.joins('JOIN department_categories ON department_categories.category_id = categories.id')
+      model_query = model_query.joins('INNER JOIN department_categories ON department_categories.category_id = categories.id')
       model_query = model_query.where("department_categories.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     else
       model_query = model_query.where('user_id = ?', user_id)
