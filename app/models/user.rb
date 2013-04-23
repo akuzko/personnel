@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   }
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
-  after_update :sync_with_forum
+  after_update :sync_with_forum, :send_hr_notification
 
   after_create :create_internals
   after_create :sync_with_forum
@@ -325,6 +325,13 @@ class User < ActiveRecord::Base
     model_query = model_query.group('`departments`.name, `profiles`.t_shirt_size, `profiles`.level')
     model_query = model_query.order('`departments`.name', '`profiles`.t_shirt_size')
     model_query.all
+  end
+
+  def send_hr_notification
+    if active_changed? and active?
+      message = HrNotification.send_user_activated(self)
+      message.deliver
+    end
   end
 
 end

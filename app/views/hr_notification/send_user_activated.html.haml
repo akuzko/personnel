@@ -1,0 +1,17 @@
+.block
+  .content
+    %h2.title
+      New User Activation
+    .inner.form
+      %p
+        Dear HR Team,
+      %p
+        Account for user
+        = @user.full_name
+        has been activated in the department
+        = @user.department.name
+        \.
+      %p
+        You can login to Admin Area to view the
+        =link_to "profile details", admin_user_url(@user)
+        \.
