@@ -156,6 +156,8 @@ Personnel::Application.routes.draw do
       get :get_for_department, :on => :collection
       put :update_for_department, :on => :collection
     end
+
+    resources :birthdays
   end
 
   namespace :api do
