@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401155017) do
+ActiveRecord::Schema.define(:version => 20130430172449) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -45,19 +45,20 @@ ActiveRecord::Schema.define(:version => 20130401155017) do
   add_index "admin_settings", ["admin_id", "key", "value"], :name => "index_admin_settings_on_admin_id_and_key_and_value", :unique => true
 
   create_table "admins", :force => true do |t|
-    t.string   "email",                               :default => "",    :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "",    :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                       :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "approved",                            :default => false, :null => false
-    t.boolean  "super_user",                          :default => false, :null => false
+    t.boolean  "approved",                              :default => false, :null => false
+    t.boolean  "super_user",                            :default => false, :null => false
+    t.datetime "reset_password_sent_at"
   end
 
   add_index "admins", ["email"], :name => "index_admins_on_email", :unique => true
@@ -81,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20130401155017) do
     t.datetime "updated_at"
     t.string   "cell3"
     t.string   "home_phone"
+    t.string   "jabber",     :limit => 50, :null => false
   end
 
   create_table "department_categories", :force => true do |t|

@@ -24,3 +24,8 @@
       = t("personnel.contact.home_phone", :default => "Home Phone")
       \:
     = @user.contact.home_phone == '0' ? 'n/a' : @user.contact.home_phone
+%p
+  %b
+    = t("personnel.contact.jabber", :default => "Jabber")
+    \:
+  = @user.contact.jabber == '0' ? 'n/a' : @user.contact.jabber

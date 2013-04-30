@@ -19,6 +19,13 @@
     = t("personnel.Required")
     ,
     = t("personnel.contact.put `n/a` only if you don`t have one", :default => "put 'n/a' only if you don't have one")
+.group
+  = f.label :jabber, t("personnel.contact.jabber", :default => "Jabber"), :class => :label
+  = f.text_field :jabber, :class => 'text_field'
+  %span.description
+    = t("personnel.Required")
+    ,
+    = t("personnel.contact.put `n/a` only if you don`t have one", :default => "put 'n/a' only if you don't have one")
 .group.navform.wat-cf
   %button.button{:type => "submit"}
     = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
