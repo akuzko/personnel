@@ -207,11 +207,14 @@ class User < ActiveRecord::Base
     create_contact
     self.department_id ||= Department.find_or_create_by_name('General').id
     save
-    # send notification to admin
-    department = Department.find(self.department_id)
-    admins = department.admins.map(&:email)
-    message = UserAuth.send_user_created(self, admins)
-    message.deliver
+
+    unless self.active?
+      # send notification to admin
+      department = Department.find(self.department_id)
+      admins = department.admins.map(&:email)
+      message = UserAuth.send_user_created(self, admins)
+      message.deliver
+    end
   end
 
   def self.search(params)
