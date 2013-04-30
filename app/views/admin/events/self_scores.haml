@@ -36,6 +36,12 @@
             %td
               &nbsp;
             %td
+              = check_box_tag :with_comments, 1, params[:with_comments]
+            %td with comments
+
+            %td
+              &nbsp;
+            %td
               per page
               = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
             %td

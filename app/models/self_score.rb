@@ -39,6 +39,7 @@ class SelfScore < ActiveRecord::Base
     conditions.push("`self_scores`.`user_id` = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
     conditions.push("score_date >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == "" || params[:date_from_check].nil?
     conditions.push("score_date <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == "" || params[:date_to_check].nil?
+    conditions.push("self_scores.comment <> ''") unless params[:with_comments].blank?
 
     includes(:user => :profile).
         paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
