@@ -25,10 +25,11 @@
       = t("personnel.profile.level", :default => "Level")
       \:
     = @user.profile.level
-%p
-  %b
-    - if @user.hired_at
-      =distance_of_time_in_words_to_now(@user.hired_at)
-    - else
-      no one knows how long
-  with the company
+- if @user.active
+  %p
+    %b
+      - if @user.hired_at
+        =distance_of_time_in_words_to_now(@user.hired_at)
+      - else
+        no one knows how long
+    with the company
