@@ -279,7 +279,16 @@ class EventsController < ApplicationController
     end
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time) if !params[:date_to]
     params[:department_id] = current_user.department_id.to_s
-    params[:user_id] = (current_user.id).to_s unless current_user.team_lead?
+
+    if current_user.team_lead?
+      if params[:user_id]
+        params[:user_ids] = [params[:user_id]]
+      else
+        params[:user_ids] = User.active.where(department_id: current_user.department_id).map(&:id)
+      end
+    else
+      params[:user_ids] = [current_user.id]
+    end
 
     @events = Event.processed_by_person(params, 0)
 

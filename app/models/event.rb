@@ -49,7 +49,7 @@ class Event < ActiveRecord::Base
     model_query = model_query.joins('INNER JOIN categories ON events.category_id = categories.id')
     model_query = model_query.joins('INNER JOIN users ON events.user_id = users.id')
     model_query = model_query.joins('INNER JOIN profiles ON profiles.user_id = users.id')
-    model_query = model_query.where("events.user_id = '" + params[:user_id] + "'") unless params[:user_id].nil? || params[:user_id] == ""
+    model_query = model_query.where("events.user_id IN (" + params[:user_ids].join(',') + ")") unless params[:user_id].blank?
     begin
       model_query = model_query.joins('INNER JOIN department_categories ON department_categories.category_id = categories.id')
       model_query = model_query.where("department_categories.department_id = '" + params[:department_id] + "'")
@@ -58,9 +58,9 @@ class Event < ActiveRecord::Base
       admin = Admin.find_by_id(admin_id)
       model_query = model_query.where("`users`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
     end
-    model_query = model_query.where("events.category_id IN (#{params[:categories].map{|d|d}.join(',')})") unless params[:categories].nil? || params[:categories].empty?
-    model_query = model_query.where("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].nil? || params[:date_from] == ""
-    model_query = model_query.where("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].nil? || params[:date_to] == ""
+    model_query = model_query.where("events.category_id IN (#{params[:categories].map{|d|d}.join(',')})") unless params[:categories].blank?
+    model_query = model_query.where("eventtime >= '" + params[:date_from].to_s + "'") unless params[:date_from].blank?
+    model_query = model_query.where("eventtime <= '" + params[:date_to].to_s + "'") unless params[:date_to].blank?
     model_query = model_query.group('categories.name, username')
     model_query = model_query.order('username, categories.name')
     model_query.all
