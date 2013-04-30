@@ -10,6 +10,7 @@
   .content
     %h2.title
       = t("web-app-theme.all", :default => "All")
+      = @users.total_entries
       = t("personnel.user.title", :default => "Users")
     .inner
       = form_tag(admin_users_path, :method => :get, :id => 'find_form') do

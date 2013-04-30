@@ -22,6 +22,7 @@ class Admin::UsersController < ApplicationController
     end
 
     @users = User.with_data.search_by_admin(params, current_admin.id)
+
     if params[:export]
       headers['Content-Type'] = "application/vnd.ms-excel"
       headers['Content-Disposition'] = 'attachment; filename="users.xls"'
