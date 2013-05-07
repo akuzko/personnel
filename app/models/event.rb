@@ -49,7 +49,7 @@ class Event < ActiveRecord::Base
     model_query = model_query.joins('INNER JOIN categories ON events.category_id = categories.id')
     model_query = model_query.joins('INNER JOIN users ON events.user_id = users.id')
     model_query = model_query.joins('INNER JOIN profiles ON profiles.user_id = users.id')
-    model_query = model_query.where("events.user_id IN (" + params[:user_ids].join(',') + ")") unless params[:user_id].blank?
+    model_query = model_query.where("events.user_id IN (" + params[:user_ids].join(',') + ")") unless params[:user_ids].blank?
     begin
       model_query = model_query.joins('INNER JOIN department_categories ON department_categories.category_id = categories.id')
       model_query = model_query.where("department_categories.department_id = '" + params[:department_id] + "'")

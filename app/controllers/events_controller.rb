@@ -281,10 +281,10 @@ class EventsController < ApplicationController
     params[:department_id] = current_user.department_id.to_s
 
     if current_user.team_lead?
-      if params[:user_id]
-        params[:user_ids] = [params[:user_id]]
-      else
+      if params[:user_id].blank?
         params[:user_ids] = User.active.where(department_id: current_user.department_id).map(&:id)
+      else
+        params[:user_ids] = [params[:user_id]]
       end
     else
       params[:user_ids] = [current_user.id]
