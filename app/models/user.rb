@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
   delegate :birthdate, :to => :profile, :allow_nil => true
   delegate :cell1, :cell2, :cell3, :to => :contact, :allow_nil => true
   delegate :home_phone, :to => :contact, :allow_nil => false
+  delegate :jabber, :to => :contact, :allow_nil => false
   delegate :name, :to => :department, :prefix => true
 
   scope :with_data, includes(:profile, :addresses, :contact, :permissions)
