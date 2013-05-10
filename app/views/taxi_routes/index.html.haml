@@ -28,7 +28,7 @@
             = ex.body =~ /destroy/ ? "удален" : "составлен"
           %td
             = ex.created_at.to_formatted_s(:time)
-      - elsif params[:date].to_time == ex.subject.to_time
+      - elsif ScheduleCell.find_by_id(ex.subject_id) and params[:date].to_time == ex.subject.to_time
         %tr
           %td
             = User.find_by_id(ex.author_id).identifier
