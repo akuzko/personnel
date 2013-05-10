@@ -1,12 +1,17 @@
-%table.table
-  %tr
-    %th
-      = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
-    %th
-      = t("activerecord.attributes.admin_self_score.score", :default => t("activerecord.labels.rating", :default => "Rating"))
-  - @scores.each do |line|
-    %tr{:class => cycle("odd", "even")}
-      %td
-        = line.user_full_name
-      %td
-        = "%.2f" % line.avg_score
+!!!
+%html
+  %head
+    %meta{charset:'utf-8'}
+      %body
+        %table.table
+          %tr
+            %th
+              = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
+            %th
+              = t("activerecord.attributes.admin_self_score.score", :default => t("activerecord.labels.rating", :default => "Rating"))
+          - @scores.each do |line|
+            %tr{:class => cycle("odd", "even")}
+              %td
+                = line.user_full_name
+              %td
+                = "%.2f" % line.avg_score
