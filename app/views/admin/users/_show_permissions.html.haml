@@ -3,10 +3,8 @@
     %p
       - if @user.permissions.map(&:id).include?(dp.id)
         = image_tag("web-app-theme/icons/accept.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
-      - else
-        = image_tag("web-app-theme/icons/cancel.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
-      %b
-        = dp.name
+        %b
+          = dp.name
 %p
   .wat-cf
     = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
