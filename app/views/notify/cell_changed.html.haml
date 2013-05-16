@@ -1,0 +1,13 @@
+.block
+  .content
+    %h2.title
+      Updated list of my cell phones
+    .inner.form
+      %p
+        ="# #{@user.identifier}"
+        =@user.full_name
+      %p
+        - [@user.contact.cell1, @user.contact.cell2, @user.contact.cell3].each do |cell|
+          - unless cell.blank?
+            %br/
+            = cell

@@ -52,12 +52,25 @@ class UsersController < ApplicationController
     end
   end
 
-  def notify
+  def notify_address
     render :layout => false
   end
 
-  def send_notify
+  def notify_cell
+    render :layout => false
+  end
+
+  def send_notify_address
     message = Notify.address_changed(current_user)
+    message.deliver
+    render(:update) do |page|
+      page['.flash'].html "<div class='message notice'><p>Email has been sent</p></div>"
+      page["#overlay"].dialog("close")
+    end
+  end
+
+  def send_notify_cell
+    message = Notify.cell_changed(current_user)
     message.deliver
     render(:update) do |page|
       page['.flash'].html "<div class='message notice'><p>Email has been sent</p></div>"
@@ -71,6 +84,7 @@ class UsersController < ApplicationController
     flash[:error] = "Please update your profile" if @user.profile.first_name.nil?
     flash[:error] = "Please add your address" if @user.addresses.empty?
     flash[:error] = "Please update your contact information" if @user.contact.cell1.nil?
+    flash[:error] = "Please update your jabber" if @user.contact.jabber.nil?
     forum_member = SmfMember.find_by_member_name(@user.email.gsub(/@zone3000.net/, ''))
     if forum_member
       time = Time.now + 3153600.minutes
@@ -91,8 +105,13 @@ class UsersController < ApplicationController
     params[:previous_attributes] = data.attributes
     if data.update_attributes(params[params[:data]])
       user.sync_with_forum
+      render(:update) do |p|
+        p.call 'app.reload_section', params[:data]
+        if params[:data] == 'contact' and (params[:previous_attributes]["cell1"] != data.cell1 || params[:previous_attributes]["cell2"] != data.cell2 || params[:previous_attributes]["cell3"] != data.cell3) and current_user.has_identifier?
+          p.call 'app.display_dialog', '/user/notify_cell'
+        end
+      end
       Log.add(current_user, data, params)
-      render(:update){ |p| p.call 'app.reload_section', params[:data]}
     else
       message = '<p>' + data.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|
