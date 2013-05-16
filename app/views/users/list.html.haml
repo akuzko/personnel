@@ -30,6 +30,12 @@
               = item.identifier
           %td{:style=>"border: 1px solid black"}
             = item.cell1
+            - unless item.cell2.blank?
+              %br/
+              = item.cell2
+            - unless item.cell3.blank?
+              %br/
+              = item.cell3
           %td{:style=>"border: 1px solid black"}= item.full_name
           %td{:style=>"border: 1px solid black"}
             - item.addresses.order("`primary` DESC").each do |addr|
