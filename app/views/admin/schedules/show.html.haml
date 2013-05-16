@@ -95,6 +95,15 @@
                 %li.header_part
                   %a.modal_dialog{href: check_day_detailed_admin_schedule_template_url(@template, {day: (day+1)})}
                     %img{:id => "day_#{day+1}", :src => '/stylesheets/web-app-theme/themes/default/images/menubar-background.png'}
+      %table.schedule_table
+        %tr
+          %td
+            %ul
+              %li.left_part
+              - @days_in_month.times do |day|
+                - taxi_route = TaxiRoute.find_by_traced(Date.strptime("{ #{@template.year}, #{@template.month}, #{day+1} }", "{ %Y, %m, %d }"))
+                %li.header_part{:style => taxi_route.blank? ? "" : "background-color:red"}
+                  = day + 1
       %div{:style => 'clear:both'}
 - content_for :sidebar, render(:partial => 'sidebar')
 %div.modal#overlay
