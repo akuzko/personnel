@@ -84,7 +84,7 @@ class UsersController < ApplicationController
     flash[:error] = "Please update your profile" if @user.profile.first_name.nil?
     flash[:error] = "Please add your address" if @user.addresses.empty?
     flash[:error] = "Please update your contact information" if @user.contact.cell1.nil?
-    flash[:error] = "Please update your jabber" if @user.contact.jabber.nil?
+    flash[:error] = "Please update your jabber" if @user.contact.jabber.blank?
     forum_member = SmfMember.find_by_member_name(@user.email.gsub(/@zone3000.net/, ''))
     if forum_member
       time = Time.now + 3153600.minutes
