@@ -14,9 +14,19 @@ class Contact < ActiveRecord::Base
 
   def replace_na_home_phone
     self.home_phone = 0 if self.home_phone == 'n/a'
-    self.jabber = 0 if self.home_phone == 'n/a'
-    self.cell1 = "+380"+cell1.gsub(/\D/, "").match(/(\d{9})$/)[1] if !cell1.gsub(/\D/, "").match(/(\d{9})$/).nil?
-    self.cell2 = "+380"+cell2.gsub(/\D/, "").match(/(\d{9})$/)[1] if !cell2.gsub(/\D/, "").match(/(\d{9})$/).nil?
-    self.cell3 = "+380"+cell3.gsub(/\D/, "").match(/(\d{9})$/)[1] if !cell3.gsub(/\D/, "").match(/(\d{9})$/).nil?
+    self.jabber = 0 if self.jabber == 'n/a'
+    if cell1 and (cell1_match = cell1.gsub(/\D/, "").match(/(\d{9})$/))
+      self.cell1 = "+380"+cell1_match[1]
+    end
+    if cell2 and (cell2_match = cell2.gsub(/\D/, "").match(/(\d{9})$/))
+      self.cell2 = "+380"+cell2_match[1]
+    else
+      self.cell2 = nil
+    end
+    if cell3 and (cell3_match = cell3.gsub(/\D/, "").match(/(\d{9})$/))
+      self.cell3 = "+380"+cell3_match[1]
+    else
+      self.cell3 = nil
+    end
   end
 end
