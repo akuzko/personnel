@@ -101,9 +101,18 @@ class Admin::EventsController < ApplicationController
     params[:user_ids] = [params[:user_id]] unless params[:user_id].blank?
     @events = Event.processed_by_person(params, current_admin)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml { render :xml => @events }
+    if params[:export]
+      @categories = @events.map{|ev| ev.name}.uniq.sort
+      @lines = {}
+      @events.each do |event|
+        @lines[event.username] ||= {}
+        @lines[event.username][event.name] = event.total
+      end
+      ap @lines
+      headers['Content-Type'] = "application/vnd.ms-excel"
+      headers['Content-Disposition'] = 'attachment; filename="processed_by_person.xls"'
+      headers['Cache-Control'] = ''
+      render 'export_processed_by_person', :layout => false
     end
   end
 

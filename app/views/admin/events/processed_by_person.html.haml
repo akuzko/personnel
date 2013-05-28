@@ -38,6 +38,9 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
+              %button.button{:type => "submit", :name => "export", :value => "export"}
+                = image_tag("web-app-theme/icons/table_go.png", :alt => "#{t("web-app-theme.export", :default => "Export")}")
+                = t("web-app-theme.export", :default => "Export")
       %table.table
         - user = ''
         - @events.each do |event|
