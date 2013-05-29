@@ -108,7 +108,6 @@ class Admin::EventsController < ApplicationController
         @lines[event.username] ||= {}
         @lines[event.username][event.name] = event.total
       end
-      ap @lines
       headers['Content-Type'] = "application/vnd.ms-excel"
       headers['Content-Disposition'] = 'attachment; filename="processed_by_person.xls"'
       headers['Cache-Control'] = ''
