@@ -20,7 +20,7 @@
         %td{:style=>"border: 1px solid black"}= item.full_name
         %td{:style=>"border: 1px solid black"}
           - item.addresses.order("`primary` DESC").each do |addr|
-            %span{:style=> (Date.today - addr.updated_at.to_date).days > 10.days ? "" : "color:red", :days => (Date.today - addr.updated_at.to_date).days}
+            %span{:style=> (Date.today - addr.updated_at.to_date).days > 10.days ? "" : "color:red"}
               = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
             %br
         - j = i + @u.count / 2
@@ -40,7 +40,7 @@
           %td{:style=>"border: 1px solid black"}= item.full_name
           %td{:style=>"border: 1px solid black"}
             - item.addresses.order("`primary` DESC").each do |addr|
-              %span{:style=> (Date.today - addr.updated_at.to_date).days > 10.days ? "" : "color:red", :days => (Date.today - addr.updated_at.to_date).days}
+              %span{:style=> (Date.today - addr.updated_at.to_date).days > 10.days ? "" : "color:red"}
                 = addr.street + " " + addr.build.mb_chars.upcase.to_s + ", " + addr.porch.to_s + "/" + addr.nos.to_s
               %br
         - i += 1
