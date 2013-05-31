@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507165808) do
+ActiveRecord::Schema.define(:version => 20130531191255) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -301,6 +301,7 @@ ActiveRecord::Schema.define(:version => 20130507165808) do
     t.boolean  "team_lead",                             :default => false
     t.integer  "norm",                                  :default => 8,     :null => false
     t.text     "extended_permissions"
+    t.boolean  "delivered",                             :default => false, :null => false
   end
 
   add_index "users", ["department_id"], :name => "index_users_on_department_id"
