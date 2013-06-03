@@ -301,7 +301,7 @@ ActiveRecord::Schema.define(:version => 20130531191255) do
     t.boolean  "team_lead",                             :default => false
     t.integer  "norm",                                  :default => 8,     :null => false
     t.text     "extended_permissions"
-    t.boolean  "delivered",                             :default => false, :null => false
+    t.boolean  "deliverable",                           :default => false, :null => false
   end
 
   add_index "users", ["department_id"], :name => "index_users_on_department_id"
