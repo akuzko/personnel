@@ -53,7 +53,7 @@ class Admin::UsersController < ApplicationController
     templates.each do |tpl|
       tpl.schedule_shifts.find_all{|s| s.number < 10 and s.end == 24}.each do |shift|
         shift.schedule_cells.each do |cell|
-          out_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude
+          out_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude && User.find_by_identifier_and_deliverable(cell.user_id, true)
         end
       end
     end
@@ -67,7 +67,7 @@ class Admin::UsersController < ApplicationController
     templates.each do |tpl|
       tpl.schedule_shifts.find_all{|s| s.number < 10 and s.start == 0}.each do |shift|
         shift.schedule_cells.each do |cell|
-          in_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude
+          in_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude && User.find_by_identifier_and_deliverable(cell.user_id, true)
         end
       end
     end
