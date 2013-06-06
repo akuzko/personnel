@@ -11,6 +11,6 @@
 .group
   = f.label :avatar, t("personnel.user.picture", :default => "Picture"), :class => :label
   = f.file_field :avatar, :class => 'text_field'
-.group.for_identified_only{:style => "#{f.object.department.has_identifier? ? "" : "display:none"}"}
+.group.for_identified_only{:style => "#{(f.object.department.has_identifier? and f.object.department.show_address?) ? "" : "display:none"}"}
   = f.label :deliverable, "Deliverable", :class => :label
   = f.check_box :deliverable, :class => 'check_box'

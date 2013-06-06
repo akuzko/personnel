@@ -7,7 +7,7 @@
         - if item
           - address = item.addresses.order("`primary` DESC").first
           - if opposite_users.include? item.identifier
-            - style = "color:green"
+            - style = "background-color: #00FF00;"
           - else
             - style = (Date.today - address.updated_at.to_date).days > 10.days ? "" : "color:red" rescue ""
         - else
