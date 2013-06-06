@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   scope :with_data, includes(:profile, :addresses, :contact, :permissions)
   scope :identified, where('identifier IS NOT NULL')
   scope :active, where('active = 1')
-  scope :delivered, where('delivered = 1')
+  scope :deliverable, where('deliverable = 1')
   #scope :identifiers, order('identifier ASC').select('identifier')
 
   validates_presence_of :department_id

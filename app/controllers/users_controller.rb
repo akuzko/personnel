@@ -184,7 +184,7 @@ class UsersController < ApplicationController
       end
     end
     @users_out = []
-    @users_out = User.with_data.delivered.active.order(:identifier).where("identifier IN (#{out_ids.map { |d| d }.join(',')})") if !out_ids.empty?
+    @users_out = User.with_data.deliverable.active.order(:identifier).where("identifier IN (#{out_ids.map { |d| d }.join(',')})") if !out_ids.empty?
 
     #In 0:00
     in_ids = []
@@ -198,7 +198,7 @@ class UsersController < ApplicationController
       end
     end
     @users_in = []
-    @users_in = User.with_data.delivered.active.order(:identifier).where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
+    @users_in = User.with_data.deliverable.active.order(:identifier).where("identifier IN (#{in_ids.map { |d| d }.join(',')})") if !in_ids.empty?
 
     @users_in_ids = in_ids
     @users_out_ids = out_ids
