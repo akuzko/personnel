@@ -44,9 +44,16 @@
                 = t("web-app-theme.find", :default => "Find")
       %table.table
         - user = ''
+        - @late_min = 0
+        - @worked_min = 0
         - @late_comings.each do |late_coming|
           - if user != late_coming.user_full_name
+            = render 'total' unless user.blank?
+
             - user = late_coming.user_full_name
+            - @late_min = 0
+            - @worked_min = 0
+
             %tr
               %td{:colspan => 7}
                 %h3= user
@@ -65,7 +72,10 @@
                 = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
               %th
                 = t("activerecord.attributes.admin_event.action", :default => t("activerecord.labels.action", :default => ""))
+
           - unless late_coming.shift.nil? && late_coming.shift.schedule_shift.nil?
+            - @worked_min += late_coming.shift.worked_min
+            - @late_min += late_coming.late_minutes
             %tr{:class => cycle("odd", "even")}
               %td
                 = late_coming.shift.shiftdate
@@ -82,6 +92,9 @@
                 = late_coming.description
               %td
                 \#{link_to "#{t("web-app-theme.delete", :default => "Release")}", admin_late_coming_path(late_coming), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to release this?")}"}
+        = render 'total'
+
+
       .actions-bar.wat-cf
         .actions
         = will_paginate @late_comings

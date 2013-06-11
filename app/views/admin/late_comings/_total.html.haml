@@ -1,0 +1,18 @@
+%tr
+  %th{colspan: 2}
+    Total
+  %th
+    %strong
+      = (@late_min/60).round
+      hrs
+      = @late_min % 60
+      mins
+  %th
+    %strong
+      = (@worked_min/60).round
+      hrs
+      = @worked_min % 60
+      mins
+  %th
+  %th
+  %th
