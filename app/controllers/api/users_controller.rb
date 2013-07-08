@@ -102,7 +102,7 @@ class Api::UsersController < Api::BaseController
       shift_leader_cell = shift.schedule_shift.schedule_cells.find{|k|k.day == shift.shiftdate.day and k.responsible == 1}
       if shift_leader_cell
         user = User.find_by_identifier(shift_leader_cell.user_id)
-        shift_leader = {id: user.id, identifier:user.identifier, name: user.full_name}
+        shift_leader = {id: user.id, identifier:user.identifier, name: user.full_name} rescue nil
       else
         shift_leader = nil
       end
