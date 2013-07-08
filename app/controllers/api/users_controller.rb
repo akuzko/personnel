@@ -106,14 +106,24 @@ class Api::UsersController < Api::BaseController
       else
         shift_leader = nil
       end
-      # traning supervisor = 13
-      supervisors = shift.schedule_shift.schedule_cells.find_all{|k|k.day == shift.shiftdate.day and k.additional_attributes == 13}.count
+
+      # excluded statuses
+
+      # 13	 Training Supervisor
+      # 16	 CS Supervision
+      # 18	 KB Responsible
+      # 7	   Legal & Abuse
+      # 2	   New
+      # 11	 On Training
+
+      excluded = shift.schedule_shift.schedule_cells.find_all{|k|k.day == shift.shiftdate.day and
+          [13, 16, 18, 7, 2, 11].include?(k.additional_attributes)}.count
 
       if date == shift.shiftdate.to_formatted_s(:db)
-        date_hash.merge!(shift.number => {total_employees: shift.total_employees - supervisors, shift_leader: shift_leader})
+        date_hash.merge!(shift.number => {total_employees: shift.total_employees - excluded, shift_leader: shift_leader})
       else
         res << {date => date_hash} unless date_hash.blank?
-        date_hash = {shift.number => {total_employees: shift.total_employees - supervisors, shift_leader: shift_leader}}
+        date_hash = {shift.number => {total_employees: shift.total_employees - excluded, shift_leader: shift_leader}}
         date = shift.shiftdate.to_formatted_s(:db)
       end
 
