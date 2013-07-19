@@ -59,7 +59,8 @@ class Admin::ScheduleCellsController < ApplicationController
               'responsible' => params[:responsible],
               'additional_attributes' => params[:additional_attributes],
               'user_id' => params[:user_id],
-              'is_modified' => params[:is_modified]
+              'is_modified' => params[:is_modified],
+              'exclude' => false
             })
 
       end

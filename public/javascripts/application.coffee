@@ -253,7 +253,7 @@
           $(".for_identified_only").show()
 
   repaint_selected_cells: (user_id, font_weight, font_color, color) ->
-    $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).removeClass('ui-selected')
+    $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).css("text-decoration", '').removeClass('ui-selected')
 
   display_dialog: (template) ->
     $("#overlay .contentWrap").load template
