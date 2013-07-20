@@ -208,6 +208,7 @@ class User < ActiveRecord::Base
     create_profile
     create_contact
     self.department_id ||= Department.find_or_create_by_name('General').id
+    self.deliverable = (department.has_identifier? and department.show_address?)
     save
 
     unless self.active?
