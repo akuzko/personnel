@@ -96,7 +96,9 @@ class User < ActiveRecord::Base
     shifts = ScheduleShift.where('number < 10').find_all_by_schedule_template_id template_id
     shifts.each do |shift|
       cells = ScheduleCell.where(:schedule_shift_id => shift.id).where(:user_id => self.identifier).count(:all)
-      shifts_count += cells * (shift.end - shift.start) /8.0
+      shift_duration = shift.end - shift.start
+      shift_duration += 24 if shift_duration < 0
+      shifts_count += cells * shift_duration /8.0
     end
     shifts_count
   end

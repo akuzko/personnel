@@ -12,6 +12,7 @@ class ScheduleTemplate < ActiveRecord::Base
     shifts = ScheduleShift.includes(:schedule_cells).find_all_by_schedule_template_id self.id
     shifts.each do |shift|
       hours = shift.end - shift.start
+      hours += 24 if hours < 0
       cells = shift.schedule_cells.find_all{|k| k.day == day}
       unless cells.nil?
         cells.each do |cell|
@@ -36,6 +37,7 @@ class ScheduleTemplate < ActiveRecord::Base
       total_fact = 0
       @shifts.each do |shift|
         hours = shift.end - shift.start
+        hours += 24 if hours < 0
         cells = shift.schedule_cells.find_all{|k| k.day == day.to_i}
         unless cells.nil?
           cells.each do |cell|
