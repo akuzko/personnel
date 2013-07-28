@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   after_update :sync_with_forum, :send_hr_notification
+  before_save :take_off_email
 
   after_create :create_internals
   after_create :sync_with_forum
@@ -199,7 +200,7 @@ class User < ActiveRecord::Base
   end
 
   def self.birthdays_selection
-    [1,3,6,12].each do |d|
+    [1, 3, 6, 12].each do |d|
       [d, d]
     end
   end
@@ -283,7 +284,7 @@ class User < ActiveRecord::Base
       if department_id.to_i == 0
         return includes(:profile).order('`profiles`.last_name').active.map { |d| [d.full_name, d.id] }
       else
-        return includes(:profile).order(:identifier).find_all_by_department_id_and_active(department_id, 1).map { |d| [d.full_name, d.id]  }
+        return includes(:profile).order(:identifier).find_all_by_department_id_and_active(department_id, 1).map { |d| [d.full_name, d.id] }
       end
     end
     departments = department_id.to_i == 0 ? admin.departments.map { |d| d.id } : [department_id.to_i]
@@ -300,7 +301,7 @@ class User < ActiveRecord::Base
       if department_id.to_i == 0
         return includes(:profile).order('`profiles`.last_name').active.map { |d| [d.full_name, d.id] }
       else
-        return includes(:profile).order('`profiles`.last_name').find_all_by_department_id_and_active(department_id, 1).map { |d| [d.full_name, d.id]  }
+        return includes(:profile).order('`profiles`.last_name').find_all_by_department_id_and_active(department_id, 1).map { |d| [d.full_name, d.id] }
       end
     end
     departments = department_id.to_i == 0 ? admin.departments.map { |d| d.id } : [department_id.to_i]
@@ -339,6 +340,16 @@ class User < ActiveRecord::Base
     if active_changed? and active?
       message = HrNotification.send_user_activated(self)
       message.deliver
+    end
+  end
+
+  def take_off_email
+    if active_changed?
+      if active?
+        self.email = self.email.gsub(/^\d{4}\-\d{2}\-\d{2}\-/, '')
+      else
+        self.email = "#{Date.current.to_formatted_s(:db)}-#{self.email}"
+      end
     end
   end
 
