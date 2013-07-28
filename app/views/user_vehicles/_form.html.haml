@@ -1,0 +1,4 @@
+%div{:class => "flash", :style => 'display:none;'}
+  %div{:id => "vehicle_flash", :class => "message error"}
+= form_for @vehicle, :remote => true, :html => {:class => 'form', 'data-type' => 'script'} do |f|
+  = render 'shared/vehicle_form', :f => f

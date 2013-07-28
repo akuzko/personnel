@@ -68,6 +68,7 @@ Personnel::Application.routes.draw do
   resources :addresses do
     get :make_primary, :on => :member
   end
+
   resources :shifts do
     get :close_old, :on => :collection
     get :check, :on => :collection
@@ -91,6 +92,7 @@ Personnel::Application.routes.draw do
     post :create_self_score, :on => :collection
     post :create_shift_leader_score, :on => :collection
   end
+  resources :user_vehicles
   resources :late_comings
   resources :birthdays
   devise_for :admins, :controllers => { :registrations => "admin_registrations" }

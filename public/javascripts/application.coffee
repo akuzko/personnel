@@ -194,6 +194,10 @@
       app.showAddTab(id)
     no
 
+  display_vehicles: () ->
+    $("#sidebar_vehicles").load '/user/user_vehicles'
+    no
+
   display_addresses_admin: (user_id, id) ->
     $("#sidebar_address").load '/admin/users/'+user_id+'/display_addresses', ->
       app.showAddTab(id)

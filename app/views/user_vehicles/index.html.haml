@@ -1,0 +1,11 @@
+.pagination
+  %ul
+    - @user.user_vehicles.each do |vehicle|
+      %li
+        = vehicle.type
+        = vehicle.brand
+        = vehicle.reg_number
+- if current_user.id == @user.id
+  = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
+    new_user_vehicle_path, :class => 'modal_dialog'
+%div{:style => "padding-top:30px;"}

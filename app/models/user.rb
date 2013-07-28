@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :permissions, :through => :user_permissions, :uniq => true
   has_many :logs_entered, :class_name => 'Log', :as => :author
   has_many :logs, :as => :subject
+  has_many :user_vehicles, dependent: :destroy
 
   has_attached_file :avatar, :styles => {
       :large => "500x500>",
