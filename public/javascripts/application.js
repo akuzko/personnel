@@ -248,6 +248,10 @@
       });
       return false;
     },
+    display_vehicles: function() {
+      $("#sidebar_vehicles").load('/user_vehicles');
+      return false;
+    },
     display_addresses_admin: function(user_id, id) {
       $("#sidebar_address").load('/admin/users/' + user_id + '/display_addresses', function() {
         return app.showAddTab(id);

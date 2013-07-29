@@ -40,17 +40,17 @@ class Log < ActiveRecord::Base
     subject_id = obj.id
     subject_type = obj.class.name
     case subject_type
-      when "Contact", "Profile", "Address" then
+      when "Contact", "Profile", "Address", "UserVehicle" then
         record_type = "User"
         subject_id = obj.user.id
       else
         record_type = subject_type
     end
-    filter(params[subject_type.downcase.to_sym], [:password, :password_confirmation]) unless params[subject_type.downcase.to_sym].nil?
-    convert_date(params[subject_type.downcase.to_sym], "birthdate") unless params[subject_type.downcase.to_sym].nil?
+    filter(params[subject_type.underscore.to_sym], [:password, :password_confirmation]) unless params[subject_type.underscore.to_sym].nil?
+    convert_date(params[subject_type.underscore.to_sym], "birthdate") unless params[subject_type.underscore.to_sym].nil?
     body = case params[:action]
              when "create" then
-               '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+params[subject_type.downcase.to_sym].to_a.map { |k, v| k+":"+v.to_s }.join("; ")
+               '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+params[subject_type.underscore.to_sym].to_a.map { |k, v| k+":"+v.to_s }.join("; ")
              when "update" then
                filter(params[:previous_attributes], [:password, :password_confirmation])
                h = params[:previous_attributes]
@@ -60,7 +60,7 @@ class Log < ActiveRecord::Base
                  h[k] = h[k].to_s
                end
                a1 = h.to_a
-               a2 = h.merge!(params[subject_type.downcase.to_sym]).to_a
+               a2 = h.merge!(params[subject_type.underscore.to_sym]).to_a
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+(a2 - a1).map { |k, v| k+":"+v.to_s }.join("; ")
              when "update_data" then
                filter(params[:previous_attributes], [:password, :password_confirmation])
@@ -71,7 +71,7 @@ class Log < ActiveRecord::Base
                  h[k] = h[k].to_s
                end
                a1 = h.to_a
-               a2 = h.merge!(params[subject_type.downcase.to_sym]).to_a
+               a2 = h.merge!(params[subject_type.underscore.to_sym]).to_a
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+(a2 - a1).map { |k, v| k+":"+v.to_s }.join("; ")
              when "destroy" then
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+obj.attributes.to_a.map { |k, v| k+":"+v.to_s }.join("; ")

@@ -3,6 +3,7 @@ class UserVehiclesController < ApplicationController
 
   def index
     @user = current_user
+    render :layout => false
   end
 
   def show
@@ -25,7 +26,10 @@ class UserVehiclesController < ApplicationController
     @vehicle.user_id = current_user.id
     if @vehicle.save
       Log.add(current_user, @vehicle, params)
-      render(:update){ |p| p.call 'app.display_vehicles' }
+      render(:update) do |p|
+        p["#overlay"].dialog("close")
+        p.call 'app.display_vehicles'
+      end
     else
       message = '<p>' + @vehicle.errors.full_messages.join('</p><p>') + '</p>'
       render(:update) do |page|
@@ -39,8 +43,11 @@ class UserVehiclesController < ApplicationController
     @vehicle = UserVehicle.find_by_id_and_user_id(params[:id], current_user.id)
     params[:previous_attributes] = @vehicle.attributes
     if @vehicle.update_attributes(params[:user_vehicle])
+      ap @vehicle
+      ap params
       Log.add(current_user, @vehicle, params)
       render(:update) do  |p|
+        p["#overlay"].dialog("close")
         p.call 'app.display_vehicles'
       end
     else

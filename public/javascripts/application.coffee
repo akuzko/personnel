@@ -195,7 +195,7 @@
     no
 
   display_vehicles: () ->
-    $("#sidebar_vehicles").load '/user/user_vehicles'
+    $("#sidebar_vehicles").load '/user_vehicles'
     no
 
   display_addresses_admin: (user_id, id) ->

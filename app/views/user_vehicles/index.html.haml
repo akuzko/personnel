@@ -1,10 +1,14 @@
 .pagination
-  %ul
+  %table
     - @user.user_vehicles.each do |vehicle|
-      %li
-        = vehicle.type
-        = vehicle.brand
-        = vehicle.reg_number
+      %tr
+        %td= vehicle.type
+        %td= vehicle.brand
+        %td= vehicle.reg_number
+        - if current_user.id == @user.id
+          %td.last
+            \#{link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_user_vehicle_path(vehicle), :class => "modal_dialog"} |
+            \#{link_to "#{t("web-app-theme.delete", :default => "Delete")}", user_vehicle_path(vehicle), :method => :delete, :remote => true, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"}
 - if current_user.id == @user.id
   = link_to image_tag("web-app-theme/icons/application_add.png", :alt => "#{t("web-app-theme.add", :default=> "Add")}") + " " + t("web-app-theme.add", :default=> "Add"),
     new_user_vehicle_path, :class => 'modal_dialog'
