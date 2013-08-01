@@ -54,4 +54,34 @@ class ScheduleTemplate < ActiveRecord::Base
     end
     [missed.sort, extra.sort]
   end
+
+
+  def self.vacations(params, admin_id)
+    #SELECT u.email, c.additional_attributes, count(c.id) FROM `schedule_templates` t
+    #INNER JOIN schedule_shifts s ON s.schedule_template_id = t.id
+    #INNER JOIN schedule_cells c ON c.schedule_shift_id = s.id
+    #INNER JOIN users u ON c.user_id = u.identifier AND u.active = 1
+    #WHERE c.additional_attributes IN (3, 5)
+    #AND STR_TO_DATE(CONCAT_WS('-', t.year, t.month, c.day), '%Y-%m-%d') BETWEEN '2012-04-01' AND '2013-05-16'
+    #GROUP BY u.email, c.additional_attributes
+    #ORDER BY u.email, c.additional_attributes
+    model_query = select('CONCAT(profiles.last_name," ",profiles.first_name) as username, schedule_templates.year, schedule_templates.month, c.additional_attributes, count(c.id) as total')
+    model_query = model_query.joins('INNER JOIN schedule_shifts s ON s.schedule_template_id = schedule_templates.id')
+    model_query = model_query.joins('INNER JOIN schedule_cells c ON c.schedule_shift_id = s.id')
+    model_query = model_query.joins('INNER JOIN users u ON c.user_id = u.identifier AND u.active = 1')
+    model_query = model_query.joins('INNER JOIN profiles ON profiles.user_id = u.id')
+    model_query = model_query.where("u.id IN (" + params[:user_ids].join(',') + ")") unless params[:user_ids].blank?
+    model_query = model_query.where("c.additional_attributes IN (4, 5, 6)")
+
+    if admin_id != 0
+      admin = Admin.find_by_id(admin_id)
+      model_query = model_query.where("`u`.department_id IN (#{admin.departments.map{|d|d.id}.join(',')})") unless admin.super_user?
+    end
+
+    model_query = model_query.where("STR_TO_DATE(CONCAT_WS('-', schedule_templates.year, schedule_templates.month, c.day), '%Y-%m-%d') >= '" + params[:date_from].to_s + "'") unless params[:date_from].blank?
+    model_query = model_query.where("STR_TO_DATE(CONCAT_WS('-', schedule_templates.year, schedule_templates.month, c.day), '%Y-%m-%d') <= '" + params[:date_to].to_s + "'") unless params[:date_to].blank?
+    model_query = model_query.group('username, schedule_templates.year, schedule_templates.month, c.additional_attributes')
+    model_query = model_query.order('username, schedule_templates.year, schedule_templates.month, c.additional_attributes')
+    model_query.all
+  end
 end
