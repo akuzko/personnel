@@ -70,7 +70,8 @@ class ScheduleTemplate < ActiveRecord::Base
     model_query = model_query.joins('INNER JOIN schedule_cells c ON c.schedule_shift_id = s.id')
     model_query = model_query.joins('INNER JOIN users u ON c.user_id = u.identifier AND u.active = 1')
     model_query = model_query.joins('INNER JOIN profiles ON profiles.user_id = u.id')
-    model_query = model_query.where("u.id IN (" + params[:user_ids].join(',') + ")") unless params[:user_ids].blank?
+    model_query = model_query.where("u.id IN (?)", params[:user_ids].join(',') ) unless params[:user_ids].blank?
+    model_query = model_query.where("u.department_id = ?", params[:department_id]) unless params[:department_id].blank?
     model_query = model_query.where("c.additional_attributes IN (4, 5, 6)")
 
     if admin_id != 0

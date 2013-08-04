@@ -303,16 +303,8 @@ class EventsController < ApplicationController
     params[:date_from] ||= (Date.current - 1.month).to_formatted_s(:date_and_time)
     params[:date_to] ||= Date.current.to_formatted_s(:date_and_time)
     params[:department_id] = current_user.department_id.to_s
+    params[:user_ids] = [current_user.id]
 
-    if current_user.team_lead?
-      if params[:user_id].blank?
-        params[:user_ids] = User.active.where(department_id: current_user.department_id).map(&:id)
-      else
-        params[:user_ids] = [params[:user_id]]
-      end
-    else
-      params[:user_ids] = [current_user.id]
-    end
 
     @events = {}
     ScheduleTemplate.vacations(params, 0).each do |line|
