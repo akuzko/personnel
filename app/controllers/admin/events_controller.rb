@@ -117,7 +117,7 @@ class Admin::EventsController < ApplicationController
 
   def vacations
 
-    params[:date_from] ||= (Date.current - 1.month).to_formatted_s(:date_and_time)
+    params[:date_from] ||= Date.new(Date.current.year, 1).beginning_of_month.to_formatted_s(:date_and_time)
     params[:date_to] ||= Date.current.to_formatted_s(:date_and_time)
     params[:user_ids] = [params[:user_id]] unless params[:user_id].blank?
 

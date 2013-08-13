@@ -8,10 +8,6 @@
           %tr
             %td
               &nbsp;
-            - if current_user.team_lead?
-              %td
-                User
-                = select_tag :user_id, options_for_select(User.selection_by_team_lead(current_user.id), params[:user_id]), { :include_blank => true }
             %td
               &nbsp;
             %td
