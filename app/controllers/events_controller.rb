@@ -346,7 +346,7 @@ class EventsController < ApplicationController
     @shift_leader_cell = current_shift.prev_shift[:schedule_shift].shift_leader_cell(current_shift.prev_shift[:date].day) rescue nil
 
     redirect_to events_path unless @shift_leader_cell
-    @shift_leader = User.find_by_identifier(@shift_leader_cell.user_id)
+    @shift_leader = User.find_by_identifier_and_active(@shift_leader_cell.user_id, true)
     redirect_to events_path unless @shift_leader
 
     @shift_leader_score = ShiftLeaderScore.new(shift_date: @shift_leader_cell.date, shift_number: @prev_shift[:schedule_shift].number, shift_leader_id: @shift_leader.id)
@@ -388,7 +388,7 @@ class EventsController < ApplicationController
     # find prev shift and check if it is rated already
     shift_leader_cell = current_shift.prev_shift[:schedule_shift].shift_leader_cell(current_shift.prev_shift[:date].day) rescue nil
     return false unless shift_leader_cell
-    shift_leader = User.find_by_identifier(shift_leader_cell.user_id)
+    shift_leader = User.find_by_identifier_and_active(shift_leader_cell.user_id, true)
     return false unless shift_leader and shift_leader.id != current_user.id
     ShiftLeaderScore.find_by_shift_date_and_shift_number_and_user_id(current_shift.prev_shift[:date], current_shift.prev_shift[:schedule_shift].number, current_user.id).blank?
   end
