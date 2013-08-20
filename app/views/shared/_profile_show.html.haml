@@ -12,7 +12,7 @@
   %b
     = t("personnel.profile.birthdate", :default => "Birthdate")
     \:
-  = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
+  = @user.profile.birthdate.strftime("%Y-%b-%d") unless @user.profile.birthdate.nil?
 - if @user.profile.has_t_shirt? && current_admin
   %p
     %b
