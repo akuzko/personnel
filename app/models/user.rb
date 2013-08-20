@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   delegate :jabber, :to => :contact, :allow_nil => false
   delegate :name, :to => :department, :prefix => true
 
-  scope :with_data, includes(:profile, :addresses, :contact, :permissions)
+  scope :with_data, includes(:profile, :addresses, :contact, :permissions, :user_vehicles)
   scope :identified, where('identifier IS NOT NULL')
   scope :active, where('active = 1')
   scope :deliverable, where('deliverable = 1')
@@ -255,10 +255,12 @@ class User < ActiveRecord::Base
     conditions = []
     conditions.push("department_id IN (#{admin.departments.map { |d| d.id }.join(',')})") unless admin.super_user?
     [:active, :department_id, :identifier].each do |field|
-      conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
+      conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].blank?
     end
     conditions.push("fired = 0") unless params[:employed].nil? || params[:employed] == ""
-    conditions.push("(`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%')") unless params[:full_name].nil? || params[:full_name] == ""
+    conditions.push("(`profiles`.last_name LIKE '%#{params[:full_name]}%' OR `profiles`.first_name LIKE '%#{params[:full_name]}%')") unless params[:full_name].blank?
+    conditions.push("`user_vehicles`.`vehicle_type` = #{params[:vehicle_type]}") unless params[:vehicle_type].blank?
+    conditions.push("`user_vehicles`.`reg_number` LIKE '%#{params[:reg_number]}%'") unless params[:reg_number].blank?
     paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :conditions => conditions.join(' and '),
              :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"

@@ -18,43 +18,42 @@
           %tr
             %td
               ID
-              = text_field_tag :identifier, params[:identifier], :class => 'text_field', :style => "width:80px"
-            %td
-              &nbsp;
-            %td
+              %br/
+              = text_field_tag :identifier, params[:identifier], :class => 'text_field', :style => "width:30px"
+            %td{style: "width:150px"}
               = t("personnel.user.full_name", :default => "Full Name")
+              %br/
               = text_field_tag :full_name, params[:full_name], :class => 'text_field'
-            %td
-              &nbsp;
-            %td
+            %td{style: "width:150px"}
               = t("personnel.user.department", :default => "Department")
+              %br/
               = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id), params[:department_id]), { :include_blank => true }
             %td
-              &nbsp;
+              Vehicle
+              %br/
+              = select_tag :vehicle_type, options_for_select(UserVehicle.selection, params[:vehicle_type]), {:include_blank => true}
+              = text_field_tag :reg_number, params[:reg_number], :style => "width:50px"
             %td
               = t("personnel.user.active-only", :default => "Active Only")
+              %br/
               = check_box_tag :active, 1, params[:active]
             %td
-              &nbsp;
-            %td
-              = t("personnel.user.presently-employed", :default => "Presently Employed")
+              = t("personnel.user.presently-employed", :default => "Pres. Employed")
+              %br/
               = check_box_tag :employed, 1, params[:employed]
             %td
-              &nbsp;
-            %td
               = t("web-app-theme.per page", :default => "per page")
+              %br/
               = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
-            %td
-              &nbsp;
             %td
               = hidden_field_tag 'sort_by', params[:sort_by]
               = hidden_field_tag 'sort_order', params[:sort_order]
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
-                = t("web-app-theme.find", :default => "Find")
+                -#= t("web-app-theme.find", :default => "Find")
               %button.button{:type => "submit", :name => "export", :value => "export"}
                 = image_tag("web-app-theme/icons/table_go.png", :alt => "#{t("web-app-theme.export", :default => "Export")}")
-                = t("web-app-theme.export", :default => "Export")
+                -#= t("web-app-theme.export", :default => "Export")
       %table.table
         %tr
           %th
