@@ -1,0 +1,50 @@
+.block
+  .content
+    %h2.title
+      Vacations
+    .inner
+      = form_tag(vacations_admin_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.identified.selection_by_admin(current_admin.id), params[:department_id]), { :include_blank => true }
+            %td#users_select
+              User
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id, params[:department_id]), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'date_select'
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        - @events.each do |user, months|
+          %tr
+            %td{:colspan => 6}
+              %h3= user
+          %tr{:class => cycle("odd", "even")}
+            %th Month
+            %th Vacation
+            %th Unpaid
+            %th Sick
+          - months.each do |month, statuses|
+            %tr{:class => cycle("odd", "even")}
+              %td= month
+              %td= statuses[5]
+              %td= statuses[6]
+              %td= statuses[4]
+
+%div.contentWrap

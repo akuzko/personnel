@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :check_filled_profile
-  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers, :processed_by_person, :new_self_score, :create_self_score]
+  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers, :processed_by_person, :vacations, :new_self_score, :create_self_score]
   layout 'user'
 
   def index
@@ -298,6 +298,22 @@ class EventsController < ApplicationController
     end
   end
 
+  def vacations
+
+    params[:date_from] ||= Date.new(Date.current.year, 1).beginning_of_month.to_formatted_s(:date_and_time)
+    params[:date_to] ||= Date.current.to_formatted_s(:date_and_time)
+    params[:department_id] = current_user.department_id.to_s
+    params[:user_ids] = [current_user.id]
+
+
+    @events = {}
+    ScheduleTemplate.vacations(params, 0).each do |line|
+      @events[line.username] ||= {}
+      @events[line.username]["#{line.year}, #{line.month}"] ||= {}
+      @events[line.username]["#{line.year}, #{line.month}"][line.additional_attributes] = line.total
+    end
+  end
+
   def new_self_score
     if self_score_available?(:ended)
       shift = current_user.shifts.where("shiftdate < ?", Date.current).order(:shiftdate).order(:number).last
@@ -366,7 +382,7 @@ class EventsController < ApplicationController
 
   def shift_leader_score_available?
     return false unless session[:shift_id]
-    return false unless [4,5,6,14].include?(current_user.department_id)
+    return false unless [4, 5, 6, 14].include?(current_user.department_id)
     current_shift = Shift.find_by_id session[:shift_id]
     return false unless current_shift.schedule_cell.responsible?
     # find prev shift and check if it is rated already

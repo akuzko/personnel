@@ -115,6 +115,20 @@ class Admin::EventsController < ApplicationController
     end
   end
 
+  def vacations
+
+    params[:date_from] ||= Date.new(Date.current.year, 1).beginning_of_month.to_formatted_s(:date_and_time)
+    params[:date_to] ||= Date.current.to_formatted_s(:date_and_time)
+    params[:user_ids] = [params[:user_id]] unless params[:user_id].blank?
+
+    @events = {}
+    ScheduleTemplate.vacations(params, current_admin).each do |line|
+      @events[line.username] ||= {}
+      @events[line.username]["#{line.year}, #{line.month}"] ||= {}
+      @events[line.username]["#{line.year}, #{line.month}"][line.additional_attributes] = line.total
+    end
+  end
+
   def processed_by_day_of_week
     params[:date_from] = (Date.current - 1.month).to_formatted_s(:date_only)  if !params[:date_from]
     params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
