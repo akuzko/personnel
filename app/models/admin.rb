@@ -40,6 +40,8 @@ class Admin < ActiveRecord::Base
         rescue
           dep = department_ids.map(&:to_i)
         end
+      else
+        dep = [department_ids]
       end
     end
     super_user? || (departments.map(&:id) & dep).any?
