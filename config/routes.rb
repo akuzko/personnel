@@ -67,6 +67,8 @@ Personnel::Application.routes.draw do
 
   resources :addresses do
     get :make_primary, :on => :member
+    get :map, on: :member
+    put :update_map, on: :member
   end
   resources :shifts do
     get :close_old, :on => :collection
@@ -141,6 +143,8 @@ Personnel::Application.routes.draw do
 
     resources :addresses do
       get :make_primary, :on => :member
+      get :map, on: :member
+      put :update_map, on: :member
     end
 
     resources :users do

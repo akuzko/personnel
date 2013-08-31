@@ -25,6 +25,7 @@ class AddressesController < ApplicationController
     @address.user_id = current_user.id
     @address.primary = 1 if Address.find_all_by_user_id_and_primary(current_user.id, 1).count == 0
     if @address.save
+      @address.get_map
       Log.add(current_user, @address, params)
       render(:update){ |p| p.call 'app.display_addresses', @address.id }
     else
@@ -40,6 +41,7 @@ class AddressesController < ApplicationController
     @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
     params[:previous_attributes] = @address.attributes
     if @address.update_attributes(params[:address])
+      @address.get_map
       Log.add(current_user, @address, params)
       render(:update) do  |p|
         p.call 'app.display_addresses', @address.id
@@ -76,6 +78,26 @@ class AddressesController < ApplicationController
     Log.add(current_user, @address, params)
     respond_to do |format|
       format.js { render() { |p| p.call 'app.display_addresses', @address.id } }
+    end
+  end
+
+  def map
+    @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
+    if @address.lat.blank? or @address.lng.blank?
+      @address.get_map
+    end
+    render layout: false
+  end
+
+  def update_map
+    @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
+    Address.record_timestamps= false
+    @address.assign_attributes(lat: params[:lat], lng: params[:lng])
+    @address.save(validate: false)
+    Address.record_timestamps= true
+    render(:update) do |page|
+      page['.flash'].html "<div class='message notice'><p>Map has been updated</p></div>"
+      page["#overlay"].dialog("close")
     end
   end
 

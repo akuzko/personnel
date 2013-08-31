@@ -78,13 +78,13 @@ class Admin::UsersController < ApplicationController
     @users_out_ids = out_ids
 
     if params['detailed'] == '1'
-      render 'delivery_detailed', layout: 'mobile', format: :html
+      render 'users/delivery_detailed', layout: 'mobile', format: :html
     else
 
       @users_out = @users_out.in_groups_of(4)
       @users_in = @users_in.in_groups_of(4)
 
-      render 'delivery', layout: 'mobile', format: :html
+      render 'users/delivery', layout: 'mobile', format: :html
     end
   end
 

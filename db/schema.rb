@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130531191255) do
+ActiveRecord::Schema.define(:version => 20130831144123) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -21,8 +21,10 @@ ActiveRecord::Schema.define(:version => 20130531191255) do
     t.integer  "nos"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "primary",    :default => false
-    t.string   "room",                          :null => false
+    t.boolean  "primary",                  :default => false
+    t.string   "room",                                        :null => false
+    t.string   "lat",        :limit => 10
+    t.string   "long",       :limit => 10
   end
 
   create_table "admin_departments", :force => true do |t|
@@ -270,6 +272,17 @@ ActiveRecord::Schema.define(:version => 20130531191255) do
   end
 
   add_index "user_permissions", ["user_id", "permission_id"], :name => "index_user_permissions_on_user_id_and_permission_id", :unique => true
+
+  create_table "user_vehicles", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "vehicle_type", :null => false
+    t.string   "brand",        :null => false
+    t.string   "reg_number",   :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "user_vehicles", ["user_id"], :name => "index_user_vehicles_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false

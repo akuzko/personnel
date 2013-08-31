@@ -204,12 +204,12 @@ class UsersController < ApplicationController
     @users_out_ids = out_ids
 
     if params['detailed'] == '1'
-      render 'delivery_detailed.html', :layout => 'mobile'
+      render 'delivery_detailed', :layout => 'mobile'
     else
       @users_out = @users_out.in_groups_of(4)
       @users_in = @users_in.in_groups_of(4)
 
-      render 'delivery.html', :layout => 'mobile'
+      render 'delivery', :layout => 'mobile'
     end
   end
 end

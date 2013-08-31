@@ -24,6 +24,7 @@
         autoOpen: false
         resizable: false
         modal: true
+        width: 450
       $('#overlay').live 'keyup', (e) ->
         if e.keyCode == 13 && e.target.type != 'text'
           $(':button:contains("Save")').click()
@@ -255,7 +256,7 @@
   repaint_selected_cells: (user_id, font_weight, font_color, color) ->
     $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).css("text-decoration", '').removeClass('ui-selected')
 
-  display_dialog: (template) ->
+  display_dialog: (template, width = 300) ->
     $("#overlay .contentWrap").load template
-#    $("#overlay").dialog({ minWidth: 450, minHeight: 600 })
+    $("#overlay").dialog({ minWidth: width })
     $("#overlay").dialog("open")
