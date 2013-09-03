@@ -12,14 +12,14 @@
   %b
     = t("personnel.profile.birthdate", :default => "Birthdate")
     \:
-  = l(@user.profile.birthdate) unless @user.profile.birthdate.nil?
+  = @user.profile.birthdate.strftime("%Y-%b-%d") unless @user.profile.birthdate.nil?
 - if @user.profile.has_t_shirt? && current_admin
   %p
     %b
       = t("personnel.profile.t_shirt_size", :default => "T-Shirt Size")
       \:
     = @user.profile.t_shirt_size
-- if @user.profile.has_levels? && current_admin
+- if @user.profile.has_levels?
   %p
     %b
       = t("personnel.profile.level", :default => "Level")

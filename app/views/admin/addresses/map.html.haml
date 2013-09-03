@@ -1,0 +1,38 @@
+:javascript
+  function ShowMarker(x, y) {
+    var myLatlng = new google.maps.LatLng(x,y);
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: '#{@address.street}, #{@address.build}',
+        draggable: true
+    });
+    google.maps.event.addListener(marker, 'dragend', function(evt){
+      $('#lat').val(evt.latLng.lat());
+      $('#lng').val(evt.latLng.lng());
+    });
+    return (false);
+  }
+
+#map_canvas{style: "width:600px; height:450px"}
+
+= form_tag(update_map_admin_address_path, :method => :put, :remote => true, :class => 'form', 'data-type' => 'script') do
+  = hidden_field_tag :id, @address.id
+  = hidden_field_tag :lat, @address.lat
+  = hidden_field_tag :lng, @address.lng
+  .group.navform.wat-cf
+    %button.button{:type => "submit"}
+      = image_tag("web-app-theme/icons/tick.png", :alt => "#{t("web-app-theme.save", :default => "Save")}")
+      = t("web-app-theme.send", :default => "Save")
+    %a.button.close{:href => 'javascript:void(0);'}
+      = image_tag("web-app-theme/icons/cross.png", :alt => "#{t("web-app-theme.cancel", :default => "Cancel")}")
+      = t("web-app-theme.cancel", :default => "Cancel")
+
+:javascript
+  ShowMarker(#{@address.lat}, #{@address.lng});

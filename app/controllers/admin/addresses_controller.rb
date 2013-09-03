@@ -75,4 +75,24 @@ class Admin::AddressesController < ApplicationController
     end
   end
 
+  def map
+    @address = Address.find_by_id(params[:id])
+    if @address.lat.blank? or @address.lng.blank?
+      @address.get_map
+    end
+    render layout: false
+  end
+
+  def update_map
+    @address = Address.find_by_id(params[:id])
+    Address.record_timestamps= false
+    @address.assign_attributes(lat: params[:lat], lng: params[:lng])
+    @address.save(validate: false)
+    Address.record_timestamps= true
+    render(:update) do |page|
+      page['.flash'].html "<div class='message notice'><p>Map has been updated</p></div>"
+      page["#overlay"].dialog("close")
+    end
+  end
+
 end

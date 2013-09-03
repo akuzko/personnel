@@ -34,7 +34,8 @@
         $("#overlay").dialog({
           autoOpen: false,
           resizable: false,
-          modal: true
+          modal: true,
+          width: 450
         });
         $('#overlay').live('keyup', function(e) {
           if (e.keyCode === 13 && e.target.type !== 'text') {
@@ -333,8 +334,14 @@
     repaint_selected_cells: function(user_id, font_weight, font_color, color) {
       return $('.ui-selected').html(user_id).css("font-weight", font_weight).css("color", font_color).css("background-color", color).css("text-decoration", '').removeClass('ui-selected');
     },
-    display_dialog: function(template) {
+    display_dialog: function(template, width) {
+      if (width == null) {
+        width = 300;
+      }
       $("#overlay .contentWrap").load(template);
+      $("#overlay").dialog({
+        minWidth: width
+      });
       return $("#overlay").dialog("open");
     }
   };

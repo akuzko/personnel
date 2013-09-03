@@ -28,3 +28,68 @@
           = render :partial => 'shared/delivery_detailed', :locals => {:users => @users_out, :opposite_users => @users_in_ids}
 %center
   = link_to "Простой", delivery_user_path
+#map_holder_in{style: "float:left;margin:5px;"}
+  %h3
+    In
+  #map_canvas_in{style:"width:800px;height: 800px"}
+#map_holder_out{style: "float:left;margin:5px;"}
+  %h3
+    Out
+  #map_canvas_out{style:"width:800px;height: 800px;"}
+- markers_in = []
+- markers_out = []
+- @users_in.each do |user|
+  - address = user.addresses.order("`primary` DESC").first
+  - markers_in << ["#{user.identifier} [#{address.street}, #{address.build}]", address.lat, address.lng, user.identifier] if address.lat and address.lng
+- @users_out.each do |user|
+  - address = user.addresses.order("`primary` DESC").first
+  - markers_out << ["#{user.identifier} [#{address.street}, #{address.build}]", address.lat, address.lng, user.identifier] if address.lat and address.lng
+:javascript
+  function InitMap(id, markers){
+    var locations = markers;
+
+    var map = new google.maps.Map(document.getElementById(id), {
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+    var latlngbounds = new google.maps.LatLngBounds();
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map
+      });
+
+      latlngbounds.extend(new google.maps.LatLng(locations[i][1], locations[i][2]));
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+
+    // main office
+    marker = new google.maps.Marker({
+          position: new google.maps.LatLng(49.98696, 36.2559),
+          icon: '/images/web-app-theme/icons/car.png',
+          map: map
+        });
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+        infowindow.setContent('Zone3000');
+        infowindow.open(map, marker);
+      }
+    })(marker, i));
+    latlngbounds.extend(marker.position);
+
+    map.setCenter(latlngbounds.getCenter());
+    map.fitBounds(latlngbounds);
+  }
+  InitMap('map_canvas_out', #{markers_out});
+  InitMap('map_canvas_in', #{markers_in});
+
+

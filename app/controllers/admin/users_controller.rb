@@ -53,7 +53,7 @@ class Admin::UsersController < ApplicationController
     templates.each do |tpl|
       tpl.schedule_shifts.find_all{|s| s.number < 10 and s.end == 24}.each do |shift|
         shift.schedule_cells.each do |cell|
-          out_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude && User.find_by_identifier_and_deliverable(cell.user_id, true)
+          out_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude && User.find_by_identifier_and_deliverable_and_active(cell.user_id, true, true)
         end
       end
     end
@@ -67,7 +67,7 @@ class Admin::UsersController < ApplicationController
     templates.each do |tpl|
       tpl.schedule_shifts.find_all{|s| s.number < 10 and s.start == 0}.each do |shift|
         shift.schedule_cells.each do |cell|
-          in_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude && User.find_by_identifier_and_deliverable(cell.user_id, true)
+          in_ids.push cell.user_id if cell.day == date.day && cell.user_id? && !cell.exclude && User.find_by_identifier_and_deliverable_and_active(cell.user_id, true, true)
         end
       end
     end
@@ -78,13 +78,13 @@ class Admin::UsersController < ApplicationController
     @users_out_ids = out_ids
 
     if params['detailed'] == '1'
-      render 'delivery_detailed', layout: 'mobile', format: :html
+      render 'users/delivery_detailed', layout: 'mobile', format: :html
     else
 
       @users_out = @users_out.in_groups_of(4)
       @users_in = @users_in.in_groups_of(4)
 
-      render 'delivery', layout: 'mobile', format: :html
+      render 'users/delivery', layout: 'mobile', format: :html
     end
   end
 

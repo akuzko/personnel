@@ -192,6 +192,7 @@ class User < ActiveRecord::Base
   end
 
   def extended_permissions_by_section(section_name)
+    return nil if extended_permissions.blank?
     extended_permissions.split("\r\n").each do |section|
       name, depts = section.split(":").map(&:strip)
       return Department.all.map(&:id) if depts == "all"
