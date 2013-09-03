@@ -23,3 +23,8 @@
   %h3= t("personnel.contact.title", :default => 'Contacts')
   #sidebar_contact.content
     = render 'show_contact'
+
+.block.notice
+  %h3 Vehicles
+  %div#sidebar_vehicles.content{:style => "margin:10px;"}
+    = render 'show_vehicles'
