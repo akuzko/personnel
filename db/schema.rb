@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130831144123) do
+ActiveRecord::Schema.define(:version => 20130903184046) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -23,8 +23,8 @@ ActiveRecord::Schema.define(:version => 20130831144123) do
     t.datetime "updated_at"
     t.boolean  "primary",                  :default => false
     t.string   "room",                                        :null => false
-    t.string   "lat",        :limit => 10
-    t.string   "long",       :limit => 10
+    t.string   "lat",        :limit => 20
+    t.string   "lng",        :limit => 20
   end
 
   create_table "admin_departments", :force => true do |t|
