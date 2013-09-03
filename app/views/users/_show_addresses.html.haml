@@ -19,6 +19,6 @@
               address_path(addr), :method => :delete, :remote => true, :class => "button"
             = link_to image_tag("web-app-theme/icons/heart.png", :alt => "#{t("web-app-theme.edit", :default=> "Make Primary")}") + " " + t("web-app-theme.edit", :default=> "Make Primary"),
               make_primary_address_path(addr), :remote => true,  :class => "button"
-          %a.button{href: "javascript:app.display_dialog('/addresses/#{addr.id}/map', 620)"}
+          %a.button{href:'javascript:void(0);', onclick: "app.display_dialog('/addresses/#{addr.id}/map', 620)"}
             =image_tag("web-app-theme/icons/calendar_edit.png")
             Map
