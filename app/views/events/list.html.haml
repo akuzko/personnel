@@ -1,0 +1,71 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Events
+    .inner
+      = form_tag(list_events_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            - if current_user.team_lead?
+              %td
+                User
+                = select_tag :user_id, options_for_select(User.selection_by_team_lead(current_user.id), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_from_check, 1, params[:date_from_check]
+            %td
+              &nbsp;
+            %td
+              From
+              = text_field_tag 'date_from', params[:date_from], :class => 'datetime_select'
+            %td
+              &nbsp;
+            %td
+              = check_box_tag :date_to_check, 1, params[:date_to_check]
+            %td
+              &nbsp;
+            %td
+              To
+              = text_field_tag 'date_to', params[:date_to], :class => 'datetime_select'
+            %td
+              &nbsp;
+            %td
+              per page
+              = text_field_tag 'per_page', params[:per_page], :style => "width:30px"
+            %td
+              &nbsp;
+            %td
+              = hidden_field_tag 'sort_by', params[:sort_by]
+              = hidden_field_tag 'sort_order', params[:sort_order]
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+          %th
+            = t("activerecord.attributes.admin_user.name", :default => t("activerecord.labels.name", :default => "Name"))
+          %th
+            = t("activerecord.attributes.category.name", :default => t("activerecord.labels.category", :default => "Category"))
+          %th
+            = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
+        - @events.each do |event|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = event.eventtime.to_formatted_s(:date_and_time)
+            %td
+              = event.user_full_name
+            %td
+              = event.category_name
+            %td
+              = event.description
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @events
+%div.modal#overlay
+  %div.contentWrap

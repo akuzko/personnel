@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :check_filled_profile
-  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers, :processed_by_person, :vacations, :new_self_score, :create_self_score]
+  before_filter :check_shift_started, :except => [:start_shift, :create_shift, :available_shift_numbers, :processed_by_person, :vacations, :new_self_score, :create_self_score, :list]
   layout 'user'
 
   def index
@@ -291,6 +291,31 @@ class EventsController < ApplicationController
     end
 
     @events = Event.processed_by_person(params, 0)
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml { render :xml => @events }
+    end
+  end
+
+  def list
+    if !params[:sort_order]
+      params[:date_from_check] = "1"
+    end
+    params[:date_from] = (DateTime.current - 2.hour).to_formatted_s(:date_and_time)  if !params[:date_from]
+    params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+
+    if current_user.team_lead?
+      if params[:user_id].blank?
+        params[:user_ids] = User.active.where(department_id: current_user.department_id).map(&:id)
+      else
+        params[:user_ids] = [params[:user_id]]
+      end
+    else
+      params[:user_ids] = [current_user.id]
+    end
+
+    @events = Event.joins('JOIN users ON events.user_id = users.id').search(params, 0)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -13,6 +13,7 @@ class Admin::EventsController < ApplicationController
     end
     params[:date_from] = (DateTime.current - 2.hour).to_formatted_s(:date_and_time)  if !params[:date_from]
     params[:date_to] = DateTime.current.to_formatted_s(:date_and_time)  if !params[:date_to]
+    params[:user_ids] = [params[:user_id]] unless params[:user_id].blank?
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
     params[:per_page] ||= 15
 

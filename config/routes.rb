@@ -94,6 +94,7 @@ Personnel::Application.routes.draw do
     get :new_shift_leader_score, :on => :collection
     post :create_self_score, :on => :collection
     post :create_shift_leader_score, :on => :collection
+    get :list, :on => :collection
   end
   resources :user_vehicles
   resources :late_comings
