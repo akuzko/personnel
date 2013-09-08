@@ -82,7 +82,7 @@ class AddressesController < ApplicationController
   end
 
   def map
-    @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
+    @address = Address.find_by_id(params[:id])
     if @address.lat.blank? or @address.lng.blank?
       @address.get_map
     end
@@ -90,7 +90,8 @@ class AddressesController < ApplicationController
   end
 
   def update_map
-    @address = Address.find_by_id_and_user_id(params[:id], current_user.id)
+    @address = Address.find_by_id(params[:id])
+    return false unless current_user.extended_permissions_by_section('edit_map').include?(@address.user.department_id)
     Address.record_timestamps= false
     @address.assign_attributes(lat: params[:lat], lng: params[:lng])
     @address.save(validate: false)

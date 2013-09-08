@@ -10,8 +10,8 @@
   - @user.addresses.each do |addr|
     %div{:id => "sidebar_address_#{addr.id}", :style => "#{!addr.primary ? 'display:none;' : ''}"}
       = render 'shared/address_show', :addr => addr
-      - if current_user.id == @user.id
-        .wat-cf
+      .wat-cf
+        - if current_user.id == @user.id
           = link_to image_tag("web-app-theme/icons/application_edit.png", :alt => "#{t("web-app-theme.edit", :default=> "Edit")}") + " " + t("web-app-theme.edit", :default=> "Edit"),
             edit_address_path(addr), :class => "button", 'data-edit-address' => edit_address_path(addr)
           - if !addr.primary
@@ -19,6 +19,7 @@
               address_path(addr), :method => :delete, :remote => true, :class => "button"
             = link_to image_tag("web-app-theme/icons/heart.png", :alt => "#{t("web-app-theme.edit", :default=> "Make Primary")}") + " " + t("web-app-theme.edit", :default=> "Make Primary"),
               make_primary_address_path(addr), :remote => true,  :class => "button"
+        - if current_user.extended_permissions_by_section('edit_map')
           %a.button{href:'javascript:void(0);', onclick: "app.display_dialog('/addresses/#{addr.id}/map', 620)"}
             =image_tag("web-app-theme/icons/calendar_edit.png")
             Map
