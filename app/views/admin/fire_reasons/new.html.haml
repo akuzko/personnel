@@ -1,0 +1,13 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first= link_to "#{t("web-app-theme.list", :default => "List")}", admin_fire_reasons_path
+      %li.active= link_to "#{t("web-app-theme.new", :default => "New")}", new_admin_fire_reason_path
+  .content
+    %h2.title
+      = t("web-app-theme.new", :default => "New")
+      Fire Reason
+    .inner
+      = render "shared/form_errors", :object => @reason
+      = form_for @reason, :url => admin_fire_reasons_path, :html => { :class => :form } do |f|
+        = render :partial => "form", :locals => {:f => f}

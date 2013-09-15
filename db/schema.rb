@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130903184046) do
+ActiveRecord::Schema.define(:version => 20130912184106) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -131,6 +131,12 @@ ActiveRecord::Schema.define(:version => 20130903184046) do
 
   add_index "events", ["category_id"], :name => "index_events_on_category_id"
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
+  create_table "fire_reasons", :force => true do |t|
+    t.string   "name",       :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "late_comings", :force => true do |t|
     t.integer  "user_id"
@@ -315,6 +321,8 @@ ActiveRecord::Schema.define(:version => 20130903184046) do
     t.integer  "norm",                                  :default => 8,     :null => false
     t.text     "extended_permissions"
     t.boolean  "deliverable",                           :default => false, :null => false
+    t.integer  "fire_reason_id"
+    t.text     "fire_comment"
   end
 
   add_index "users", ["department_id"], :name => "index_users_on_department_id"

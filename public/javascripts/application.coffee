@@ -184,6 +184,12 @@
         else
           $(".late_description").hide()
 
+      $("#user_fired_at").change ->
+        if $(this).val() > 0
+          $(".user_fire_reason").show()
+        else
+          $(".user_fire_reason").hide()
+
   flashFade: ->
     $('.flash-fade').children().each (i) ->
       setTimeout((=> $(this).fadeOut()), 250 + i * 1000)

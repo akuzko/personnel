@@ -169,6 +169,7 @@ Personnel::Application.routes.draw do
     end
 
     resources :birthdays
+    resources :fire_reasons
   end
 
   namespace :api do

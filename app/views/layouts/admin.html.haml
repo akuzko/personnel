@@ -28,6 +28,9 @@
             %li{:class => (controller.controller_path == 'admin/users'  && controller.action_name != 'working_shifts') ? 'active' : '' }
               %a{:href => admin_users_path}
                 =t("personnel.user.title", :default => "Users")
+            %li{:class => (controller.controller_path == 'admin/fire_reasons') ? 'active' : '' }
+              %a{:href => admin_fire_reasons_path}
+                Fire Reasons
             %li{:class => controller.controller_path == 'admin/schedule_statuses' ? 'active' : '' }
               %a{:href => admin_schedule_statuses_path} Schedule Statuses
             %li{:class => controller.controller_path == 'admin/schedules' ? 'active' : '' }

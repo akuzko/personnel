@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many :addresses, :dependent => :destroy
   has_one :contact, :dependent => :destroy
   belongs_to :department
+  belongs_to :fire_reason
   has_many :schedule_cells, :dependent => :destroy
   has_many :events
   has_many :shifts
