@@ -34,9 +34,12 @@ class User < ActiveRecord::Base
   }
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
-  after_update :sync_with_forum, :send_hr_notification
   before_save :take_off_email
 
+  before_validation :clean_unused_identifier
+  before_validation {|u| (u.fired_at = nil; u.fire_reason_id = nil; u.fire_comment = nil) if u.fired_at.blank?}
+
+  after_update :sync_with_forum, :send_hr_notification
   after_create :create_internals
   after_create :sync_with_forum
 
@@ -54,12 +57,14 @@ class User < ActiveRecord::Base
 
   validates_presence_of :department_id
   validates_presence_of :identifier, :if => :has_identifier?
+  validates_presence_of :fire_reason_id, if: Proc.new {|u| u.fired_at}
+  validates_presence_of :fire_comment, if: Proc.new {|u| u.fired_at}
   validates_uniqueness_of :identifier, :scope => :active, :if => :has_identifier?
   validates_confirmation_of :password
   validates_format_of :email,
                       :with => /\A([^@\s]+)@zone3000\.net\Z/i
   validates_attachment_content_type :avatar, :content_type => ['image/jpeg', 'image/png', 'image/gif']
-  before_validation :clean_unused_identifier
+
 
   def has_identifier?
     return false if !active
@@ -67,7 +72,7 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    name = [profile.last_name, profile.first_name] * ' '
+    name = [profile.last_name, profile.first_name] * ' ' rescue ' '
     name == ' ' ? email : name
   end
 
@@ -344,6 +349,10 @@ class User < ActiveRecord::Base
   def send_hr_notification
     if active_changed? and active?
       message = HrNotification.send_user_activated(self)
+      message.deliver
+    end
+    if fired_at? and fired_at_changed?
+      message = HrNotification.send_user_fired(self)
       message.deliver
     end
   end

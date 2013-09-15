@@ -223,11 +223,19 @@
             return $(".self_score").hide();
           }
         });
-        return $("#late_coming_late_type").change(function() {
+        $("#late_coming_late_type").change(function() {
           if ($(this).val() > 5) {
             return $(".late_description").show();
           } else {
             return $(".late_description").hide();
+          }
+        });
+        return $("#user_fired_at").change(function() {
+          console.log($(this).val());
+          if ($(this).val() !== '') {
+            return $(".user_fire_reason").show();
+          } else {
+            return $(".user_fire_reason").hide();
           }
         });
       });

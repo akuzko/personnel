@@ -325,4 +325,31 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  def fire_reasons
+    @users = User.includes(:fire_reason).select('count(*) as total, fire_reason_id').where('fired_at IS NOT NULL')
+    @users = @users.where('department_id IN (?)', params[:departments]) # unless params[:departments].blank?
+    @users = @users.where('fired_at >= ?', params[:date_from]) unless params[:date_from].blank?
+    @users = @users.where('fired_at <= ?', params[:date_to]) unless params[:date_to].blank?
+    @users = @users.group(:fire_reason_id)
+  end
+
+  def fired_people
+    params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
+    params[:per_page] ||= 15
+
+    params[:sort_by] ||= :full_name
+    sort_by = {
+        :fired_at => '`users`.fired_at',
+        :reason => '`users`.fire_reason_id',
+        :full_name => '`profiles`.last_name'
+    }
+
+    @users = User.includes(:fire_reason, :profile, :department).where('fired_at IS NOT NULL')
+    @users = @users.where('department_id IN (?)', params[:departments]) unless params[:departments].blank?
+    @users = @users.where('fired_at >= ?', params[:date_from]) unless params[:date_from].blank?
+    @users = @users.where('fired_at <= ?', params[:date_to]) unless params[:date_to].blank?
+    @users = @users.paginate :per_page => [params[:per_page].to_i, 20].max, :page => params[:page],
+                                 :order => "#{sort_by[params[:sort_by].to_sym]} #{params[:sort_order]}"
+  end
+
 end

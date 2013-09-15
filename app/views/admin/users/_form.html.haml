@@ -18,10 +18,10 @@
   = f.label :fired_at, t("personnel.user.fired", :default => "Fired"), :class => :label
   = f.check_box :fired, :class => 'check_box', :disabled => true
   = f.text_field :fired_at, :class => 'text_field date_select', :style => "width:160px"
-.group.user_fire_reason
-  = f.label :fire_reason, 'Fire Reason', :class => :label
-  = f.select :fire_reason, FireReason.selection, :include_blank => true
-.group.user_fire_reason
+.group.user_fire_reason{style: "#{f.object.fired_at.nil? ? 'display: none;' : ''}"}
+  = f.label :fire_reason_id, 'Fire Reason', :class => :label
+  = f.select :fire_reason_id, FireReason.selection, :include_blank => true
+.group.user_fire_reason{style: "#{f.object.fired_at.nil? ? 'display: none;' : ''}"}
   = f.label :fire_comment, 'Fire Comment', :class => :label
   = f.text_area :fire_comment, rows: 4
 .group

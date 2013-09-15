@@ -1,0 +1,24 @@
+.block
+  .content
+    %h2.title
+      User Leaving
+    .inner.form
+      %p
+        User
+        =@user.full_name
+        from
+        =@user.department.name
+        department
+        =@user.fired_at > Date.current ? 'is leaving' : 'left'
+        on
+        =@user.fired_at.to_formatted_s
+      %p
+        %b
+          Reason:
+        %br/
+        =@user.fire_reason.name
+      %p
+        %b
+          Manager comments:
+        %br/
+        =@user.fire_comment

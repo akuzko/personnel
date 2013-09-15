@@ -185,7 +185,8 @@
           $(".late_description").hide()
 
       $("#user_fired_at").change ->
-        if $(this).val() > 0
+        console.log $(this).val()
+        if $(this).val() != ''
           $(".user_fire_reason").show()
         else
           $(".user_fire_reason").hide()
