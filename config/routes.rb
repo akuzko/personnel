@@ -181,6 +181,7 @@ Personnel::Application.routes.draw do
       get :rates, on: :collection
       get :feedbacks, on: :collection
       get :shifts, on: :collection
+      get :nc_report, on: :collection
     end
     resources :leader_shifts, only: [:index]
   end

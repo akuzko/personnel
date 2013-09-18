@@ -1,5 +1,5 @@
 class Api::UsersController < Api::BaseController
-  before_filter :check_params, :only => [:rate, :rates, :feedbacks, :shifts]
+  before_filter :check_params, :only => [:rate, :rates, :feedbacks, :shifts, :nc_report]
   def index
     error!('Missing required parameter: department_id', 404) and return unless params[:department_id]
     @users = User.with_data.active.where(department_id: params[:department_id]).inject([]) do |res, i|
@@ -134,6 +134,56 @@ class Api::UsersController < Api::BaseController
     end
     respond_to do |format|
       format.json { render json: shifts_hash }
+    end
+  end
+
+  def nc_report
+    respond_to do |format|
+      # NC Account activation
+      activation_id = 66
+      # NC Failed orders
+      failed_orders_id = 110
+      # NC Payment reminder call
+      payment_reminder_id = 81
+      # NC Phone calls
+      phone_call_id = 77
+
+      categories = {
+          activation_id => 0,
+          failed_orders_id => 0,
+          payment_reminder_id => 0,
+          phone_call_id => 0
+      }
+
+      @events = Event.select('category_id, count(*) as total').
+          joins(:user).
+          where('eventtime >= ?', params[:date_from]).
+          where('eventtime <= ?', params[:date_to]).
+          where('users.department_id = ?', params[:department_id].to_i).
+          where(category_id: categories.keys).
+          group(:category_id)
+
+      @shifts = Shift.select('count(*) as total').
+          joins(:user).
+          where('shiftdate >= ?', params[:date_from]).
+          where('shiftdate <= ?', params[:date_to]).
+          where('users.department_id = ?', params[:department_id].to_i).
+          where('number IN (1,2,3,4,5)').
+          where("schedule_shift_id IS NOT NULL").
+          group(:schedule_shift_id, :number, :shiftdate)
+
+      shifts_count = @shifts.first.total
+
+      @events.each do |event|
+        categories[event.category_id] = event.total
+      end
+
+      result = {
+        'average activations per shift' => "%.2f" % (categories[activation_id].to_f / shifts_count),
+        'average failed orders per shift' => "%.2f" % (categories[failed_orders_id].to_f / shifts_count),
+        'average calls per shift' => "%.2f" % ((categories[payment_reminder_id] + categories[phone_call_id]).to_f / shifts_count),
+      }
+      format.json { render json: result }
     end
   end
 
