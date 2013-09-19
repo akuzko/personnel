@@ -148,41 +148,56 @@ class Api::UsersController < Api::BaseController
       # NC Phone calls
       phone_call_id = 77
 
-      categories = {
+      stats = {
           activation_id => 0,
           failed_orders_id => 0,
           payment_reminder_id => 0,
           phone_call_id => 0
       }
 
+      @categories = Category.where(id: stats.keys)
+
       @events = Event.select('category_id, count(*) as total').
           joins(:user).
           where('eventtime >= ?', params[:date_from]).
-          where('eventtime <= ?', params[:date_to]).
+          where('eventtime <= ?', "#{params[:date_to]} 23:59:59").
           where('users.department_id = ?', params[:department_id].to_i).
-          where(category_id: categories.keys).
+          where(category_id: stats.keys).
           group(:category_id)
 
-      @shifts = Shift.select('count(*) as total').
+      shifts_count = Shift.
           joins(:user).
           where('shiftdate >= ?', params[:date_from]).
           where('shiftdate <= ?', params[:date_to]).
           where('users.department_id = ?', params[:department_id].to_i).
           where('number IN (1,2,3,4,5)').
           where("schedule_shift_id IS NOT NULL").
-          group(:schedule_shift_id, :number, :shiftdate)
+          group(:schedule_shift_id, :number, :shiftdate).count.size
 
-      shifts_count = @shifts.first.total
+      users_count = User.active.where(department_id: params[:department_id]).size
 
       @events.each do |event|
-        categories[event.category_id] = event.total
+        stats[event.category_id] = event.total
       end
 
       result = {
-        'average activations per shift' => "%.2f" % (categories[activation_id].to_f / shifts_count),
-        'average failed orders per shift' => "%.2f" % (categories[failed_orders_id].to_f / shifts_count),
-        'average calls per shift' => "%.2f" % ((categories[payment_reminder_id] + categories[phone_call_id]).to_f / shifts_count),
+        'average activations per shift' => "%.2f" % (stats[activation_id].to_f / shifts_count),
+        'average activations per person per period' => "%.2f" % (stats[activation_id].to_f / users_count),
+        'average failed orders per shift' => "%.2f" % (stats[failed_orders_id].to_f / shifts_count),
+        'average failed orders per per person per period' => "%.2f" % (stats[failed_orders_id].to_f / users_count),
+        'average calls per shift' => "%.2f" % ((stats[payment_reminder_id] + stats[phone_call_id]).to_f / shifts_count),
+        'average calls per person per period' => "%.2f" % ((stats[payment_reminder_id] + stats[phone_call_id]).to_f / users_count),
+        'raw' => {
+          'users_count' => users_count,
+          'shifts_count' => shifts_count,
+        }
       }
+
+      stats.each do |key, value|
+        _cat = @categories.find{|c| c.id == key}
+        result['raw'][_cat.name] = value
+      end
+
       format.json { render json: result }
     end
   end
