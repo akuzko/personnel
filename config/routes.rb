@@ -102,7 +102,10 @@ Personnel::Application.routes.draw do
   devise_for :admins, :controllers => { :registrations => "admin_registrations" }
   namespace :admin do
     root :to => "users#index"
-    resources :departments, :categories, :schedule_statuses, :schedule_shifts, :late_comings, :permissions, :logs
+    resources :departments, :categories, :schedule_statuses, :schedule_shifts, :permissions, :logs
+    resources :late_comings do
+      put :release, on: :collection
+    end
     resources :admins do
       get :settings_edit, on: :collection
       put :settings_update, on: :collection

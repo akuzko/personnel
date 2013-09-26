@@ -33,6 +33,9 @@
         resizable: false
         modal: true
         width: 500
+      $(".check_all").live 'click', ->
+        $(this).parents('table').find('input:checkbox').attr "checked", $(this).attr("checked")
+
       $("a.#check_all").live 'click', ->
         $("#check_list :checkbox").each ->
           $(this).attr("checked", "checked")

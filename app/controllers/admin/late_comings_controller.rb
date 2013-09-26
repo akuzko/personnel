@@ -8,12 +8,13 @@ class Admin::LateComingsController < ApplicationController
   end
 
   def index
-    params[:date_from] = Date.current.to_formatted_s(:date_only)  if !params[:date_from]
-    params[:date_to] = Date.current.to_formatted_s(:date_only)  if !params[:date_to]
+    params[:date_from] = Date.current.to_formatted_s(:date_only) if !params[:date_from]
+    params[:date_to] = Date.current.to_formatted_s(:date_only) if !params[:date_to]
     params[:per_page] ||= current_admin.admin_settings.find_or_create_by_key('per_page').value
     params[:per_page] ||= 15
 
     @late_comings = LateComing.search(params, current_admin.id)
+    @late_comings_grouped = @late_comings.group_by(&:user_full_name)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -40,6 +41,20 @@ class Admin::LateComingsController < ApplicationController
         page['#late_coming_flash'].html message
       end
     end
+  end
+
+  def release
+    if params[:release]
+      params[:release].each do |id|
+        late_coming = LateComing.find_by_id(id)
+        shift = Shift.find(late_coming.shift_id)
+        start_event = Event.find_by_id(shift.start_event)
+        start_event.eventtime = shift.schedule_start_time rescue nil
+        start_event.save
+        late_coming.destroy
+      end
+    end
+    redirect_to admin_late_comings_path
   end
 
   def destroy

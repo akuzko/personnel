@@ -48,6 +48,9 @@
           modal: true,
           width: 500
         });
+        $(".check_all").live('click', function() {
+          return $(this).parents('table').find('input:checkbox').attr("checked", $(this).attr("checked"));
+        });
         $("a.#check_all").live('click', function() {
           $("#check_list :checkbox").each(function() {
             return $(this).attr("checked", "checked");

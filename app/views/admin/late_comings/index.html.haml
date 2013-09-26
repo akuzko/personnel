@@ -42,18 +42,10 @@
               %button.button{:type => "submit"}
                 = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
                 = t("web-app-theme.find", :default => "Find")
-      %table.table
-        - user = ''
-        - @late_min = 0
-        - @worked_min = 0
-        - @late_comings.each do |late_coming|
-          - if user != late_coming.user_full_name
-            = render 'total' unless user.blank?
+      = form_tag(release_admin_late_comings_url, method: :put, name: "release") do
 
-            - user = late_coming.user_full_name
-            - @late_min = 0
-            - @worked_min = 0
-
+        - @late_comings_grouped.each do |user, user_late_comings|
+          %table.table
             %tr
               %td{:colspan => 7}
                 %h3= user
@@ -69,33 +61,38 @@
               %th
                 Type
               %th
-                = t("activerecord.attributes.admin_event.description", :default => t("activerecord.labels.description", :default => "Description"))
               %th
-                = t("activerecord.attributes.admin_event.action", :default => t("activerecord.labels.action", :default => ""))
+                = check_box_tag 'check_all', 0, false, class: "check_all"
+                All
+              %th
+                = button_tag 'Release'
+            - @late_min = 0
+            - @worked_min = 0
+            - user_late_comings.each do |late_coming|
+              - unless late_coming.shift.nil? && late_coming.shift.schedule_shift.nil?
+                - @worked_min += late_coming.shift.worked_min
+                - @late_min += late_coming.late_minutes
+                %tr{:class => cycle("odd", "even")}
+                  %td
+                    = late_coming.shift.shiftdate
+                  %td
+                    = "##{late_coming.shift.number}"
+                    -#= "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
+                  %td
+                    = (Date.current + late_coming.late_minutes.minutes).strftime("%H hrs %M min")
+                  %td
+                    = (Date.current + late_coming.shift.worked_min.minutes).strftime("%H hrs %M min")
+                  %td
+                    = LateComing::LATE_TYPES[late_coming.late_type.to_s]
+                  %td
+                    = late_coming.description
+                  %td
+                    = check_box_tag 'release[]', late_coming.id, false, class: "release_#{late_coming.user_id}"
+                  %td
+                    \#{link_to "#{t("web-app-theme.delete", :default => "Release")}", admin_late_coming_path(late_coming), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to release this?")}"}
+            = render 'total'
 
-          - unless late_coming.shift.nil? && late_coming.shift.schedule_shift.nil?
-            - @worked_min += late_coming.shift.worked_min
-            - @late_min += late_coming.late_minutes
-            %tr{:class => cycle("odd", "even")}
-              %td
-                = late_coming.shift.shiftdate
-              %td
-                = "##{late_coming.shift.number}"
-                -#= "##{late_coming.shift.schedule_shift.number} (#{late_coming.shift.schedule_shift.start}:00 - #{late_coming.shift.schedule_shift.end}:00)" if late_coming.shift
-              %td
-                = (Date.current + late_coming.late_minutes.minutes).strftime("%H hrs %M min")
-              %td
-                = (Date.current + late_coming.shift.worked_min.minutes).strftime("%H hrs %M min")
-              %td
-                = LateComing::LATE_TYPES[late_coming.late_type.to_s]
-              %td
-                = late_coming.description
-              %td
-                \#{link_to "#{t("web-app-theme.delete", :default => "Release")}", admin_late_coming_path(late_coming), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to release this?")}"}
-        = render 'total'
-
-
-      .actions-bar.wat-cf
+        .actions-bar.wat-cf
         .actions
         = will_paginate @late_comings
 - content_for :sidebar, render(:partial => 'sidebar')
