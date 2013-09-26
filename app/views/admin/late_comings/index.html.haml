@@ -65,7 +65,7 @@
                 = check_box_tag 'check_all', 0, false, class: "check_all"
                 All
               %th
-                = button_tag 'Release'
+                = button_tag 'Release', :confirm => "Are you sure you would like to release this?"
             - @late_min = 0
             - @worked_min = 0
             - user_late_comings.each do |late_coming|
