@@ -92,7 +92,7 @@
                     \#{link_to "#{t("web-app-theme.delete", :default => "Release")}", admin_late_coming_path(late_coming), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure you would like to release this?")}"}
             = render 'total'
 
-        .actions-bar.wat-cf
+      .actions-bar.wat-cf
         .actions
         = will_paginate @late_comings
 - content_for :sidebar, render(:partial => 'sidebar')
