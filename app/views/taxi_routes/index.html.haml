@@ -31,8 +31,24 @@
       - elsif ScheduleCell.find_by_id(ex.subject_id) and params[:date].to_time == ex.subject.to_time
         %tr
           %td
-            = User.find_by_id(ex.author_id).identifier
+            = User.find_by_id(ex.author_id).identifier rescue '-'
           %td
             = ex.body =~ /false/ ? "добавлен" : "исключен"
+          %td
+            = ex.created_at.to_formatted_s(:time)
+      - elsif (m = ex.body.match(/by admin .*@zone3000\.net, date\: (\d{4}\-\d{2}\-\d{2})/)) and Date.parse(m[1]).to_time == params[:date].to_time
+        %tr
+          %td
+            = User.find_by_id(ex.author_id).identifier rescue '-'
+          %td
+            = ex.body =~ /false/ ? "добавлен" : "исключен"
+          %td
+            = ex.created_at.to_formatted_s(:time)
+      - elsif ex.body =~ /Address/
+        %tr
+          %td
+            = User.find_by_id(ex.author_id).identifier rescue '-'
+          %td
+            смена адреса
           %td
             = ex.created_at.to_formatted_s(:time)

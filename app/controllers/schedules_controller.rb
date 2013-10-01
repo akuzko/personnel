@@ -116,7 +116,18 @@ class SchedulesController < ApplicationController
     id = "#cell_#{@cell.schedule_shift_id}_#{@cell.line}_#{@cell.day}"
     if @cell.user_id == current_user.identifier && @cell.update_attribute(:exclude, !@cell.exclude)
       render(:update) do |page|
-        page.alert("Contact taxi driver!") if TaxiRoute.find_by_traced(Date.strptime("{ #{@template.year}, #{@template.month}, #{@cell.day} }", "{ %Y, %m, %d }"))
+        if TaxiRoute.find_by_traced(Date.strptime("{ #{@template.year}, #{@template.month}, #{@cell.day} }", "{ %Y, %m, %d }"))
+
+          ActionMailer::Base.mail(
+              :from => "valnech@zone3000.net",
+              :to => "valnech@zone3000.net",
+              :subject => "User #{current_user.identifier}: Delivery status is changed",
+              :body => "User #{current_user.identifier} #{@cell.exclude ? 'excluded from delivery list' : 'included to delivery list'}"
+          ).deliver
+
+          page.alert("Contact taxi driver!")
+        end
+
         if @cell.exclude
           page[id].css('text-decoration', 'line-through')
         else

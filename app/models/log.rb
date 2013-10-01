@@ -26,13 +26,11 @@ class Log < ActiveRecord::Base
   end
 
   def self.search(params)
-    conditions = []
-
+    res = where('1 = 1')
     [:subject_id, :subject_type, :author_id, :author_type].each do |field|
-      conditions.push(field.to_s + " = '" + params[field] + "'") unless params[field].nil? || params[field] == ""
+      res = res.where("#{field} IN (?)", params[field]) unless params[field].blank?
     end
-    paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
-             :conditions => conditions.join(' and '),
+    res.paginate :per_page => [params[:per_page].to_i, 5].max, :page => params[:page],
              :order => 'created_at DESC'
   end
 
@@ -77,7 +75,7 @@ class Log < ActiveRecord::Base
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+obj.attributes.to_a.map { |k, v| k+":"+v.to_s }.join("; ")
              when "make_primary" then
                '<b>'+subject_type+' '+params[:action]+'</b>'+"\r\n"+obj.attributes.to_a.map { |k, v| k+":"+v.to_s }.join("; ")
-             when "toggle_exclude" then
+               when "toggle_exclude" then
                '<b>'+subject_type+' excluded: '+params[:excluded].to_s+'</b>'
              else
                '<b>'+'unknown action: '+params[:action]+'</b>'

@@ -50,9 +50,13 @@ class Admin::ScheduleCellsController < ApplicationController
       match = c.match(/cell_([0-9]+)_([0-9]+)_([0-9]+)/)
 
       @cell = ScheduleCell.find_or_create_by_schedule_shift_id_and_line_and_day(match[1], match[2], match[3])
+
       @shift = ScheduleShift.find match[1]
       @template = ScheduleTemplate.find @shift.schedule_template_id
       if params[:user_id] == ''
+        if @cell.date == Date.current
+          Log.add(User.find_by_identifier_and_active(@cell.user_id, true), @cell, params.merge(action: 'toggle_exclude',excluded: "true by admin #{current_admin.email}, date: #{@cell.date}"))
+        end
         @cell.destroy
       else
         @cell.update_attributes({
@@ -62,7 +66,9 @@ class Admin::ScheduleCellsController < ApplicationController
               'is_modified' => params[:is_modified],
               'exclude' => false
             })
-
+        if @cell.date == Date.current
+          Log.add(User.find_by_identifier_and_active(params[:user_id], true), @cell, params.merge(action: 'toggle_exclude',excluded: "false by admin #{current_admin.email}"))
+        end
       end
     end
     render(:update) do |page|
