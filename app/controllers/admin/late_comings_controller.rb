@@ -44,6 +44,7 @@ class Admin::LateComingsController < ApplicationController
   end
 
   def release
+    @back_url = request.env["HTTP_REFERER"] || admin_late_comings_path
     if params[:release]
       params[:release].each do |id|
         late_coming = LateComing.find_by_id(id)
@@ -54,7 +55,7 @@ class Admin::LateComingsController < ApplicationController
         late_coming.destroy
       end
     end
-    redirect_to admin_late_comings_path
+    redirect_to @back_url
   end
 
   def destroy
