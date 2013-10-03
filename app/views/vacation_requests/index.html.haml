@@ -1,0 +1,46 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li= link_to "#{t("web-app-theme.new", :default => "New")}", new_vacation_request_path, :class => 'modal_dialog'
+  .content
+    %h2.title
+      Vacation Requests
+    %table.table
+      %tr
+        %th
+          = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+        %th
+          Started
+        %th
+          Ended
+        %th
+          Days
+        %th
+          Status
+        %th
+          Comment
+        %th.last &nbsp;
+      - @vacation_requests.each do |line|
+        %tr{:class => cycle("odd", "even")}
+          %td
+            = line.created_at.to_formatted_s(:date_and_time)
+          %td
+            = line.started.to_formatted_s
+          %td
+            = line.ended.to_formatted_s
+          %td
+            = (line.ended - line.started).to_i+1
+          %td
+            = VacationRequest::STATUS[line.status]
+          %td
+            = line.comment
+          %td.last
+            - if line.status == 0
+              =link_to "#{t("web-app-theme.edit", :default => "Edit")}", edit_vacation_request_path(line), :class => "modal_dialog"
+              =link_to "#{t("web-app-theme.delete", :default => "Delete")}", vacation_request_path(line), :method => :delete, :confirm => "#{t("web-app-theme.confirm", :default => "Are you sure?")}"
+    .actions-bar.wat-cf
+      .actions
+      = will_paginate @vacation_requests
+    %br
+%div.modal#overlay
+  %div.contentWrap

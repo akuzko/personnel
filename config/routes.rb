@@ -81,6 +81,7 @@ Personnel::Application.routes.draw do
     post :update_cell, on: :collection
     post :toggle_exclude, on: :collection
   end
+  resources :vacation_requests
   resources :events do
     get :start_shift, on: :collection
     get :end_shift, on: :collection
@@ -175,6 +176,7 @@ Personnel::Application.routes.draw do
 
     resources :birthdays
     resources :fire_reasons
+    resources :vacation_requests
   end
 
   namespace :api do

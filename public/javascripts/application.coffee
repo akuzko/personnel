@@ -121,7 +121,12 @@
       $('.modal_dialog').live 'click', ->
         $("#overlay .contentWrap").load $(this).attr("href"), ->
           $("#overlay").dialog("open")
+          $('.date_select').datepicker
+            dateFormat: 'yy-mm-dd'
+            changeMonth: true
+            changeYear: true
         no
+
 
       $("input.visible").click ->
         href = $(this).attr("href")

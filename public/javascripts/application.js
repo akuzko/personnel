@@ -154,7 +154,12 @@
         });
         $('.modal_dialog').live('click', function() {
           $("#overlay .contentWrap").load($(this).attr("href"), function() {
-            return $("#overlay").dialog("open");
+            $("#overlay").dialog("open");
+            return $('.date_select').datepicker({
+              dateFormat: 'yy-mm-dd',
+              changeMonth: true,
+              changeYear: true
+            });
           });
           return false;
         });
