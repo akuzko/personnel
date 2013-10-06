@@ -8,4 +8,8 @@ class VacationRequest < ActiveRecord::Base
   }
 
   validates_presence_of :started, :ended
+
+  def self.selection
+    STATUS.map{|k, v| [v, k]}
+  end
 end

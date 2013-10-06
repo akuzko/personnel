@@ -4,7 +4,7 @@ class VacationRequestsController < ApplicationController
   layout 'user'
 
   def index
-    @vacation_requests = VacationRequest.where(user_id: current_user.id).paginate :per_page => 10, :page => params[:page],                                                                                      :order => "created_at DESC"
+    @vacation_requests = VacationRequest.where(user_id: current_user.id).paginate :per_page => 10, :page => params[:page], :order => "created_at DESC"
   end
 
   def show
@@ -27,6 +27,13 @@ class VacationRequestsController < ApplicationController
 
     if @vacation_request.save
       # send email
+      admins = @user.department.admins.map(&:email)
+      ActionMailer::Base.mail(
+          :to => admins.join(","),
+          :from => current_user.email,
+          :subject => "New vacation request",
+          :body => "User #{current_user.full_name} submitted a new vacation request"
+      ).deliver
       render(:update) do |page|
         page["#overlay"].dialog("close")
         flash[:notice] = t("personnel.event.Record has been added", :default => "Record has been added")

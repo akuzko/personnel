@@ -176,7 +176,10 @@ Personnel::Application.routes.draw do
 
     resources :birthdays
     resources :fire_reasons
-    resources :vacation_requests
+    resources :vacation_requests, only: [:index] do
+      put :approve, on: :member
+      put :decline, on: :member
+    end
   end
 
   namespace :api do

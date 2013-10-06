@@ -1,0 +1,69 @@
+.block
+  .content
+    %h2.title
+      = t("web-app-theme.all", :default => "All")
+      Vacation Requests
+    .inner
+      = form_tag(admin_vacation_requests_path, :method => :get, :id => 'find_form') do
+        %table
+          %tr
+            %td
+              &nbsp;
+            %td
+              Status
+              = select_tag :status, options_for_select(VacationRequest.selection, params[:status]), { :include_blank => true }
+            %td
+              Department
+              = select_tag :department_id, options_for_select(Department.selection_by_admin(current_admin.id, true), params[:department_id]), { :include_blank => true }
+            %td#users_select
+              User
+              = select_tag :user_id, options_for_select(User.selection_by_admin(current_admin.id, params[:department_id]), params[:user_id]), { :include_blank => true }
+            %td
+              &nbsp;
+            %td
+              %button.button{:type => "submit"}
+                = image_tag("web-app-theme/icons/find.png", :alt => "#{t("web-app-theme.find", :default => "Find")}")
+                = t("web-app-theme.find", :default => "Find")
+      %table.table
+        %tr
+          %th
+            = t("activerecord.attributes.admin_event.datetime", :default => t("activerecord.labels.datetime", :default => "DateTime"))
+          %th
+            User
+          %th
+            Started
+          %th
+            Ended
+          %th
+            Days
+          %th
+            Status
+          %th
+            Comment
+          %th.last &nbsp;
+        - @vacation_requests.each do |line|
+          %tr{:class => cycle("odd", "even")}
+            %td
+              = line.created_at.to_formatted_s(:date_and_time)
+            %td
+              = line.user.full_name
+            %td
+              = line.started.to_formatted_s
+            %td
+              = line.ended.to_formatted_s
+            %td
+              = (line.ended - line.started).to_i+1
+            %td
+              = VacationRequest::STATUS[line.status]
+            %td
+              = line.comment
+            %td.last
+              - if line.status == 0
+                =link_to 'Approve', approve_admin_vacation_request_path(line), method: :put
+                =link_to 'Decline', decline_admin_vacation_request_path(line), method: :put
+      .actions-bar.wat-cf
+        .actions
+        = will_paginate @vacation_requests
+      %br
+%div.modal#overlay
+  %div.contentWrap
